@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "753299412122",
+    "project_id": "ketabna-75830",
+    "storage_bucket": "ketabna-75830.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753299412122:android:91677f418ace72d78e3b23",
+        "android_client_info": {
+          "package_name": "com.example.ketabna"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "753299412122-9a8m1vstiervc2t9r3mmet4k8970ja7e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ketabna",
+            "certificate_hash": "76acb83a4708e3641ac08f0e6cd3a5ab28ac0c5a"
+          }
+        },
+        {
+          "client_id": "753299412122-mob8f9qdquk6o17kr49cu40bledi9fto.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBo5fH7Yn1AYf0mtdG1OMb0b0utV3WPjpU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "753299412122-mob8f9qdquk6o17kr49cu40bledi9fto.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
