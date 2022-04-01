@@ -1,6 +1,4 @@
-
 //   Write by BALY
-
 import 'package:flutter/material.dart';
 
 Widget textFormField({
@@ -10,21 +8,21 @@ Widget textFormField({
   double radius = 0,
   int? maxLength,
   Function? onTab,
-  double ? labelSized,
+  double? labelSized,
   bool obscureText = false,
 }) {
   return TextFormField(
-    onTap: (){onTab!();},
+    onTap: () {
+      onTab!();
+    },
     maxLength: maxLength,
     controller: TextEditingController(),
     obscureText: obscureText,
     keyboardType: keyboardType,
-    decoration:  InputDecoration(
+    decoration: InputDecoration(
       labelStyle: TextStyle(
         fontSize: labelSized,
-
       ),
-
       hintMaxLines: maxLength,
       labelText: label,
       border: OutlineInputBorder(
@@ -33,5 +31,3 @@ Widget textFormField({
     ),
   );
 }
-
-
