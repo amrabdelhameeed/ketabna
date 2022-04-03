@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ketabna/screens/register_screen.dart';
+
+import 'login_screen.dart';
 
 
 class SignInUPScreen extends StatelessWidget {
@@ -98,13 +101,14 @@ class SignInUPScreen extends StatelessWidget {
                   child: MaterialButton(
 
                     onPressed:(){
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     /// Go to Sign In Screen
-                      //     builder:(context)=> const SignInScreen(),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          /// Go to Sign In Screen
+                          /// Sign In Screen
+                          builder:(context)=> LoginScreen(),
+                        ),
+                      );
                     },
                     child: const Text(
                       'Sign In',
@@ -134,13 +138,13 @@ class SignInUPScreen extends StatelessWidget {
                   child: MaterialButton(
 
                     onPressed:(){
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     /// Go to Sign Up Screen
-                      //     builder:(context)=> SignUpScreen(),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          /// Go to Sign Up Screen
+                          builder:(context)=> RegisterScreen(),
+                        ),
+                      );
                     },
                     child: const Text(
                       'Sign Up',
