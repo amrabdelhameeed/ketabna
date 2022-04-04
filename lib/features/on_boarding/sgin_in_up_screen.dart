@@ -96,7 +96,7 @@ class SignInUpScreen extends StatelessWidget {
                   ),
                   child: MaterialButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, loginScreen);
+                      // Navigator.pushNamed(context, loginScreen);
                     },
                     child: const Text(
                       'Sign In',
