@@ -13,7 +13,7 @@ class SignInUPScreen extends StatelessWidget {
       backgroundColor: const Color(0xFFF5F1D7),
       body: Stack(
         children:[
-          ///flower1 TopRight
+          ///f1 TopRight
           Align(
             alignment: const AlignmentDirectional(3.5,-.6),
             child: Transform.rotate(
@@ -25,7 +25,7 @@ class SignInUPScreen extends StatelessWidget {
               ),
             ),
           ),
-          ///flower2 TopRight
+          ///f2 TopRight
           Align(
             alignment: const AlignmentDirectional(1.67,-.16),
             child: Transform.rotate(
