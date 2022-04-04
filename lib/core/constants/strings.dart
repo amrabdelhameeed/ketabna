@@ -5,6 +5,9 @@ const kImagePath = "assets/images/Untitled.png";
 const loginScreen = "/loginScreen";
 const registerScreen = "/registerScreen";
 const mainScreen = "/mainScreen";
+const splashScreen = "/splashScreen";
+const onBoardingScreen = "/onBoardingScreen";
+
 const otpscreen = "/otpscreen";
 
 String? token;

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ketabna/bloc/cubit/auth_cubit.dart';
 import 'package:ketabna/core/constants/strings.dart';
-import 'package:ketabna/core/utils/shared_pref_helper.dart';
 import 'package:ketabna/core/widgets/mytextformfield.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -22,6 +21,13 @@ class LoginScreen extends StatelessWidget {
       builder: (context, state) {
         var cubit = AuthCubit.get(context);
         return Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.arrow_back_ios_new)),
+          ),
           body: Padding(
             padding: const EdgeInsets.only(
               right: 8.0,
@@ -59,13 +65,14 @@ class LoginScreen extends StatelessWidget {
                           email: emailController.text,
                           password: passController.text);
                     },
-                    child: Text("Login")),
+                    child: const Text("Login")),
                 const SizedBox(
                   height: 20,
                 ),
                 Row(
                   children: [
-                    Expanded(flex: 4, child: Text("U don't have account ?")),
+                    const Expanded(
+                        flex: 4, child: Text("U don't have account ?")),
                     Expanded(
                         flex: 1,
                         child: InkWell(
@@ -73,11 +80,9 @@ class LoginScreen extends StatelessWidget {
                               Navigator.pushReplacementNamed(
                                   context, registerScreen);
                             },
-                            child: Container(
-                              child: Text(
-                                "Register Now",
-                                style: TextStyle(color: Colors.blue),
-                              ),
+                            child: const Text(
+                              "Register Now",
+                              style: TextStyle(color: Colors.blue),
                             ))),
                   ],
                 )

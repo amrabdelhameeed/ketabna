@@ -16,7 +16,7 @@ class SignInUpScreen extends StatelessWidget {
             child: Transform.rotate(
               angle: .1,
               child: const Image(
-                image: AssetImage('assets/images/flower.png'),
+                image: AssetImage('assets/image/f.png'),
                 height: 200,
                 width: 250,
               ),
@@ -29,7 +29,7 @@ class SignInUpScreen extends StatelessWidget {
             child: Transform.rotate(
               angle: 0,
               child: const Image(
-                image: AssetImage('assets/images/flower2.png'),
+                image: AssetImage('assets/image/f2.png'),
                 height: 110,
                 width: 140,
               ),
@@ -40,7 +40,7 @@ class SignInUpScreen extends StatelessWidget {
           const Align(
             alignment: AlignmentDirectional(-3.9, -1),
             child: Image(
-              image: AssetImage('assets/images/flower3.png'),
+              image: AssetImage('assets/image/f3.png'),
               height: 380,
               width: 270,
             ),
@@ -48,7 +48,7 @@ class SignInUpScreen extends StatelessWidget {
           const Align(
             alignment: AlignmentDirectional(-22, .99),
             child: Image(
-              image: AssetImage('assets/images/background.png'),
+              image: AssetImage('assets/image/b.png'),
               width: 348,
               height: 260,
               fit: BoxFit.fill,
@@ -96,7 +96,7 @@ class SignInUpScreen extends StatelessWidget {
                   ),
                   child: MaterialButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, mainScreen);
+                      Navigator.pushNamed(context, loginScreen);
                     },
                     child: const Text(
                       'Sign In',
@@ -125,13 +125,7 @@ class SignInUpScreen extends StatelessWidget {
                   ),
                   child: MaterialButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          /// Go to Sign Up Screen
-                          builder: (context) => RegisterScreen(),
-                        ),
-                      );
+                      Navigator.pushNamed(context, registerScreen);
                     },
                     child: const Text(
                       'Sign Up',
@@ -153,7 +147,7 @@ class SignInUpScreen extends StatelessWidget {
           const Align(
             alignment: AlignmentDirectional(-4, 1),
             child: Image(
-              image: AssetImage('assets/images/Girl.png'),
+              image: AssetImage('assets/image/G.png'),
               width: 300,
               height: 250,
             ),

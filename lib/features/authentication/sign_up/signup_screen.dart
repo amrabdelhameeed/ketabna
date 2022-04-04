@@ -26,8 +26,8 @@ class SignupPage extends StatelessWidget {
           leading: IconButton(
             padding: EdgeInsets.only(top: 20.0),
             onPressed: () {
-              // Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, loginScreen);
+              Navigator.pop(context);
+              // Navigator.pushReplacementNamed(context, loginScreen);
             },
             icon: const Icon(
               Icons.arrow_back_ios_new,

@@ -6,7 +6,6 @@ import 'package:ketabna/app_router.dart';
 import 'package:ketabna/core/constants/observer.dart';
 import 'package:ketabna/core/constants/strings.dart';
 import 'package:ketabna/core/utils/shared_pref_helper.dart';
-import 'package:ketabna/features/authentication/sign_up/signup_screen.dart';
 
 String initialRoute = "";
 void main() async {
@@ -15,7 +14,7 @@ void main() async {
   await Firebase.initializeApp();
   FirebaseAuth.instance.authStateChanges().listen((user) {
     if (user == null) {
-      initialRoute = loginScreen;
+      initialRoute = splashScreen;
     } else {
       initialRoute = mainScreen;
     }
