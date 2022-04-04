@@ -19,7 +19,7 @@ class SignInUPScreen extends StatelessWidget {
             child: Transform.rotate(
               angle: .1 ,
               child: const Image(
-                image: AssetImage('assets/images/flower.png'),
+                image: AssetImage('assets/images/f.png'),
                 height: 200,
                 width: 250,
               ),
@@ -31,7 +31,7 @@ class SignInUPScreen extends StatelessWidget {
             child: Transform.rotate(
               angle: 0 ,
               child: const Image(
-                image: AssetImage('assets/images/flower2.png'),
+                image: AssetImage('assets/images/f2.png'),
                 height: 110,
                 width: 140,
               ),
@@ -41,7 +41,7 @@ class SignInUPScreen extends StatelessWidget {
           const Align(
            alignment: AlignmentDirectional(-3.9,-1),
            child: Image(
-             image: AssetImage('assets/images/flower3.png'),
+             image: AssetImage('assets/images/f3.png'),
              height: 380,
              width: 270,
            ),
@@ -50,7 +50,7 @@ class SignInUPScreen extends StatelessWidget {
           const Align(
             alignment: AlignmentDirectional(-22,.99),
             child: Image(
-              image: AssetImage('assets/images/background.png'),
+              image: AssetImage('assets/images/b.png'),
               width: 348,
               height: 260,
               fit: BoxFit.fill,
@@ -169,7 +169,7 @@ class SignInUPScreen extends StatelessWidget {
           const Align(
             alignment: AlignmentDirectional(-4,1),
             child: Image(
-              image: AssetImage('assets/images/Girl.png'),
+              image: AssetImage('assets/images/G.png'),
               width: 300,
               height: 250,
             ),
