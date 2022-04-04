@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ketabna/core/constants/strings.dart';
 import 'package:ketabna/features/authentication/sign_up/register_screen.dart';
-import 'login_screen.dart';
 
-class SignInScreen extends StatelessWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+class SignInUpScreen extends StatelessWidget {
+  const SignInUpScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

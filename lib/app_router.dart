@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ketabna/bloc/cubit/auth_cubit.dart';
 import 'package:ketabna/core/constants/strings.dart';
-import 'package:ketabna/screens/home.dart';
-import 'package:ketabna/screens/login_screen.dart';
-import 'package:ketabna/screens/otp_screen.dart';
-import 'package:ketabna/screens/register_screen.dart';
+import 'package:ketabna/features/authentication/login/sgin_in_up_screen.dart';
+import 'package:ketabna/features/authentication/otp/varification_screen.dart';
+import 'package:ketabna/features/authentication/sign_up/signup_screen.dart';
+import 'package:ketabna/features/home/home.dart';
 
 class AppRouter {
   AuthCubit? authCubit;
@@ -27,22 +27,22 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) {
           return BlocProvider<AuthCubit>.value(
             value: authCubit!,
-            child: LoginScreen(),
+            child: SignInUpScreen(),
           );
         });
       case otpscreen:
-        final phonenum = settings.arguments;
+        // final phonenum = settings.arguments;
         return MaterialPageRoute(builder: (_) {
           return BlocProvider<AuthCubit>.value(
             value: authCubit!,
-            child: OtpScreen(),
+            child: VerificationScreen(),
           );
         });
       case registerScreen:
         return MaterialPageRoute(builder: (_) {
           return BlocProvider<AuthCubit>.value(
             value: authCubit!,
-            child: RegisterScreen(),
+            child: SignupScreen(),
           );
         });
     }
