@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ketabna/core/constants/constants.dart';
+import 'package:ketabna/core/constants/strings.dart';
 import 'package:ketabna/core/utils/app_colors.dart';
 import 'package:ketabna/core/widgets/default_check_box.dart';
 import 'package:ketabna/core/widgets/default_form_button.dart';
@@ -25,7 +26,8 @@ class SignupPage extends StatelessWidget {
           leading: IconButton(
             padding: EdgeInsets.only(top: 20.0),
             onPressed: () {
-              Navigator.pop(context);
+              // Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, loginScreen);
             },
             icon: const Icon(
               Icons.arrow_back_ios_new,

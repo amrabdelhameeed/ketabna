@@ -6,7 +6,7 @@ import 'package:ketabna/app_router.dart';
 import 'package:ketabna/core/constants/observer.dart';
 import 'package:ketabna/core/constants/strings.dart';
 import 'package:ketabna/core/utils/shared_pref_helper.dart';
-import 'package:ketabna/screens/signup_screen.dart';
+import 'package:ketabna/features/authentication/sign_up/signup_screen.dart';
 
 String initialRoute = "";
 void main() async {
@@ -35,16 +35,10 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key, required this.appRouter}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return /*MaterialApp(
+    return MaterialApp(
       initialRoute: initialRoute,
       onGenerateRoute: appRouter.generateRoutes,
       title: 'Ketabna',
-    );
-    */
-
-        MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SignupPage(),
     );
   }
 }
