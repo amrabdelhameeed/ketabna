@@ -6,7 +6,8 @@ import 'package:ketabna/app_router.dart';
 import 'package:ketabna/core/constants/observer.dart';
 import 'package:ketabna/core/constants/strings.dart';
 import 'package:ketabna/core/utils/shared_pref_helper.dart';
-import 'package:ketabna/screens/signup_screen.dart';
+
+import 'Splash_view.dart';
 
 String initialRoute = "";
 void main() async {
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
 
         MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SignupPage(),
+      home: SplashView(),
     );
   }
 }
