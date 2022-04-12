@@ -114,20 +114,22 @@ class RegisterScreen extends StatelessWidget {
                           const SizedBox(
                             height: 10.0,
                           ),
-                          DefaultFormButton(onPressed: () {
-                            cubit.signUpWithEmailAndPassword(
-                                email: _emailController.text,
-                                password: _passwordController.text,
-                                name: _nameController.text,
-                                intersts: "intersts",
-                                phone: _mobileController.text,
-                                fantasyInterst: true,
-                                fictionInterst: true,
-                                horrorInterst: true,
-                                novelInterst: true,
-                                studingInterst: true,
-                                technologyInterst: true);
-                          }),
+                          DefaultFormButton(
+                              text: '',
+                              onPressed: () {
+                                cubit.signUpWithEmailAndPassword(
+                                    email: _emailController.text,
+                                    password: _passwordController.text,
+                                    name: _nameController.text,
+                                    intersts: "intersts",
+                                    phone: _mobileController.text,
+                                    fantasyInterst: true,
+                                    fictionInterst: true,
+                                    horrorInterst: true,
+                                    novelInterst: true,
+                                    studingInterst: true,
+                                    technologyInterst: true);
+                              }),
                         ],
                       )),
                 ),
