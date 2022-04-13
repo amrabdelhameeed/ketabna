@@ -13,7 +13,7 @@ class HorizontalSpace extends StatelessWidget {
 }
 
 class VerticalSpace extends StatelessWidget {
-  const VerticalSpace({Key? key, this.value}) : super(key: key);
+  const VerticalSpace({Key? key, required this.value}) : super(key: key);
   final double? value;
   @override
   Widget build(BuildContext context) {

@@ -11,4 +11,3 @@ const onBoardingScreen = "/onBoardingScreen";
 const otpscreen = "/otpscreen";
 
 String? token;
-const TextStyle textStyleBig = TextStyle(fontSize: 25);

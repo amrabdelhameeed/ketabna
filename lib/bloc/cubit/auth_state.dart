@@ -65,3 +65,9 @@ class GetUserByUidState extends AuthState {
 
   GetUserByUidState(this.userModel);
 }
+
+class GetRecommended extends AuthState {
+  final List<BookModel> books;
+
+  GetRecommended(this.books);
+}

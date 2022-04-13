@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:ketabna/core/constants/constants.dart';
 import 'package:ketabna/core/utils/app_colors.dart';
 
 class DefaultCheckBox extends StatefulWidget {
-  const DefaultCheckBox({Key? key, required this.checkInfo}) : super(key: key);
+  const DefaultCheckBox({
+    Key? key,
+    required this.checkInfo,
+  }) : super(key: key);
   final String checkInfo;
-
   @override
   State<DefaultCheckBox> createState() => _DefaultCheckBoxState();
 }
 
 class _DefaultCheckBoxState extends State<DefaultCheckBox> {
-  bool? value = false;
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -27,7 +28,7 @@ class _DefaultCheckBoxState extends State<DefaultCheckBox> {
             value: value,
             onChanged: (bool? val) {
               setState(() {
-                value = val;
+                value = val!;
               });
             },
             shape: const RoundedRectangleBorder(
