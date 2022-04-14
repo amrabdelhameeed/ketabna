@@ -71,3 +71,10 @@ class GetRecommended extends AuthState {
 
   GetRecommended(this.books);
 }
+
+class PickPhotoLoadingState extends AuthState {}
+
+class PickPhotoLoadedState extends AuthState {}
+
+class BookRequestedState extends AuthState {}
+// class PickPhotoLoadingState extends AuthState{}

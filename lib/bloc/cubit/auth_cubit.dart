@@ -1,11 +1,16 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ketabna/core/models/book_model.dart';
 import 'package:ketabna/core/models/intersts_model.dart';
+import 'package:ketabna/core/models/request_model.dart';
 import 'package:ketabna/core/models/user_model.dart';
 import 'package:ketabna/core/utils/random_string.dart';
 import 'package:meta/meta.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -14,6 +19,31 @@ class AuthCubit extends Cubit<AuthState> {
   bool isTechnical = false;
   late String verificationId;
   var instance = FirebaseAuth.instance;
+  final ImagePicker _picker = ImagePicker();
+  File? bookImage;
+  Future<String> pickBookImage(String bookId) async {
+    String? photoUrl;
+    await _picker.pickImage(source: ImageSource.gallery).then((value) {
+      bookImage = File(value!.path);
+    }).then((value) async {
+      emit(PickPhotoLoadingState());
+      await firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('books/${Uri.file(bookImage!.path).pathSegments.last}')
+          .putFile(bookImage!)
+          .then((p0) async {
+        await p0.ref.getDownloadURL().then((photoLink) async {
+          print(photoLink);
+          photoUrl = photoLink;
+          emit(PickPhotoLoadedState());
+          return photoUrl;
+        });
+      });
+    });
+    emit(PickPhotoLoadedState());
+    return photoUrl!;
+  }
+
   Future<void> signUpWithEmailAndPassword({
     required String email,
     required String password,
@@ -152,7 +182,7 @@ class AuthCubit extends Cubit<AuthState> {
         .where((element) => element.value == true)
         .toList();
     map.forEach((key) async {
-      await getAllBooksByCategory(category: key.key, limit: 1).then((vv) {
+      await getAllBooksByCategory(category: key.key, limit: 5).then((vv) {
         vv.forEach((ele) {
           if (localBooks.contains(ele)) {
           } else {
@@ -169,25 +199,22 @@ class AuthCubit extends Cubit<AuthState> {
     required String category,
     required String nameAr,
     required String nameEn,
-    required String picture,
     required String authorName,
   }) async {
     String bookId = RandomString.getRandomString(20);
-    BookModel bookModel = BookModel(
-        ownerUid: instance.currentUser!.uid,
-        category: category,
-        nameAr: nameAr,
-        picture: picture,
-        nameEn: nameEn,
-        isValid: true,
-        bookId: bookId,
-        authorName: authorName);
-    FirebaseFirestore.instance
-        .collection('books')
-        .doc(bookId)
-        .set(bookModel.toJson())
-        .then((value) {
-      print("tamam ya basha");
+    await pickBookImage(bookId).then((value) async {
+      BookModel bookModel = BookModel(
+          ownerUid: instance.currentUser!.uid,
+          category: category,
+          nameAr: nameAr,
+          picture: value,
+          nameEn: nameEn,
+          bookId: bookId,
+          authorName: authorName);
+      await FirebaseFirestore.instance
+          .collection('books')
+          .doc(bookId)
+          .set(bookModel.toJson());
     });
   }
 
@@ -207,5 +234,16 @@ class AuthCubit extends Cubit<AuthState> {
   User getLoggedInUser() {
     User firebaseUser = instance.currentUser!;
     return firebaseUser;
+  }
+
+  void makeRequest({required RequestModel requestModel}) async {
+    FirebaseFirestore.instance
+        .collection('requests')
+        .doc()
+        .set(requestModel.toJson())
+        .then((value) {
+      print("requested ya basha");
+      emit(BookRequestedState());
+    });
   }
 }

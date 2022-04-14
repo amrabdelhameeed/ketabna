@@ -7,8 +7,6 @@ import 'package:ketabna/bloc/cubit/auth_cubit.dart';
 import 'package:ketabna/core/constants/constants.dart';
 import 'package:ketabna/core/constants/strings.dart';
 import 'package:ketabna/core/utils/size_config.dart';
-import 'package:ketabna/core/widgets/custom_general_button.dart';
-import 'package:ketabna/core/widgets/mytextformfield.dart';
 import 'package:ketabna/core/widgets/space.dart';
 
 class Home extends StatelessWidget {
@@ -32,7 +30,6 @@ class Home extends StatelessWidget {
         },
         builder: (context, state) {
           var cubit = BlocProvider.of<AuthCubit>(context);
-
           return Scaffold(
             appBar: AppBar(actions: [
               IconButton(
@@ -52,7 +49,7 @@ class Home extends StatelessWidget {
                 VerticalSpace(
                   value: 2,
                 ),
-                state is GetRecommended
+                cubit.books.isNotEmpty
                     ? SizedBox(
                         height: 130,
                         child: ListView.separated(
@@ -62,25 +59,49 @@ class Home extends StatelessWidget {
                             );
                           },
                           itemBuilder: (context, index) {
-                            return Container(
-                              height: 120,
-                              color: Colors.grey.shade300,
-                              child: Column(
-                                children: [
-                                  Text(state.books[index].authorName!),
-                                  Text(state.books[index].nameAr!),
-                                  Text(state.books[index].bookId!)
-                                ],
-                              ),
-                            );
+                            return cubit.books[index].picture != null
+                                ? InkWell(
+                                    onTap: () {
+                                      Navigator.pushNamed(context, bookScreen,
+                                          arguments: cubit.books[index]);
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey.shade300,
+                                          image: DecorationImage(
+                                              image: NetworkImage(cubit
+                                                  .books[index].picture!))),
+                                      height: 120,
+                                      child: Column(
+                                        children: [
+                                          Text(cubit.books[index].authorName!),
+                                          Text(cubit.books[index].nameAr!),
+                                          Text(cubit.books[index].bookId!)
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                : Center(
+                                    child: CircularProgressIndicator(),
+                                  );
                           },
                           scrollDirection: Axis.horizontal,
-                          itemCount: state.books.length,
+                          itemCount: cubit.books.length,
                         ),
                       )
                     : Center(
                         child: Text("laaaaaaaaa"),
-                      )
+                      ),
+                VerticalSpace(value: 1),
+                ElevatedButton(
+                    onPressed: () {
+                      cubit.addBook(
+                          category: "technologyInterst",
+                          nameAr: "قران",
+                          nameEn: "Quran",
+                          authorName: "-");
+                    },
+                    child: Text("pick photo and add book"))
               ],
             ),
           );
