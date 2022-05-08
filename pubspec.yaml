@@ -66,6 +66,15 @@ flutter:
     - assets/image/on_boarding1.png
     - assets/image/on_boarding2.png
     - assets/image/Books.png
+    - assets/image/Art.jpg
+    - assets/image/Children.jpg
+    - assets/image/Cooking.jpg
+    - assets/image/Fantasy.jpg
+    - assets/image/History.jpg
+    - assets/image/Horror.jpg
+    - assets/image/medicien.jpg
+    - assets/image/Romance.jpg
+    - assets/image/Science Fiction.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
