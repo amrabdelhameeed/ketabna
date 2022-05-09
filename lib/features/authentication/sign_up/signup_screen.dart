@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ketabna/bloc/cubit/auth_cubit.dart';
 import 'package:ketabna/core/constants/constants.dart';
 import 'package:ketabna/core/constants/strings.dart';
+import 'package:ketabna/core/models/intersts_model.dart';
 import 'package:ketabna/core/utils/app_colors.dart';
 import 'package:ketabna/core/widgets/default_check_box.dart';
 import 'package:ketabna/core/widgets/default_form_button.dart';
@@ -91,17 +94,42 @@ class SignupPage extends StatelessWidget {
                       const SizedBox(
                         height: 10.0,
                       ),
-                      const DefaultCheckBox(
-                        checkInfo: 'accept term & conditions',
-                      ),
+                      // const DefaultCheckBox(
+                      //   checkInfo: 'accept term & conditions',
+                      // ),
                       const DefaultCheckBox(checkInfo: 'Using What\'s app'),
                       const SizedBox(
                         height: 10.0,
                       ),
-                      DefaultFormButton(
-                        text: 'Sign Up',
-                        onPressed: () {
-                          formKey.currentState!.validate();
+                      BlocConsumer<AuthCubit, AuthState>(
+                        listener: (context, state) {
+                          if (state is PhoneNumberSubmitted) {
+                            Navigator.pushNamed(context, otpscreen);
+                          }
+                        },
+                        builder: (context, state) {
+                          var cubit = AuthCubit.get(context);
+                          return DefaultFormButton(
+                            text: 'Sign Up',
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                cubit.signUpWithEmailAndPassword(
+                                  isWhatsapp: value,
+                                  interstsModel: InterstsModel(
+                                      fantasyInterst: false,
+                                      fictionInterst: true,
+                                      horrorInterst: false,
+                                      novelInterst: true,
+                                      studingInterst: false,
+                                      technologyInterst: true),
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                  name: _nameController.text,
+                                  phone: _mobileController.text,
+                                );
+                              }
+                            },
+                          );
                         },
                       ),
                     ],

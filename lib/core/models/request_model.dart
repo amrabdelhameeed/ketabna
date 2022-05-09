@@ -6,7 +6,7 @@ class RequestModel {
   RequestModel({
     required this.senderUid,
     required this.reciverUid,
-    required this.isAccepted,
+    this.isAccepted,
     required this.bookId,
   });
   RequestModel.fromJson(Map<String, dynamic> map) {
