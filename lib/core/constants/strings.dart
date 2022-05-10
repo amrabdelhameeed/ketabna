@@ -5,7 +5,10 @@ const kImagePath = "assets/images/Untitled.png";
 const loginScreen = "/loginScreen";
 const registerScreen = "/registerScreen";
 const mainScreen = "/mainScreen";
+const splashScreen = "/splashScreen";
+const onBoardingScreen = "/onBoardingScreen";
+
 const otpscreen = "/otpscreen";
+const bookScreen = "/bookScreen";
 
 String? token;
-const TextStyle textStyleBig = TextStyle(fontSize: 25);

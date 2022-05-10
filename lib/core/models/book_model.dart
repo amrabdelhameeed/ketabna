@@ -11,7 +11,7 @@ class BookModel {
       {required this.nameAr,
       required this.picture,
       required this.nameEn,
-      required this.isValid,
+      this.isValid=true,
       required this.authorName,
       required this.category,
       required this.ownerUid,

@@ -14,7 +14,7 @@ void main() async {
   await Firebase.initializeApp();
   FirebaseAuth.instance.authStateChanges().listen((user) {
     if (user == null) {
-      initialRoute = loginScreen;
+      initialRoute = splashScreen;
     } else {
       initialRoute = mainScreen;
     }
@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       initialRoute: initialRoute,
       onGenerateRoute: appRouter.generateRoutes,
       title: 'Ketabna',
