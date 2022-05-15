@@ -1,9 +1,14 @@
+import 'dart:math';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ketabna/bloc/cubit/auth_cubit.dart';
+import 'package:ketabna/core/constants/strings.dart';
+import 'package:ketabna/core/models/intersts_model.dart';
 import 'package:ketabna/core/widgets/components.dart';
 import 'package:ketabna/features/home/widgets/custom_listview.dart';
+import 'package:ketabna/features/on_boarding/sgin_in_up_screen.dart';
 import 'widgets/customShape.dart';
 import 'widgets/get_books.dart';
 import 'widgets/customcarousel.dart';
@@ -37,6 +42,29 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          var cubit = AuthCubit.get(context);
+          cubit.addBook(
+              category: InterstsModel
+                  .categorys[Random().nextInt(InterstsModel.categorys.length)],
+              nameAr: ' nameAr',
+              nameEn: ' nameEn',
+              authorName: ' authorName');
+        },
+        child: Icon(Icons.add),
+      ),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                AuthCubit.get(context).logOut().then((value) {
+                  Navigator.pushReplacementNamed(context, registerScreen);
+                });
+              },
+              icon: const Icon(Icons.exit_to_app))
+        ],
+      ),
       body: SingleChildScrollView(
         child: BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
           var cubit = AuthCubit.get(context);
@@ -87,9 +115,15 @@ class HomeScreen extends StatelessWidget {
                     defaultHeader(
                       text: 'Recommended',
                     ),
-                    CustomCarousel(
-                      listOfBookModel: cubit.reccomendedBooks,
-                    ),
+                    cubit.reccomendedBooks.isNotEmpty
+                        ? CustomCarousel(
+                            listOfBookModel: cubit.reccomendedBooks,
+                          )
+                        : const Center(
+                            child: SizedBox(
+                              child: Text('No items Yet'),
+                            ),
+                          )
                   ],
                 ),
               ]),
@@ -163,7 +197,8 @@ class HomeScreen extends StatelessWidget {
                     height: MediaQuery.of(context).size.height / 3,
                     viewportFraction: 0.6,
                     autoPlay: true,
-                    autoPlayAnimationDuration: Duration(milliseconds: 600),
+                    autoPlayAnimationDuration:
+                        const Duration(milliseconds: 600),
                   )), //Genres
               const SizedBox(
                 height: 10,

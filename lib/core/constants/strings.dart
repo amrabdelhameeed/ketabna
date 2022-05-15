@@ -11,4 +11,6 @@ const otpscreen = "/otpscreen";
 const bookScreen = "/bookScreen";
 const profileScreen = "/profileScreen";
 const searchScreen = "/searchScreen";
+const chossingCategoryScreen = "/chossingCategoryScreen";
+
 String? token;

@@ -86,6 +86,21 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
+  Future<void> updateInterstedModel({
+    required InterstsModel interstsModel,
+  }) async {
+    print('updateIntersts');
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(getLoggedInUser().uid)
+        .update({'interstsModel': interstsModel.toMap()}).then((value) {
+      print('Updated Intersts model');
+      emit(EmailSubmitted());
+    }).catchError((onError) {
+      print('error fe update intersts model');
+    });
+  }
+
   Future<void> submitPhoneNum(String phoneNum) async {
     emit(PhoneauthLoading());
     await instance.verifyPhoneNumber(
@@ -168,22 +183,21 @@ class AuthCubit extends Cubit<AuthState> {
   List<BookModel> technologyInterstBooks = [];
 
   void getHorrorBooks() async {
-    getSomeBooksByCategory(category: 'horrorInterst').then((horrorBooks) {
+    getSomeBooksByCategory(category: 'Horror').then((horrorBooks) {
       horrorInterstBooks = horrorBooks;
       emit(GetHorrorBooksState());
     });
   }
 
   void getTechnologyBooks() async {
-    getSomeBooksByCategory(category: 'technologyInterst')
-        .then((technologyBooks) {
+    getSomeBooksByCategory(category: 'Technology').then((technologyBooks) {
       technologyInterstBooks = technologyBooks;
       emit(GetTechnologyBooksState());
     });
   }
 
   void getFantasyBooks() async {
-    getSomeBooksByCategory(category: 'fantasyInterst').then((fantasyBooks) {
+    getSomeBooksByCategory(category: 'Fantasy').then((fantasyBooks) {
       fantasyInterstBooks = fantasyBooks;
       emit(GetFantasyBooksState());
     });
@@ -197,14 +211,14 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   void getfictionBooks() async {
-    getSomeBooksByCategory(category: 'fictionInterst').then((fictionBooks) {
+    getSomeBooksByCategory(category: 'Fiction').then((fictionBooks) {
       fictionInterstBooks = fictionBooks;
       emit(GetFictionBooksState());
     });
   }
 
   void getstudingBooks() async {
-    getSomeBooksByCategory(category: 'studingInterst').then((studingBooks) {
+    getSomeBooksByCategory(category: 'children').then((studingBooks) {
       studingInterstBooks = studingBooks;
       emit(GetstudingBooksState());
     });

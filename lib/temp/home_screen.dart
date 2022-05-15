@@ -25,7 +25,6 @@ class HomeTemp extends StatelessWidget {
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
         var cubit = BlocProvider.of<AuthCubit>(context);
-
         return Scaffold(
           floatingActionButton: FloatingActionButton.extended(
               onPressed: () {

@@ -1,5 +1,5 @@
 class CategoryModel {
-  List<CategoryModel> categories = [
+  static List<CategoryModel> categories = [
     CategoryModel(
         isSelected: false,
         imagePath: 'assets/image/Biography.jpg',
