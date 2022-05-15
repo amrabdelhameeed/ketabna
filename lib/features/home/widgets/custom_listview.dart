@@ -1,30 +1,25 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ketabna/core/models/book_model.dart';
-import 'package:ketabna/features/home/widgets/book_item.dart';
+
+import '../../../core/models/book_model.dart';
+import 'bookitem.dart';
 
 class CustomListView extends StatelessWidget {
-  const CustomListView({
-    Key? key,
-    required this.books,
-  }) : super(key: key);
-  final List<BookModel> books;
+  const CustomListView({Key? key, required this.listOfBook}) : super(key: key);
+  final List<BookModel> listOfBook;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 250,
+      height: MediaQuery.of(context).size.height / 3,
       child: ListView.separated(
-        itemBuilder: (context, index) {
-          return BookItem(bookModel: books[index]);
-        },
-        separatorBuilder: (context, index) {
-          return const SizedBox(
-            width: 5,
-          );
-        },
-        itemCount: books.length,
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) => BookItem(bookModel: listOfBook[index]),
+        separatorBuilder: (context, index) => const SizedBox(
+          width: 0,
+        ),
+        itemCount: listOfBook.length,
       ),
     );
   }

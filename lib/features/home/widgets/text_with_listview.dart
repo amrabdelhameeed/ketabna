@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ketabna/core/constants/constants.dart';
 import 'package:ketabna/core/models/book_model.dart';
-import 'package:ketabna/features/home/widgets/custom_listview.dart';
+import 'package:ketabna/temp/custom_listview.dart';
 
 class TextWithListView extends StatelessWidget {
   const TextWithListView({Key? key, required this.books, required this.title})

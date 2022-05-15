@@ -1,114 +1,186 @@
-// ignore_for_file: must_be_immutable
-
-import 'dart:math';
-
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ketabna/bloc/cubit/auth_cubit.dart';
-import 'package:ketabna/core/constants/strings.dart';
-import 'package:ketabna/core/models/book_model.dart';
-import 'package:ketabna/core/models/intersts_model.dart';
-import 'package:ketabna/features/home/widgets/text_with_listview.dart';
+import 'package:ketabna/core/widgets/components.dart';
+import 'package:ketabna/features/home/widgets/custom_listview.dart';
+import 'widgets/customShape.dart';
+import 'widgets/get_books.dart';
+import 'widgets/customcarousel.dart';
 
-class HomeTemp extends StatelessWidget {
-  HomeTemp({Key? key}) : super(key: key);
-  List<BookModel> reccomendedBooks = [];
-  List<BookModel> fantasyInterstBooks = [];
-  List<BookModel> fictionInterstBooks = [];
-  List<BookModel> horrorInterstBooks = [];
-  List<BookModel> novelInterstBooks = [];
-  List<BookModel> studingInterstBooks = [];
-  List<BookModel> technologyInterstBooks = [];
+class HomeScreen extends StatelessWidget {
+  HomeScreen({Key? key}) : super(key: key);
+
+  List<String> image_genres = [
+    'assets/images/Biography.jpg',
+    'assets/images/Cookery.jpg',
+    'assets/images/Children.jpg',
+    'assets/images/Business.jpg',
+    'assets/images/Graphic Novels.jpg',
+  ];
+  List<Color> colors = [
+    Colors.pink,
+    Colors.deepOrangeAccent,
+    Colors.red,
+    Colors.amber,
+    Colors.blueAccent,
+  ];
+
+  List<String> name_genres = [
+    'technology',
+    'horror',
+    'fantasy',
+    'novel',
+    'studying'
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(
-      builder: (context, state) {
-        var cubit = BlocProvider.of<AuthCubit>(context);
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
+          var cubit = AuthCubit.get(context);
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(alignment: AlignmentDirectional.topStart, children: [
+                ClipPath(
+                  clipper: CustomShape(),
+                  child: Container(
+                    height: 300,
+                    width: double.infinity,
+                    color: const Color(0xfff5b53f),
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Center(
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.search, size: 30),
+                          ),
+                          const SizedBox(
+                            width: 220,
+                          ),
+                          IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.notifications,
+                                size: 30,
+                              )),
+                          const CircleAvatar(
+                            radius: 15,
+                            backgroundImage: NetworkImage(
+                              'https://th.bing.com/th/id/R.94add630f7d00e412d90070db8587021?rik=Mv4xaEwvaqalTg&pid=ImgRaw&r=0',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    defaultHeader(
+                      text: 'Recommended',
+                    ),
+                    CustomCarousel(
+                      listOfBookModel: cubit.reccomendedBooks,
+                    ),
+                  ],
+                ),
+              ]),
 
-        return Scaffold(
-          floatingActionButton: FloatingActionButton.extended(
-              onPressed: () {
-                cubit.addBook(
-                    category: InterstsModel.categorys[
-                        Random().nextInt(InterstsModel.categorys.length)],
-                    nameAr: ' nameAr',
-                    nameEn: ' nameEn',
-                    authorName: ' authorName');
-              },
-              label: Text('Add Book')),
-          appBar: AppBar(
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      profileScreen,
-                    );
-                  },
-                  icon: Icon(Icons.person))
+              /// Header ==> Recommended
+              defaultHeader(
+                text: 'technology',
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomListView(listOfBook: cubit.technologyInterstBooks),
+              const SizedBox(
+                height: 10,
+              ),
+
+              /// Category
+              defaultHeader(
+                text: 'Genres',
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CarouselSlider.builder(
+                  itemCount: name_genres.length,
+                  itemBuilder: (context, index, realIndex) => Stack(
+                        alignment: AlignmentDirectional.center,
+                        children: [
+                          Container(
+                            width: 180,
+                            decoration: BoxDecoration(
+                                color: colors[index],
+                                borderRadius: BorderRadius.circular(20)),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${name_genres[index]}',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                                textAlign: TextAlign.center,
+                                maxLines: 3,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black.withOpacity(0.5),
+                                        blurStyle: BlurStyle.normal,
+                                        blurRadius: 10,
+                                        offset: Offset(0, 10))
+                                  ],
+                                ),
+                                height: MediaQuery.of(context).size.height / 5,
+                                width: 100,
+                                child: Image(
+                                  image: AssetImage('${image_genres[index]}'),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                  options: CarouselOptions(
+                    height: MediaQuery.of(context).size.height / 3,
+                    viewportFraction: 0.6,
+                    autoPlay: true,
+                    autoPlayAnimationDuration: Duration(milliseconds: 600),
+                  )), //Genres
+              const SizedBox(
+                height: 10,
+              ),
+
+              /// Recently Viewed
+              defaultHeader(
+                text: 'horror',
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomListView(listOfBook: cubit.horrorInterstBooks),
             ],
-            leading: IconButton(
-                onPressed: () async {
-                  await showMenu<String>(
-                      useRootNavigator: true,
-                      context: context,
-                      position: RelativeRect.fromLTRB(0, 0, 0, 0),
-                      items: const [
-                        PopupMenuItem(
-                          value: 'nameEn',
-                          child: Text('nameEn'),
-                        ),
-                        PopupMenuItem(
-                          value: 'nameAr',
-                          child: Text('nameAr'),
-                        ),
-                        PopupMenuItem(
-                          value: 'authorName',
-                          child: Text('authorName'),
-                        )
-                      ]).then((value) {
-                    if (value != null) {
-                      Navigator.pushNamed(context, searchScreen,
-                          arguments: value);
-                    }
-                  });
-                },
-                icon: Icon(Icons.search)),
-            title: const Text('Home'),
-            centerTitle: true,
-          ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                TextWithListView(
-                    books: cubit.reccomendedBooks, title: 'Recommended'),
-                TextWithListView(
-                    books: cubit.horrorInterstBooks, title: 'Horror'),
-                TextWithListView(
-                    books: cubit.technologyInterstBooks, title: 'tech'),
-                TextWithListView(
-                    books: cubit.fantasyInterstBooks, title: 'fantasy'),
-                TextWithListView(
-                    books: cubit.fictionInterstBooks, title: 'fiction'),
-                TextWithListView(
-                    books: cubit.studingInterstBooks, title: 'studying'),
-                TextWithListView(
-                    books: cubit.novelInterstBooks, title: 'novel'),
-                BlocListener<AuthCubit, AuthState>(
-                  listener: (context, state) {
-                    if (state is BookAddedSuccessState) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Uploaded Successfully')));
-                    }
-                  },
-                  child: Container(),
-                )
-              ],
-            ),
-          ),
-        );
-      },
+          );
+        }),
+      ),
     );
   }
 }

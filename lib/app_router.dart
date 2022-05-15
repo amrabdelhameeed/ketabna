@@ -4,11 +4,10 @@ import 'package:ketabna/bloc/cubit/auth_cubit.dart';
 import 'package:ketabna/core/constants/strings.dart';
 import 'package:ketabna/core/models/book_model.dart';
 import 'package:ketabna/features/authentication/otp/otp_screen.dart';
-import 'package:ketabna/features/authentication/otp/varification_screen.dart';
 import 'package:ketabna/features/book_screen/book_screen.dart';
-import 'package:ketabna/features/home/home.dart';
 import 'package:ketabna/features/authentication/sign_up/signup_screen.dart';
 import 'package:ketabna/features/home/home_screen.dart';
+import 'package:ketabna/temp/home_screen.dart';
 import 'package:ketabna/features/on_boarding/Splash_view.dart';
 import 'package:ketabna/features/on_boarding/on_boarding_screen.dart';
 import 'package:ketabna/features/profile_screen/profile_screen.dart';
@@ -29,14 +28,14 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) {
           return BlocProvider<AuthCubit>.value(
             value: authCubit!,
-            child: OnBoardingScreen(),
+            child: const OnBoardingScreen(),
           );
         });
       case splashScreen:
         return MaterialPageRoute(builder: (_) {
           return BlocProvider<AuthCubit>.value(
             value: authCubit!,
-            child: SplashView(),
+            child: const SplashView(),
           );
         });
       case mainScreen:
@@ -50,7 +49,7 @@ class AppRouter {
               ..getnovelBooks()
               ..getfictionBooks()
               ..getstudingBooks(),
-            child: HomeTemp(),
+            child: HomeScreen(),
           );
         });
       // case loginScreen:
@@ -76,13 +75,13 @@ class AppRouter {
             child: SearchScreen(searchBy: searchBy),
           );
         });
-      case profileScreen:
-        return MaterialPageRoute(builder: (_) {
-          return BlocProvider<AuthCubit>.value(
-            value: authCubit!,
-            child: ProfileScreen(),
-          );
-        });
+      // case profileScreen:
+      //   return MaterialPageRoute(builder: (_) {
+      //     return BlocProvider<AuthCubit>.value(
+      //       value: authCubit!,
+      //       child: ProfileScreen(),
+      //     );
+      //   });
       case registerScreen:
         return MaterialPageRoute(builder: (_) {
           return BlocProvider<AuthCubit>.value(

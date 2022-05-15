@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ketabna/core/models/book_model.dart';
 import 'package:ketabna/core/utils/app_colors.dart';
 import 'package:firestore_search/firestore_search.dart';
-import 'package:ketabna/features/home/widgets/book_item.dart';
+import 'package:ketabna/temp/book_item.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({Key? key, required this.searchBy}) : super(key: key);

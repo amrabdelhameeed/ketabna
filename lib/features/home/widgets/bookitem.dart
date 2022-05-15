@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../core/models/book_model.dart';
+import '../../../core/models/book_model.dart';
 
 class BookItem extends StatelessWidget {
   const BookItem({Key? key, required this.bookModel}) : super(key: key);
@@ -18,12 +18,11 @@ class BookItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               clipBehavior: Clip.antiAliasWithSaveLayer,
+              width: 135,
               height: 160,
-              width: 100,
               child: Image(
-                image:
-                AssetImage('${bookModel.picture}'),
-                fit: BoxFit.fill,
+                image: NetworkImage('${bookModel.picture}'),
+                fit: BoxFit.cover,
               ),
             ),
           ),
