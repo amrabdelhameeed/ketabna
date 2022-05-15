@@ -1,35 +1,43 @@
 import 'dart:convert';
 
 class InterstsModel {
-  bool? fantasyInterst;
-  bool? fictionInterst;
-  bool? horrorInterst;
-  bool? novelInterst;
-  bool? studingInterst;
-  bool? technologyInterst;
+  bool? biography;
+  bool? children;
+  bool? fantasy;
+  bool? graphicNovels;
+  bool? history;
+  bool? horror;
+  bool? romance;
+  bool? scienceFiction;
   InterstsModel(
-      {required this.fantasyInterst,
-      required this.fictionInterst,
-      required this.horrorInterst,
-      required this.novelInterst,
-      required this.studingInterst,
-      required this.technologyInterst});
+      {required this.biography,
+      required this.children,
+      required this.fantasy,
+      required this.graphicNovels,
+      required this.history,
+      required this.horror,
+      required this.romance,
+      required this.scienceFiction});
   InterstsModel.fromMap(Map<String, dynamic> map) {
-    fantasyInterst = map['fantasyInterst'];
-    fictionInterst = map['fictionInterst'];
-    horrorInterst = map['horrorInterst'];
-    novelInterst = map['novelInterst'];
-    studingInterst = map['studingInterst'];
-    technologyInterst = map['technologyInterst'];
+    biography = map['biography'];
+    children = map['children'];
+    fantasy = map['fantasy'];
+    graphicNovels = map['graphicNovels'];
+    history = map['history'];
+    horror = map['horror'];
+    romance = map['romance'];
+    scienceFiction = map['scienceFiction'];
   }
   Map<String, dynamic> toMap() {
     return {
-      'fantasyInterst': fantasyInterst ?? false,
-      'fictionInterst': fictionInterst ?? false,
-      'horrorInterst': horrorInterst ?? false,
-      'novelInterst': novelInterst ?? false,
-      'studingInterst': studingInterst ?? false,
-      'technologyInterst': technologyInterst ?? false,
+      'biography': biography ?? false,
+      'children': children ?? false,
+      'fantasy': fantasy ?? false,
+      'graphicNovels': graphicNovels ?? false,
+      'history': history ?? false,
+      'horror': horror ?? false,
+      'romance': romance ?? false,
+      'scienceFiction': scienceFiction ?? false
     };
   }
 
@@ -38,11 +46,13 @@ class InterstsModel {
 
   String toJson() => json.encode(toMap());
   static const List<String> categorys = [
-    'fantasyInterst',
-    'fictionInterst',
-    'horrorInterst',
-    'novelInterst',
-    'studingInterst'
-        'technologyInterst'
+    'biography',
+    'children',
+    'fantasy',
+    'graphicNovels',
+    'history',
+    'horror',
+    'romance',
+    'scienceFiction'
   ];
 }
