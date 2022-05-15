@@ -95,7 +95,7 @@ class SignInUpScreen extends StatelessWidget {
                   ),
                   child: MaterialButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, loginScreen);
+                      Navigator.pushReplacementNamed(context, loginScreen);
                     },
                     child: const Text(
                       'Sign In',
@@ -124,7 +124,7 @@ class SignInUpScreen extends StatelessWidget {
                   ),
                   child: MaterialButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, registerScreen);
+                      Navigator.pushReplacementNamed(context, registerScreen);
                     },
                     child: const Text(
                       'Sign Up',

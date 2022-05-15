@@ -8,8 +8,11 @@ import 'package:ketabna/features/authentication/otp/varification_screen.dart';
 import 'package:ketabna/features/book_screen/book_screen.dart';
 import 'package:ketabna/features/home/home.dart';
 import 'package:ketabna/features/authentication/sign_up/signup_screen.dart';
+import 'package:ketabna/features/home/home_screen.dart';
 import 'package:ketabna/features/on_boarding/Splash_view.dart';
 import 'package:ketabna/features/on_boarding/on_boarding_screen.dart';
+import 'package:ketabna/features/profile_screen/profile_screen.dart';
+import 'package:ketabna/features/search/search_screen.dart';
 
 import 'features/authentication/sign_in/signin_screen.dart';
 
@@ -39,8 +42,15 @@ class AppRouter {
       case mainScreen:
         return MaterialPageRoute(builder: (_) {
           return BlocProvider<AuthCubit>.value(
-            value: authCubit!,
-            child: Home(),
+            value: authCubit!
+              ..getRecommended()
+              ..getHorrorBooks()
+              ..getTechnologyBooks()
+              ..getFantasyBooks()
+              ..getnovelBooks()
+              ..getfictionBooks()
+              ..getstudingBooks(),
+            child: HomeTemp(),
           );
         });
       // case loginScreen:
@@ -55,6 +65,22 @@ class AppRouter {
           return BlocProvider<AuthCubit>.value(
             value: authCubit!,
             child: OtpScreen(),
+          );
+        });
+      case searchScreen:
+        final searchBy = settings.arguments as String;
+
+        return MaterialPageRoute(builder: (_) {
+          return BlocProvider<AuthCubit>.value(
+            value: authCubit!,
+            child: SearchScreen(searchBy: searchBy),
+          );
+        });
+      case profileScreen:
+        return MaterialPageRoute(builder: (_) {
+          return BlocProvider<AuthCubit>.value(
+            value: authCubit!,
+            child: ProfileScreen(),
           );
         });
       case registerScreen:

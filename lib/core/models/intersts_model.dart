@@ -37,4 +37,12 @@ class InterstsModel {
       InterstsModel.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
+  static const List<String> categorys = [
+    'fantasyInterst',
+    'fictionInterst',
+    'horrorInterst',
+    'novelInterst',
+    'studingInterst'
+        'technologyInterst'
+  ];
 }

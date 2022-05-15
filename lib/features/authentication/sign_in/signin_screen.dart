@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ketabna/bloc/cubit/auth_cubit.dart';
+import 'package:ketabna/core/constants/strings.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../core/utils/app_colors.dart';
@@ -17,18 +20,18 @@ class SigninPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
-          leading: IconButton(
-            padding: EdgeInsets.only(top: 20.0),
-            onPressed: () {
-              Navigator.pop(context);
-              // Navigator.pushReplacementNamed(context, loginScreen);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios_new,
-              color: AppColors.secondaryColor,
-              size: 22.0,
-            ),
-          ),
+          // leading: IconButton(
+          //   padding: EdgeInsets.only(top: 20.0),
+          //   onPressed: () {
+          //     Navigator.pop(context);
+          //     // Navigator.pushReplacementNamed(context, loginScreen);
+          //   },
+          //   icon: const Icon(
+          //     Icons.arrow_back_ios_new,
+          //     color: AppColors.secondaryColor,
+          //     size: 22.0,
+          //   ),
+          // ),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -86,13 +89,27 @@ class SigninPage extends StatelessWidget {
                       const SizedBox(
                         height: 10.0,
                       ),
-                      DefaultFormButton(
-                        text: 'Sign In',
-                        fillColor: AppColors.secondaryColor,
-                        textColor: Colors.white,
-                        fontSize: 19.0,
-                        onPressed: () {
-                          formKey.currentState!.validate();
+                      BlocConsumer<AuthCubit, AuthState>(
+                        listener: (context, state) {
+                          if (state is LogedInSuccessState) {
+                            Navigator.pushReplacementNamed(context, mainScreen);
+                          }
+                        },
+                        builder: (context, state) {
+                          var cubit = AuthCubit.get(context);
+                          return DefaultFormButton(
+                            text: 'Sign In',
+                            fillColor: AppColors.secondaryColor,
+                            textColor: Colors.white,
+                            fontSize: 19.0,
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                cubit.loginWithEmailAndPassword(
+                                    email: _emailController.text,
+                                    password: _passwordController.text);
+                              }
+                            },
+                          );
                         },
                       ),
                     ],

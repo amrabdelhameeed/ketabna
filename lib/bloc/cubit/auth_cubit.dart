@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ketabna/core/models/book_model.dart';
@@ -33,7 +34,7 @@ class AuthCubit extends Cubit<AuthState> {
           .putFile(bookImage!)
           .then((p0) async {
         await p0.ref.getDownloadURL().then((photoLink) async {
-          print(photoLink);
+          debugPrint(photoLink);
           photoUrl = photoLink;
           emit(PickPhotoLoadedState());
           return photoUrl;
@@ -69,24 +70,21 @@ class AuthCubit extends Cubit<AuthState> {
           .set(userModel.toJson())
           .then((value) {
         instance.currentUser!.updateDisplayName(name).then((value) {
-          print("name updated");
+          debugPrint("name updated");
         });
         instance.currentUser?.updateEmail(email).then((value) {
-          print("email updated");
+          debugPrint("email updated");
         });
         submitPhoneNum(phone);
       }).catchError((onError) {
         emit(EmailauthError(onError.toString()));
-        print("eltanya ha eltanya ${onError.toString()}");
+        debugPrint("eltanya ha eltanya ${onError.toString()}");
       });
     }).catchError((onError) {
-      print("eltanya ha eltanya ${onError.toString()}");
+      debugPrint("eltanya ha eltanya ${onError.toString()}");
       emit(EmailauthError(onError.toString()));
     });
   }
-  // Future<Void> firestoreCreateUser(
-  //     {required String email, required String password}) {
-  // }
 
   Future<void> submitPhoneNum(String phoneNum) async {
     emit(PhoneauthLoading());
@@ -100,25 +98,25 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   void vervicationCompleted(PhoneAuthCredential credential) async {
-    print("vervicationCompleted");
+    debugPrint("vervicationCompleted");
     await signIn(credential);
   }
 
   void requestAbook() async {}
 
   void vervicationFailed(FirebaseAuthException error) {
-    print("vervicationFailed : ${error.toString()}");
+    debugPrint("vervicationFailed : ${error.toString()}");
     emit(PhoneauthError(error.toString()));
   }
 
   void codeSent(String verificationId, int? resendToken) {
     this.verificationId = verificationId;
-    print("Code Sent");
+    debugPrint("Code Sent");
     emit(PhoneNumberSubmitted());
   }
 
   void codeAutoRetrivalTimeOut(String verificationId) {
-    print("codeAutoRetrivalTimeOut");
+    debugPrint("codeAutoRetrivalTimeOut");
   }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,31 +140,77 @@ class AuthCubit extends Cubit<AuthState> {
     await instance.signOut();
   }
 
-  List<BookModel> books = [];
-
   UserModel? userModel;
-  Future<List<BookModel>> getAllBooksByCategory(
+  Future<List<BookModel>> getSomeBooksByCategory(
       {required String category, int? limit}) async {
-    print(instance.currentUser!.uid);
+    List<BookModel> books = [];
     await FirebaseFirestore.instance
         .collection('books')
         .where('category', isEqualTo: category)
+        .where('isValid', isEqualTo: true)
         .limit(limit ?? 10)
         .get()
         .then((value) {
-      value.docs.forEach((element) {
+      for (var element in value.docs) {
         books.add(BookModel.fromJson(element.data()));
-      });
+      }
     });
-    for (var book in books) {
-      print(book.bookId);
-    }
-    // emit(GetBooksSuccessState());
+    debugPrint(books.length.toString());
     return books;
   }
 
-  Future<List<BookModel>> getRecommended() async {
-    List<BookModel> localBooks = [];
+  List<BookModel> reccomendedBooks = [];
+  List<BookModel> fantasyInterstBooks = [];
+  List<BookModel> fictionInterstBooks = [];
+  List<BookModel> horrorInterstBooks = [];
+  List<BookModel> novelInterstBooks = [];
+  List<BookModel> studingInterstBooks = [];
+  List<BookModel> technologyInterstBooks = [];
+
+  void getHorrorBooks() async {
+    getSomeBooksByCategory(category: 'horrorInterst').then((horrorBooks) {
+      horrorInterstBooks = horrorBooks;
+      emit(GetHorrorBooksState());
+    });
+  }
+
+  void getTechnologyBooks() async {
+    getSomeBooksByCategory(category: 'technologyInterst')
+        .then((technologyBooks) {
+      technologyInterstBooks = technologyBooks;
+      emit(GetTechnologyBooksState());
+    });
+  }
+
+  void getFantasyBooks() async {
+    getSomeBooksByCategory(category: 'fantasyInterst').then((fantasyBooks) {
+      fantasyInterstBooks = fantasyBooks;
+      emit(GetFantasyBooksState());
+    });
+  }
+
+  void getnovelBooks() async {
+    getSomeBooksByCategory(category: 'novelInterst').then((novelBooks) {
+      novelInterstBooks = novelBooks;
+      emit(GetnovelBooksState());
+    });
+  }
+
+  void getfictionBooks() async {
+    getSomeBooksByCategory(category: 'fictionInterst').then((fictionBooks) {
+      fictionInterstBooks = fictionBooks;
+      emit(GetFictionBooksState());
+    });
+  }
+
+  void getstudingBooks() async {
+    getSomeBooksByCategory(category: 'studingInterst').then((studingBooks) {
+      studingInterstBooks = studingBooks;
+      emit(GetstudingBooksState());
+    });
+  }
+
+  void getRecommended() async {
     UserModel? internalUserModel;
     String userUid = getLoggedInUser().uid;
     await FirebaseFirestore.instance
@@ -182,17 +226,18 @@ class AuthCubit extends Cubit<AuthState> {
         .where((element) => element.value == true)
         .toList();
     map.forEach((key) async {
-      await getAllBooksByCategory(category: key.key, limit: 5).then((vv) {
-        vv.forEach((ele) {
-          if (localBooks.contains(ele)) {
-          } else {
-            localBooks.add(ele);
+      await getSomeBooksByCategory(category: key.key).then((vv) {
+        // reccomendedBooks =
+        //     vv.where((element) => !reccomendedBooks.contains(element)).toList();
+        vv.forEach((book) {
+          if (!reccomendedBooks.contains(book)) {
+            reccomendedBooks.add(book);
           }
         });
       });
-      emit(GetRecommended(localBooks));
+      emit(GetRecommended());
     });
-    return localBooks;
+    debugPrint(reccomendedBooks.length.toString());
   }
 
   void addBook({
@@ -215,6 +260,8 @@ class AuthCubit extends Cubit<AuthState> {
           .collection('books')
           .doc(bookId)
           .set(bookModel.toJson());
+    }).then((value) {
+      emit(BookAddedSuccessState());
     });
   }
 
@@ -227,7 +274,7 @@ class AuthCubit extends Cubit<AuthState> {
         .then((value) {
       emit(LogedInSuccessState());
     }).catchError((onError) {
-      print("5ra error fe login ${onError.toString()}");
+      debugPrint("5ra error fe login ${onError.toString()}");
     });
   }
 
@@ -242,7 +289,7 @@ class AuthCubit extends Cubit<AuthState> {
         .doc()
         .set(requestModel.toJson())
         .then((value) {
-      print("requested ya basha");
+      debugPrint("requested ya basha");
       emit(BookRequestedState());
     });
   }
