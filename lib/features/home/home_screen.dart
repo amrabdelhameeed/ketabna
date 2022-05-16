@@ -46,14 +46,20 @@ class HomeScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           var cubit = AuthCubit.get(context);
+          // cubit.addBook(
+          //     category: InterstsModel
+          //         .categorys[Random().nextInt(InterstsModel.categorys.length)],
+          //     nameAr: ' nameAr',
+          //     nameEn: ' nameEn',
+          //     authorName: ' authorName');
           cubit.addBook(
               category: InterstsModel
                   .categorys[Random().nextInt(InterstsModel.categorys.length)],
-              nameAr: ' nameAr',
-              nameEn: ' nameEn',
-              authorName: ' authorName');
+              nameAr: "احاديث",
+              nameEn: "ahadith",
+              authorName: "bokhari");
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       body: SingleChildScrollView(
         child: BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
@@ -82,7 +88,28 @@ class HomeScreen extends StatelessWidget {
                         children: [
                           IconButton(
                             onPressed: () {
-                              // Navigator.pushNamed(context, searchScreen);
+                              showMenu<String>(
+                                  context: context,
+                                  position: RelativeRect.fromLTRB(0, 0, 0, 0),
+                                  items: [
+                                    PopupMenuItem(
+                                      child: Text('nameEn'),
+                                      value: 'nameEn',
+                                    ),
+                                    PopupMenuItem(
+                                      child: Text('nameAr'),
+                                      value: 'nameAr',
+                                    ),
+                                    PopupMenuItem(
+                                      child: Text('authorName'),
+                                      value: 'authorName',
+                                    )
+                                  ]).then((value) {
+                                if (value != null) {
+                                  Navigator.pushNamed(context, searchScreen,
+                                      arguments: value);
+                                }
+                              });
                             },
                             icon: const Icon(Icons.search, size: 30),
                           ),
@@ -213,6 +240,15 @@ class HomeScreen extends StatelessWidget {
                 height: 10,
               ),
               CustomListView(listOfBook: cubit.studingInterstBooks),
+              BlocListener<AuthCubit, AuthState>(
+                  listener: (context, state) {
+                    if (state is BookAddedSuccessState) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Uploaded Successfully')));
+                    }
+                  },
+                  child: Container(),
+                )
             ],
           );
         }),

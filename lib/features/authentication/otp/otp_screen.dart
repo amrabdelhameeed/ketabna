@@ -108,14 +108,11 @@ class OtpScreen extends StatelessWidget {
   Widget _buildPhoneVerficationBloc() {
     return BlocListener<AuthCubit, AuthState>(
       child: Container(),
-      listenWhen: (prev, cur) {
-        return prev != cur;
-      },
       listener: (context, state) {
-        if (state is PhoneauthLoading) {
-          return showProgressIndicator(context);
-        }
-        if (state is OtpVerfied || state is PhoneNumberSubmitted) {
+        // if (state is PhoneauthLoading) {
+        //   return showProgressIndicator(context);
+        // }
+        if (state is OtpVerfied) {
           Navigator.of(context).pushReplacementNamed(chossingCategoryScreen);
         }
         if (state is PhoneauthError) {
