@@ -4,12 +4,15 @@ import 'package:ketabna/bloc/cubit/auth_cubit.dart';
 import 'package:ketabna/core/constants/strings.dart';
 import 'package:ketabna/core/models/book_model.dart';
 import 'package:ketabna/features/authentication/otp/otp_screen.dart';
-import 'package:ketabna/features/authentication/otp/varification_screen.dart';
 import 'package:ketabna/features/book_screen/book_screen.dart';
-import 'package:ketabna/features/home/home.dart';
 import 'package:ketabna/features/authentication/sign_up/signup_screen.dart';
+import 'package:ketabna/features/choosing_categories_screen/intersted_screen.dart';
+import 'package:ketabna/features/home/home_screen.dart';
+import 'package:ketabna/temp/home_screen.dart';
 import 'package:ketabna/features/on_boarding/Splash_view.dart';
 import 'package:ketabna/features/on_boarding/on_boarding_screen.dart';
+import 'package:ketabna/features/profile_screen/profile_screen.dart';
+import 'package:ketabna/features/search/search_screen.dart';
 
 import 'features/authentication/sign_in/signin_screen.dart';
 
@@ -26,21 +29,28 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) {
           return BlocProvider<AuthCubit>.value(
             value: authCubit!,
-            child: OnBoardingScreen(),
+            child: const OnBoardingScreen(),
           );
         });
       case splashScreen:
         return MaterialPageRoute(builder: (_) {
           return BlocProvider<AuthCubit>.value(
             value: authCubit!,
-            child: SplashView(),
+            child: const SplashView(),
           );
         });
       case mainScreen:
         return MaterialPageRoute(builder: (_) {
           return BlocProvider<AuthCubit>.value(
-            value: authCubit!,
-            child: Home(),
+            value: authCubit!
+              ..getRecommended()
+              ..getHorrorBooks()
+              ..getTechnologyBooks()
+              ..getFantasyBooks()
+              ..getnovelBooks()
+              ..getfictionBooks()
+              ..getstudingBooks(),
+            child: HomeScreen(),
           );
         });
       // case loginScreen:
@@ -57,6 +67,28 @@ class AppRouter {
             child: OtpScreen(),
           );
         });
+      case chossingCategoryScreen:
+        return MaterialPageRoute(builder: (_) {
+          return BlocProvider<AuthCubit>.value(
+            value: authCubit!,
+            child: const InterestedScreen(),
+          );
+        });
+      case searchScreen:
+        final searchBy = settings.arguments as String;
+        return MaterialPageRoute(builder: (_) {
+          return BlocProvider<AuthCubit>.value(
+            value: authCubit!,
+            child: SearchScreen(searchBy: searchBy),
+          );
+        });
+      // case profileScreen:
+      //   return MaterialPageRoute(builder: (_) {
+      //     return BlocProvider<AuthCubit>.value(
+      //       value: authCubit!,
+      //       child: ProfileScreen(),
+      //     );
+      //   });
       case registerScreen:
         return MaterialPageRoute(builder: (_) {
           return BlocProvider<AuthCubit>.value(
@@ -71,6 +103,7 @@ class AppRouter {
             child: SigninPage(),
           );
         });
+
       case bookScreen:
         final bookModel = settings.arguments as BookModel;
         return MaterialPageRoute(builder: (_) {

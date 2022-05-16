@@ -116,7 +116,7 @@ class OtpScreen extends StatelessWidget {
           return showProgressIndicator(context);
         }
         if (state is OtpVerfied) {
-          Navigator.of(context).pushReplacementNamed(mainScreen);
+          Navigator.of(context).pushReplacementNamed(chossingCategoryScreen);
         }
         if (state is PhoneauthError) {
           Navigator.pop(context);

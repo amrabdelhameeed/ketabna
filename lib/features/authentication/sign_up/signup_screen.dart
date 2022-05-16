@@ -26,18 +26,18 @@ class SignupPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
-          leading: IconButton(
-            padding: EdgeInsets.only(top: 20.0),
-            onPressed: () {
-              Navigator.pop(context);
-              // Navigator.pushReplacementNamed(context, loginScreen);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios_new,
-              color: AppColors.secondaryColor,
-              size: 22.0,
-            ),
-          ),
+          // leading: IconButton(
+          //   padding: EdgeInsets.only(top: 20.0),
+          //   onPressed: () {
+          //     Navigator.pop(context);
+          //     // Navigator.pushReplacementNamed(context, loginScreen);
+          //   },
+          //   icon: const Icon(
+          //     Icons.arrow_back_ios_new,
+          //     color: AppColors.secondaryColor,
+          //     size: 22.0,
+          //   ),
+          // ),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -104,7 +104,7 @@ class SignupPage extends StatelessWidget {
                       BlocConsumer<AuthCubit, AuthState>(
                         listener: (context, state) {
                           if (state is PhoneNumberSubmitted) {
-                            Navigator.pushNamed(context, otpscreen);
+                            Navigator.pushReplacementNamed(context, otpscreen);
                           }
                         },
                         builder: (context, state) {
@@ -116,12 +116,15 @@ class SignupPage extends StatelessWidget {
                                 cubit.signUpWithEmailAndPassword(
                                   isWhatsapp: value,
                                   interstsModel: InterstsModel(
-                                      fantasyInterst: false,
-                                      fictionInterst: true,
-                                      horrorInterst: false,
-                                      novelInterst: true,
-                                      studingInterst: false,
-                                      technologyInterst: true),
+                                    biography: true,
+                                    children: false,
+                                    fantasy: true,
+                                    graphicNovels: false,
+                                    history: false,
+                                    horror: true,
+                                    romance: false,
+                                    scienceFiction: false,
+                                  ),
                                   email: _emailController.text,
                                   password: _passwordController.text,
                                   name: _nameController.text,
@@ -132,6 +135,12 @@ class SignupPage extends StatelessWidget {
                           );
                         },
                       ),
+                      DefaultFormButton(
+                        text: 'Sign In',
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(context, loginScreen);
+                        },
+                      )
                     ],
                   )),
             ),

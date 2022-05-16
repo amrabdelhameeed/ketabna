@@ -6,28 +6,21 @@ import 'package:ketabna/app_router.dart';
 import 'package:ketabna/bloc/cubit/auth_cubit.dart';
 import 'package:ketabna/core/constants/constants.dart';
 import 'package:ketabna/core/constants/strings.dart';
+import 'package:ketabna/core/models/book_model.dart';
 import 'package:ketabna/core/utils/size_config.dart';
 import 'package:ketabna/core/widgets/space.dart';
 
 class Home extends StatelessWidget {
   Home({Key? key}) : super(key: key);
   TextEditingController textEditingController = TextEditingController();
+  List<BookModel> localBooks = [];
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return BlocProvider<AuthCubit>.value(
       value: authCubit!..getRecommended(),
       child: BlocConsumer<AuthCubit, AuthState>(
-        listener: (context, state) {
-          // var cubit = BlocProvider.of<AuthCubit>(context);
-
-          // if (state is GetBooksSuccessState) {
-          //   cubit.getUserS();
-          // }
-          // if (state is GetUserByUidState) {
-          //   print(state.userModel.phone);
-          // }
-        },
+        listener: (context, state) {},
         builder: (context, state) {
           var cubit = BlocProvider.of<AuthCubit>(context);
           return Scaffold(
@@ -49,7 +42,7 @@ class Home extends StatelessWidget {
                 VerticalSpace(
                   value: 2,
                 ),
-                cubit.books.isNotEmpty
+                localBooks.isNotEmpty
                     ? SizedBox(
                         height: 130,
                         child: ListView.separated(
@@ -59,24 +52,23 @@ class Home extends StatelessWidget {
                             );
                           },
                           itemBuilder: (context, index) {
-                            return cubit.books[index].picture != null
+                            return localBooks[index].picture != null
                                 ? InkWell(
                                     onTap: () {
                                       Navigator.pushNamed(context, bookScreen,
-                                          arguments: cubit.books[index]);
+                                          arguments: localBooks[index]);
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
                                           color: Colors.grey.shade300,
                                           image: DecorationImage(
-                                              image: NetworkImage(cubit
-                                                  .books[index].picture!))),
+                                              image: NetworkImage(''))),
                                       height: 120,
                                       child: Column(
                                         children: [
-                                          Text(cubit.books[index].authorName!),
-                                          Text(cubit.books[index].nameAr!),
-                                          Text(cubit.books[index].bookId!)
+                                          Text(localBooks[index].authorName!),
+                                          Text(localBooks[index].nameAr!),
+                                          Text(localBooks[index].bookId!)
                                         ],
                                       ),
                                     ),
@@ -86,7 +78,7 @@ class Home extends StatelessWidget {
                                   );
                           },
                           scrollDirection: Axis.horizontal,
-                          itemCount: cubit.books.length,
+                          itemCount: localBooks.length,
                         ),
                       )
                     : Center(

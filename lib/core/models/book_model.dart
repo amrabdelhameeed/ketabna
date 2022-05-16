@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class BookModel {
   String? nameAr;
   String? nameEn;
@@ -8,13 +10,13 @@ class BookModel {
   String? ownerUid;
   String? bookId;
   BookModel(
-      {required this.nameAr,
-      required this.picture,
-      required this.nameEn,
-      this.isValid=true,
-      required this.authorName,
-      required this.category,
-      required this.ownerUid,
+      {this.nameAr,
+      this.picture,
+      this.nameEn,
+      this.isValid = true,
+      this.authorName,
+      this.category,
+      this.ownerUid,
       this.bookId});
   BookModel.fromJson(Map<String, dynamic> map) {
     nameAr = map['nameAr'];
@@ -37,5 +39,22 @@ class BookModel {
       'ownerUid': ownerUid,
       'bookId': bookId,
     };
+  }
+
+  List<BookModel> dataListFromSnapshot(QuerySnapshot querySnapshot) {
+    return querySnapshot.docs.map((snapshot) {
+      final Map<String, dynamic> dataMap =
+          snapshot.data() as Map<String, dynamic>;
+      return BookModel(
+        nameAr: dataMap['nameAr'],
+        nameEn: dataMap['nameEn'],
+        authorName: dataMap['authorName'],
+        picture: dataMap['picture'],
+        isValid: dataMap['isValid'],
+        category: dataMap['category'],
+        ownerUid: dataMap['ownerUid'],
+        bookId: dataMap['bookId'],
+      );
+    }).toList();
   }
 }

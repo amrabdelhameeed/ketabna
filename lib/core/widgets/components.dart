@@ -31,3 +31,17 @@ Widget textFormField({
     ),
   );
 }
+
+Widget defaultHeader(
+    {
+      required String? text,
+    }) => Padding(
+  padding: const EdgeInsetsDirectional.only(start: 10),
+  child: Text(
+    '$text',
+    style: const TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+);
