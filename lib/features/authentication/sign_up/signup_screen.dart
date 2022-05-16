@@ -111,9 +111,11 @@ class SignupPage extends StatelessWidget {
                           var cubit = AuthCubit.get(context);
                           return DefaultFormButton(
                             text: 'Sign Up',
-                            onPressed: () {
+                            onPressed: () async {
                               if (formKey.currentState!.validate()) {
-                                cubit.signUpWithEmailAndPassword(
+                                print('sh9al');
+                                await cubit
+                                    .signUpWithEmailAndPassword(
                                   isWhatsapp: value,
                                   interstsModel: InterstsModel(
                                     biography: true,
@@ -129,7 +131,11 @@ class SignupPage extends StatelessWidget {
                                   password: _passwordController.text,
                                   name: _nameController.text,
                                   phone: _mobileController.text,
-                                );
+                                )
+                                    .then((value) {
+                                  Navigator.pushReplacementNamed(
+                                      context, otpscreen);
+                                });
                               }
                             },
                           );

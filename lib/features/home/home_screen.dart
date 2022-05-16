@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ketabna/bloc/cubit/auth_cubit.dart';
 import 'package:ketabna/core/constants/strings.dart';
+import 'package:ketabna/core/models/category_model.dart';
 import 'package:ketabna/core/models/intersts_model.dart';
 import 'package:ketabna/core/widgets/components.dart';
 import 'package:ketabna/features/home/widgets/custom_listview.dart';
@@ -162,7 +163,7 @@ class HomeScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                '${name_genres[index]}',
+                                '${CategoryModel.categories[index].categoryName}',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
@@ -185,7 +186,8 @@ class HomeScreen extends StatelessWidget {
                                 height: MediaQuery.of(context).size.height / 5,
                                 width: 100,
                                 child: Image(
-                                  image: AssetImage('${image_genres[index]}'),
+                                  image: AssetImage(
+                                      '${CategoryModel.categories[index].imagePath}'),
                                   fit: BoxFit.fill,
                                 ),
                               ),

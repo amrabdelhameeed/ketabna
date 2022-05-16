@@ -279,11 +279,11 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  void loginWithEmailAndPassword({
+  Future<void> loginWithEmailAndPassword({
     required String email,
     required String password,
-  }) {
-    instance
+  }) async {
+    await instance
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
       emit(LogedInSuccessState());

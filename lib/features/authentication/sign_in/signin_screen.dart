@@ -102,11 +102,16 @@ class SigninPage extends StatelessWidget {
                             fillColor: AppColors.secondaryColor,
                             textColor: Colors.white,
                             fontSize: 19.0,
-                            onPressed: () {
+                            onPressed: () async {
                               if (formKey.currentState!.validate()) {
-                                cubit.loginWithEmailAndPassword(
-                                    email: _emailController.text,
-                                    password: _passwordController.text);
+                                await cubit
+                                    .loginWithEmailAndPassword(
+                                        email: _emailController.text,
+                                        password: _passwordController.text)
+                                    .then((value) {
+                                  Navigator.pushReplacementNamed(
+                                      context, mainScreen);
+                                });
                               }
                             },
                           );
