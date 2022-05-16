@@ -55,17 +55,6 @@ class HomeScreen extends StatelessWidget {
         },
         child: Icon(Icons.add),
       ),
-      appBar: AppBar(
-        actions: [
-          IconButton(
-              onPressed: () {
-                AuthCubit.get(context).logOut().then((value) {
-                  Navigator.pushReplacementNamed(context, registerScreen);
-                });
-              },
-              icon: const Icon(Icons.exit_to_app))
-        ],
-      ),
       body: SingleChildScrollView(
         child: BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
           var cubit = AuthCubit.get(context);
@@ -92,7 +81,9 @@ class HomeScreen extends StatelessWidget {
                       child: Row(
                         children: [
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              // Navigator.pushNamed(context, searchScreen);
+                            },
                             icon: const Icon(Icons.search, size: 30),
                           ),
                           const SizedBox(
@@ -110,6 +101,14 @@ class HomeScreen extends StatelessWidget {
                               'https://th.bing.com/th/id/R.94add630f7d00e412d90070db8587021?rik=Mv4xaEwvaqalTg&pid=ImgRaw&r=0',
                             ),
                           ),
+                          IconButton(
+                              onPressed: () {
+                                AuthCubit.get(context).logOut().then((value) {
+                                  Navigator.pushReplacementNamed(
+                                      context, registerScreen);
+                                });
+                              },
+                              icon: const Icon(Icons.exit_to_app))
                         ],
                       ),
                     ),
@@ -131,12 +130,12 @@ class HomeScreen extends StatelessWidget {
 
               /// Header ==> Recommended
               defaultHeader(
-                text: 'technology',
+                text: 'horror',
               ),
               const SizedBox(
                 height: 10,
               ),
-              CustomListView(listOfBook: cubit.technologyInterstBooks),
+              CustomListView(listOfBook: cubit.horrorInterstBooks),
               const SizedBox(
                 height: 10,
               ),
@@ -208,12 +207,12 @@ class HomeScreen extends StatelessWidget {
 
               /// Recently Viewed
               defaultHeader(
-                text: 'horror',
+                text: 'children',
               ),
               const SizedBox(
                 height: 10,
               ),
-              CustomListView(listOfBook: cubit.horrorInterstBooks),
+              CustomListView(listOfBook: cubit.studingInterstBooks),
             ],
           );
         }),

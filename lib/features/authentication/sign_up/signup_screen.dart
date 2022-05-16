@@ -103,9 +103,9 @@ class SignupPage extends StatelessWidget {
                       ),
                       BlocConsumer<AuthCubit, AuthState>(
                         listener: (context, state) {
-                          if (state is PhoneNumberSubmitted) {
-                            Navigator.pushReplacementNamed(context, otpscreen);
-                          }
+                          // if (state is PhoneNumberSubmitted) {
+                          //   Navigator.pushReplacementNamed(context, otpscreen);
+                          // }
                         },
                         builder: (context, state) {
                           var cubit = AuthCubit.get(context);
@@ -119,13 +119,13 @@ class SignupPage extends StatelessWidget {
                                   isWhatsapp: value,
                                   interstsModel: InterstsModel(
                                     biography: true,
-                                    children: false,
+                                    children: true,
                                     fantasy: true,
-                                    graphicNovels: false,
-                                    history: false,
+                                    graphicNovels: true,
+                                    history: true,
                                     horror: true,
-                                    romance: false,
-                                    scienceFiction: false,
+                                    romance: true,
+                                    scienceFiction: true,
                                   ),
                                   email: _emailController.text,
                                   password: _passwordController.text,

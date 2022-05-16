@@ -183,21 +183,21 @@ class AuthCubit extends Cubit<AuthState> {
   List<BookModel> technologyInterstBooks = [];
 
   void getHorrorBooks() async {
-    getSomeBooksByCategory(category: 'Horror').then((horrorBooks) {
+    getSomeBooksByCategory(category: 'horror').then((horrorBooks) {
       horrorInterstBooks = horrorBooks;
       emit(GetHorrorBooksState());
     });
   }
 
   void getTechnologyBooks() async {
-    getSomeBooksByCategory(category: 'Technology').then((technologyBooks) {
+    getSomeBooksByCategory(category: 'technology').then((technologyBooks) {
       technologyInterstBooks = technologyBooks;
       emit(GetTechnologyBooksState());
     });
   }
 
   void getFantasyBooks() async {
-    getSomeBooksByCategory(category: 'Fantasy').then((fantasyBooks) {
+    getSomeBooksByCategory(category: 'fantasy').then((fantasyBooks) {
       fantasyInterstBooks = fantasyBooks;
       emit(GetFantasyBooksState());
     });
@@ -211,14 +211,14 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   void getfictionBooks() async {
-    getSomeBooksByCategory(category: 'Fiction').then((fictionBooks) {
+    getSomeBooksByCategory(category: 'scienceFiction').then((fictionBooks) {
       fictionInterstBooks = fictionBooks;
       emit(GetFictionBooksState());
     });
   }
 
-  void getstudingBooks() async {
-    getSomeBooksByCategory(category: 'children').then((studingBooks) {
+  void getbiographyBooks() async {
+    getSomeBooksByCategory(category: 'biography').then((studingBooks) {
       studingInterstBooks = studingBooks;
       emit(GetstudingBooksState());
     });

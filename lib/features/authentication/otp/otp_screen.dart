@@ -115,7 +115,7 @@ class OtpScreen extends StatelessWidget {
         if (state is PhoneauthLoading) {
           return showProgressIndicator(context);
         }
-        if (state is OtpVerfied) {
+        if (state is OtpVerfied || state is PhoneNumberSubmitted) {
           Navigator.of(context).pushReplacementNamed(chossingCategoryScreen);
         }
         if (state is PhoneauthError) {
@@ -158,7 +158,7 @@ class OtpScreen extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8))),
           onPressed: () {
-            showProgressIndicator(context);
+            // showProgressIndicator(context);
             _login(context);
           },
           child: const Text(
