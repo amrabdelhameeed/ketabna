@@ -60,7 +60,7 @@ class _SplashViewState extends State<SplashView> {
           ),
           AnimatedPositioned(
             child: SizedBox(
-              height: 250,
+              height: MediaQuery.of(context).size.height/3,
               width: MediaQuery.of(context).size.width * 0.9,
               child: const Image(
                 image: AssetImage('assets/image/Books.png'),

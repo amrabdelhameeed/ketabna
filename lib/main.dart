@@ -9,6 +9,9 @@ import 'package:ketabna/core/utils/shared_pref_helper.dart';
 
 String initialRoute = "";
 void main() async {
+  
+   bool onBoarding = SharedPrefHelper.getBool( key: 'onBoarding') ;
+
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefHelper.init();
   await Firebase.initializeApp();
