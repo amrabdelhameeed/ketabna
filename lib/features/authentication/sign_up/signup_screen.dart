@@ -103,9 +103,9 @@ class SignupPage extends StatelessWidget {
                       ),
                       BlocConsumer<AuthCubit, AuthState>(
                         listener: (context, state) {
-                          // if (state is PhoneNumberSubmitted) {
-                          //   Navigator.pushReplacementNamed(context, otpscreen);
-                          // }
+                          if (state is PhoneNumberSubmitted) {
+                            Navigator.pushReplacementNamed(context, otpscreen);
+                          }
                         },
                         builder: (context, state) {
                           var cubit = AuthCubit.get(context);
@@ -113,9 +113,7 @@ class SignupPage extends StatelessWidget {
                             text: 'Sign Up',
                             onPressed: () async {
                               if (formKey.currentState!.validate()) {
-                                print('sh9al');
-                                await cubit
-                                    .signUpWithEmailAndPassword(
+                                await cubit.signUpWithEmailAndPassword(
                                   isWhatsapp: value,
                                   interstsModel: InterstsModel(
                                     biography: true,
@@ -131,11 +129,7 @@ class SignupPage extends StatelessWidget {
                                   password: _passwordController.text,
                                   name: _nameController.text,
                                   phone: _mobileController.text,
-                                )
-                                    .then((value) {
-                                  Navigator.pushReplacementNamed(
-                                      context, otpscreen);
-                                });
+                                );
                               }
                             },
                           );
