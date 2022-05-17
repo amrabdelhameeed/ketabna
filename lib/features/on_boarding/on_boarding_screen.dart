@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ketabna/core/utils/shared_pref_helper.dart';
 import 'package:ketabna/core/widgets/components.dart';
 import 'package:ketabna/features/on_boarding/sign_in_up_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -56,7 +57,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               onPressed: () {
                 if (loginColor == const Color(0xfff5b53f)) {
                   setState(() {
-                    navigateAndFinish(context, const SignInUpScreen());
+                    submit();
                   });
                 }
               },
@@ -138,7 +139,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     if (isLast){
 
                       setState(() {
-                        navigateAndFinish(context, const SignInUpScreen());
+                        submit();
                       });
                     }
                     else
@@ -196,7 +197,18 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       ),
     ),
   );
+
+  void submit(){
+
+    SharedPrefHelper.saveData(key: 'onBoarding', value: true).then((value){
+      if (value){
+        navigateAndFinish(context, const SignInUpScreen());
+      }
+    });
+  }
 }
+
+
 
 // void navigateAndFinish(
 //   context,
