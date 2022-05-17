@@ -30,7 +30,7 @@ class BookItem extends StatelessWidget {
             height: 5,
           ),
           Text(
-            '${bookModel.nameEn}',
+            '${bookModel.name}',
             style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),

@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ketabna/bloc/cubit/auth_cubit.dart';
 import 'package:ketabna/core/constants/strings.dart';
+import 'package:ketabna/core/models/category_model.dart';
 import 'package:ketabna/core/models/intersts_model.dart';
 import 'package:ketabna/core/widgets/components.dart';
 import 'package:ketabna/features/home/widgets/custom_listview.dart';
-import 'package:ketabna/features/on_boarding/sgin_in_up_screen.dart';
+import 'package:ketabna/features/on_boarding/sign_in_up_screen.dart';
 import 'widgets/customShape.dart';
 import 'widgets/get_books.dart';
 import 'widgets/customcarousel.dart';
@@ -45,25 +46,19 @@ class HomeScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           var cubit = AuthCubit.get(context);
+          // cubit.addBook(
+          //     category: InterstsModel
+          //         .categorys[Random().nextInt(InterstsModel.categorys.length)],
+          //     nameAr: ' nameAr',
+          //     nameEn: ' nameEn',
+          //     authorName: ' authorName');
           cubit.addBook(
               category: InterstsModel
                   .categorys[Random().nextInt(InterstsModel.categorys.length)],
-              nameAr: ' nameAr',
-              nameEn: ' nameEn',
-              authorName: ' authorName');
+              name: "ahadith",
+              authorName: "bokhari");
         },
-        child: Icon(Icons.add),
-      ),
-      appBar: AppBar(
-        actions: [
-          IconButton(
-              onPressed: () {
-                AuthCubit.get(context).logOut().then((value) {
-                  Navigator.pushReplacementNamed(context, registerScreen);
-                });
-              },
-              icon: const Icon(Icons.exit_to_app))
-        ],
+        child: const Icon(Icons.add),
       ),
       body: SingleChildScrollView(
         child: BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
@@ -91,7 +86,27 @@ class HomeScreen extends StatelessWidget {
                       child: Row(
                         children: [
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              showMenu<String>(
+                                  context: context,
+                                  position:
+                                      const RelativeRect.fromLTRB(0, 0, 0, 0),
+                                  items: const [
+                                    PopupMenuItem(
+                                      child: Text('name'),
+                                      value: 'name',
+                                    ),
+                                    PopupMenuItem(
+                                      child: Text('authorName'),
+                                      value: 'authorName',
+                                    )
+                                  ]).then((value) {
+                                if (value != null) {
+                                  Navigator.pushNamed(context, searchScreen,
+                                      arguments: value);
+                                }
+                              });
+                            },
                             icon: const Icon(Icons.search, size: 30),
                           ),
                           const SizedBox(
@@ -109,6 +124,14 @@ class HomeScreen extends StatelessWidget {
                               'https://th.bing.com/th/id/R.94add630f7d00e412d90070db8587021?rik=Mv4xaEwvaqalTg&pid=ImgRaw&r=0',
                             ),
                           ),
+                          IconButton(
+                              onPressed: () {
+                                AuthCubit.get(context).logOut().then((value) {
+                                  Navigator.pushReplacementNamed(
+                                      context, registerScreen);
+                                });
+                              },
+                              icon: const Icon(Icons.exit_to_app))
                         ],
                       ),
                     ),
@@ -130,12 +153,12 @@ class HomeScreen extends StatelessWidget {
 
               /// Header ==> Recommended
               defaultHeader(
-                text: 'technology',
+                text: 'horror',
               ),
               const SizedBox(
                 height: 10,
               ),
-              CustomListView(listOfBook: cubit.technologyInterstBooks),
+              CustomListView(listOfBook: cubit.horrorInterstBooks),
               const SizedBox(
                 height: 10,
               ),
@@ -162,14 +185,14 @@ class HomeScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                '${name_genres[index]}',
-                                style: TextStyle(
+                                '${CategoryModel.categories[index].categoryName}',
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
                                 textAlign: TextAlign.center,
                                 maxLines: 3,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Container(
@@ -179,13 +202,14 @@ class HomeScreen extends StatelessWidget {
                                         color: Colors.black.withOpacity(0.5),
                                         blurStyle: BlurStyle.normal,
                                         blurRadius: 10,
-                                        offset: Offset(0, 10))
+                                        offset: const Offset(0, 10))
                                   ],
                                 ),
                                 height: MediaQuery.of(context).size.height / 5,
                                 width: 100,
                                 child: Image(
-                                  image: AssetImage('${image_genres[index]}'),
+                                  image: AssetImage(
+                                      '${CategoryModel.categories[index].imagePath}'),
                                   fit: BoxFit.fill,
                                 ),
                               ),
@@ -206,12 +230,21 @@ class HomeScreen extends StatelessWidget {
 
               /// Recently Viewed
               defaultHeader(
-                text: 'horror',
+                text: 'children',
               ),
               const SizedBox(
                 height: 10,
               ),
-              CustomListView(listOfBook: cubit.horrorInterstBooks),
+              CustomListView(listOfBook: cubit.studingInterstBooks),
+              BlocListener<AuthCubit, AuthState>(
+                listener: (context, state) {
+                  if (state is BookAddedSuccessState) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Uploaded Successfully')));
+                  }
+                },
+                child: Container(),
+              )
             ],
           );
         }),

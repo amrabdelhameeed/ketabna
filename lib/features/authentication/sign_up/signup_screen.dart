@@ -111,19 +111,19 @@ class SignupPage extends StatelessWidget {
                           var cubit = AuthCubit.get(context);
                           return DefaultFormButton(
                             text: 'Sign Up',
-                            onPressed: () {
+                            onPressed: () async {
                               if (formKey.currentState!.validate()) {
-                                cubit.signUpWithEmailAndPassword(
+                                await cubit.signUpWithEmailAndPassword(
                                   isWhatsapp: value,
                                   interstsModel: InterstsModel(
                                     biography: true,
-                                    children: false,
+                                    children: true,
                                     fantasy: true,
-                                    graphicNovels: false,
-                                    history: false,
+                                    graphicNovels: true,
+                                    history: true,
                                     horror: true,
-                                    romance: false,
-                                    scienceFiction: false,
+                                    romance: true,
+                                    scienceFiction: true,
                                   ),
                                   email: _emailController.text,
                                   password: _passwordController.text,

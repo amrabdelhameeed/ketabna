@@ -67,7 +67,7 @@ class Home extends StatelessWidget {
                                       child: Column(
                                         children: [
                                           Text(localBooks[index].authorName!),
-                                          Text(localBooks[index].nameAr!),
+                                          Text(localBooks[index].name!),
                                           Text(localBooks[index].bookId!)
                                         ],
                                       ),
@@ -89,8 +89,7 @@ class Home extends StatelessWidget {
                     onPressed: () {
                       cubit.addBook(
                           category: "technologyInterst",
-                          nameAr: "قران",
-                          nameEn: "Quran",
+                          name: "قران",
                           authorName: "-");
                     },
                     child: Text("pick photo and add book"))

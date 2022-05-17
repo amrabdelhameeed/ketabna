@@ -183,21 +183,21 @@ class AuthCubit extends Cubit<AuthState> {
   List<BookModel> technologyInterstBooks = [];
 
   void getHorrorBooks() async {
-    getSomeBooksByCategory(category: 'Horror').then((horrorBooks) {
+    getSomeBooksByCategory(category: 'horror').then((horrorBooks) {
       horrorInterstBooks = horrorBooks;
       emit(GetHorrorBooksState());
     });
   }
 
   void getTechnologyBooks() async {
-    getSomeBooksByCategory(category: 'Technology').then((technologyBooks) {
+    getSomeBooksByCategory(category: 'technology').then((technologyBooks) {
       technologyInterstBooks = technologyBooks;
       emit(GetTechnologyBooksState());
     });
   }
 
   void getFantasyBooks() async {
-    getSomeBooksByCategory(category: 'Fantasy').then((fantasyBooks) {
+    getSomeBooksByCategory(category: 'fantasy').then((fantasyBooks) {
       fantasyInterstBooks = fantasyBooks;
       emit(GetFantasyBooksState());
     });
@@ -211,14 +211,14 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   void getfictionBooks() async {
-    getSomeBooksByCategory(category: 'Fiction').then((fictionBooks) {
+    getSomeBooksByCategory(category: 'scienceFiction').then((fictionBooks) {
       fictionInterstBooks = fictionBooks;
       emit(GetFictionBooksState());
     });
   }
 
-  void getstudingBooks() async {
-    getSomeBooksByCategory(category: 'children').then((studingBooks) {
+  void getbiographyBooks() async {
+    getSomeBooksByCategory(category: 'biography').then((studingBooks) {
       studingInterstBooks = studingBooks;
       emit(GetstudingBooksState());
     });
@@ -256,8 +256,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   void addBook({
     required String category,
-    required String nameAr,
-    required String nameEn,
+    required String name,
     required String authorName,
   }) async {
     String bookId = RandomString.getRandomString(20);
@@ -265,9 +264,8 @@ class AuthCubit extends Cubit<AuthState> {
       BookModel bookModel = BookModel(
           ownerUid: instance.currentUser!.uid,
           category: category,
-          nameAr: nameAr,
           picture: value,
-          nameEn: nameEn,
+          name: name,
           bookId: bookId,
           authorName: authorName);
       await FirebaseFirestore.instance
@@ -279,11 +277,11 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  void loginWithEmailAndPassword({
+  Future<void> loginWithEmailAndPassword({
     required String email,
     required String password,
-  }) {
-    instance
+  }) async {
+    await instance
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
       emit(LogedInSuccessState());

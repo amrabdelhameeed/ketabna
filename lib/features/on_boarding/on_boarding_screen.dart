@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ketabna/features/on_boarding/sgin_in_up_screen.dart';
+import 'package:ketabna/core/widgets/components.dart';
+import 'package:ketabna/features/on_boarding/sign_in_up_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class BoardingModel {
@@ -22,24 +23,24 @@ class OnBoardingScreen extends StatefulWidget {
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   var boardController = PageController();
-  var loginColor = Color(0xffefe9c2);
+  var loginColor = const Color(0xffefe9c2);
   double shadow = 0;
 
   List<BoardingModel> boarding = [
     BoardingModel(
         image: 'assets/image/on_boarding1.png',
-        title: 'over 20+ book from all genders',
-        body: 'We\'ve successfully Connecting Readers across Egypt'),
+        title: 'Over 20+ book from all genders',
+        body: 'We\'ve successfully connecting readers across egypt'),
     BoardingModel(
         image: 'assets/image/on_boarding2.png',
-        title: 'Sell or trade Your Old Books With Other Readers',
+        title: 'Sell or trade your books with other readers',
         body:
-            'If you\'re looking to downsize, sell or recycle old books, Borrowed Books can help.'),
+            'If you\'re looking to downsize, sell or recycle books, Borrowed Books can help.'),
     BoardingModel(
         image: 'assets/image/G.png',
-        title: 'Sell or trade Your Old Books With Other Readers',
+        title: 'Starting now ',
         body:
-            'If you\'re looking to downsize, sell or recycle old books, Borrowed Books can help.'),
+            'Let\'s Go'),
   ];
 
   bool isLast = false;
@@ -47,105 +48,164 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffefe9c2),
+      backgroundColor: const Color(0xffefe9c2),
       appBar: AppBar(
         actions: [
           TextButton(
+
               onPressed: () {
-                if (loginColor == Color(0xfff5b53f))
+                if (loginColor == const Color(0xfff5b53f)) {
                   setState(() {
-                    navigateAndFinish(context, SignInUpScreen());
+                    navigateAndFinish(context, const SignInUpScreen());
                   });
+                }
               },
               child: Text(
-                'Lets start',
-                style: TextStyle(
-                  color: loginColor,
+                'SKIP',
+                style: Theme.of(context).textTheme.headline6!.copyWith(
+                  color:const Color(0xfff5b53f),
+                  decoration: TextDecoration.underline,
                 ),
               ))
         ],
         elevation: 0,
-        backgroundColor: Color(0xffefe9c2),
+        backgroundColor: const Color(0xffefe9c2),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: PageView.builder(
-              onPageChanged: (int index) {
-                setState(() {
-                  if (index == boarding.length - 1) {
-                    loginColor = Color(0xfff5b53f);
-                  } else {
-                    loginColor = Color(0xffefe9c2);
-                  }
-                });
-              },
-              controller: boardController,
-              physics: BouncingScrollPhysics(),
-              itemBuilder: (context, index) =>
-                  buildBoardingItem(boarding[index]),
-              itemCount: boarding.length,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: PageView.builder(
+                onPageChanged: (int index) {
+                  setState(() {
+                    if (index == boarding.length - 1) {
+                      setState(() {
+                        isLast =true;
+                        loginColor = const Color(0xfff5b53f);
+                      });
+
+                    } else {
+                      setState(() {
+                        isLast =false;
+                        loginColor = const Color(0xffefe9c2);
+
+                      });
+                    }
+                  });
+                },
+                controller: boardController,
+                physics:const  BouncingScrollPhysics(),
+                itemBuilder: (context, index) =>
+                    buildBoardingItem(boarding[index]),
+                itemCount: boarding.length,
+              ),
             ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          SmoothPageIndicator(
-            effect: ColorTransitionEffect(
-              dotColor: Color(0xffe2d6af),
-              activeDotColor: Color(0xfff5b53f),
-              spacing: 20,
+            const SizedBox(
+              height: 20,
             ),
-            controller: boardController,
-            count: boarding.length,
-          ),
-          SizedBox(
-            height: 80,
-          ),
-        ],
+            Row(
+              children: [
+                SmoothPageIndicator(
+                  effect: const ExpandingDotsEffect(
+                    activeDotColor:  Color(0xfff5b53f),
+                    spacing: 10.0,
+                    dotHeight: 10,
+                    dotWidth: 10,
+                    expansionFactor: 3,
+
+                    // dotColor: Color(0xffe2d6af),
+
+
+                  ),
+                  controller: boardController,
+                  count: boarding.length,
+                ),
+                const  Spacer(
+
+                ),
+                FloatingActionButton(
+
+                  tooltip: 'next page',
+                  elevation: 0,
+                  mini: true,
+                  backgroundColor:const Color(0xfff5b53f),
+                  child: const Icon(
+                    Icons.navigate_next,
+
+                  ),
+                  onPressed: (){
+                    if (isLast){
+
+                      setState(() {
+                        navigateAndFinish(context, const SignInUpScreen());
+                      });
+                    }
+                    else
+                    {
+                      boardController.nextPage(
+                          duration: const Duration(
+                            milliseconds: 700,
+                          ),
+                          curve: Curves.fastLinearToSlowEaseIn);
+                    }
+
+                  },),
+              ],
+            ),
+
+          ],
+        ),
       ),
     );
   }
 
   Widget buildBoardingItem(BoardingModel model) => Center(
-        child: Column(
-          children: [
-            // PageView.builder(itemBuilder: (context , index) => )
-            SizedBox(
-              height: 20,
+    child: Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+
+        children: [
+          // PageView.builder(itemBuilder: (context , index) => )
+         const  SizedBox(
+            height: 20,
+          ),
+          Text(
+            model.title,
+            style:const  TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+                color: Color(0xfff5b53f)),
+            // textAlign: TextAlign.center,
+            maxLines: 3,
+          ),
+         const  SizedBox(
+            height: 10,
+          ),
+          Text(
+            model.body,
+            style:Theme.of(context).textTheme.bodyText1!.copyWith(
+              fontSize: 20,
+                color: const Color(0xfff5b53f),
+              fontWeight: FontWeight.w900,
             ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                '${model.title}',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                    color: Color(0xfff5b53f)),
-                textAlign: TextAlign.center,
-                maxLines: 3,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                '${model.body}',
-                style: TextStyle(fontSize: 15, color: Color(0xfff5b53f)),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Expanded(child: Image(image: AssetImage('${model.image}'))),
-          ],
-        ),
-      );
+            // textAlign: TextAlign.center,
+          ),
+          Expanded(child: Image(image: AssetImage(model.image))),
+        ],
+      ),
+    ),
+  );
 }
 
-void navigateAndFinish(
-  context,
-  widget,
-) =>
-    Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (context) => widget), (route) => true);
+// void navigateAndFinish(
+//   context,
+//   widget,
+// ) =>
+//     Navigator.pushAndRemoveUntil(context,
+//         MaterialPageRoute(builder: (context) => widget), (route) => true);
+
+
 
 // FloatingActionButton(
 // onPressed: (){
