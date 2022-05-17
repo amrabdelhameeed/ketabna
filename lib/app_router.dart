@@ -8,6 +8,7 @@ import 'package:ketabna/features/book_screen/book_screen.dart';
 import 'package:ketabna/features/authentication/sign_up/signup_screen.dart';
 import 'package:ketabna/features/choosing_categories_screen/intersted_screen.dart';
 import 'package:ketabna/features/home/home_screen.dart';
+import 'package:ketabna/features/on_boarding/sign_in_up_screen.dart';
 import 'package:ketabna/temp/home_screen.dart';
 import 'package:ketabna/features/on_boarding/Splash_view.dart';
 import 'package:ketabna/features/on_boarding/on_boarding_screen.dart';
@@ -66,6 +67,10 @@ class AppRouter {
             value: authCubit!,
             child: OtpScreen(),
           );
+        });
+      case signInUpScreen:
+        return MaterialPageRoute(builder: (_) {
+          return const SignInUpScreen();
         });
       case chossingCategoryScreen:
         return MaterialPageRoute(builder: (_) {

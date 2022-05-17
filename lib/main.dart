@@ -9,15 +9,15 @@ import 'package:ketabna/core/utils/shared_pref_helper.dart';
 
 String initialRoute = "";
 void main() async {
-  
-   bool onBoarding = SharedPrefHelper.getBool( key: 'onBoarding') ;
-
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefHelper.init();
+  bool onBoarding = SharedPrefHelper.getBool(key: 'onBoarding');
   await Firebase.initializeApp();
   FirebaseAuth.instance.authStateChanges().listen((user) {
-    if (user == null) {
+    if (user == null && !onBoarding) {
       initialRoute = splashScreen;
+    } else if (user == null && onBoarding) {
+      initialRoute = signInUpScreen;
     } else {
       initialRoute = mainScreen;
     }
