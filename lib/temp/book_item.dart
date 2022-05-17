@@ -30,7 +30,7 @@ class BookItem extends StatelessWidget {
             height: 170,
           ),
           Text(
-            bookModel.nameEn!,
+            bookModel.name!,
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
             textAlign: TextAlign.center,

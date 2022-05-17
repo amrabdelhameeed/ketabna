@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "753299412122-j85edlps3r0vgh1n108r1i7os3l6dqom.apps.googleusercontent.com",
+          "client_id": "753299412122-ogoak1hmd75n4ef8bnus515c2g79v510.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.ketabna",
-            "certificate_hash": "77e4d9008c7e7389c0400a5ad6e22b84cde22c95"
+            "certificate_hash": "01e05df17b7eb67b3b76f7257bbc086d1abe8ea0"
           }
         },
         {

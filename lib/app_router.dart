@@ -49,7 +49,7 @@ class AppRouter {
               ..getFantasyBooks()
               ..getnovelBooks()
               ..getfictionBooks()
-              ..getstudingBooks(),
+              ..getbiographyBooks(),
             child: HomeScreen(),
           );
         });

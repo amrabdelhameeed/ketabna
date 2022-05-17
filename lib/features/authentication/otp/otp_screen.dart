@@ -108,13 +108,10 @@ class OtpScreen extends StatelessWidget {
   Widget _buildPhoneVerficationBloc() {
     return BlocListener<AuthCubit, AuthState>(
       child: Container(),
-      listenWhen: (prev, cur) {
-        return prev != cur;
-      },
       listener: (context, state) {
-        if (state is PhoneauthLoading) {
-          return showProgressIndicator(context);
-        }
+        // if (state is PhoneauthLoading) {
+        //   return showProgressIndicator(context);
+        // }
         if (state is OtpVerfied) {
           Navigator.of(context).pushReplacementNamed(chossingCategoryScreen);
         }
@@ -158,7 +155,7 @@ class OtpScreen extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8))),
           onPressed: () {
-            showProgressIndicator(context);
+            // showProgressIndicator(context);
             _login(context);
           },
           child: const Text(
