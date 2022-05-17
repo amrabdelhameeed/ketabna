@@ -256,8 +256,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   void addBook({
     required String category,
-    required String nameAr,
-    required String nameEn,
+    required String name,
     required String authorName,
   }) async {
     String bookId = RandomString.getRandomString(20);
@@ -265,9 +264,8 @@ class AuthCubit extends Cubit<AuthState> {
       BookModel bookModel = BookModel(
           ownerUid: instance.currentUser!.uid,
           category: category,
-          nameAr: nameAr,
           picture: value,
-          nameEn: nameEn,
+          name: name,
           bookId: bookId,
           authorName: authorName);
       await FirebaseFirestore.instance

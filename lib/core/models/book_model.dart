@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BookModel {
-  String? nameAr;
-  String? nameEn;
+  String? name;
   String? authorName;
   String? picture;
   bool? isValid;
@@ -10,17 +9,15 @@ class BookModel {
   String? ownerUid;
   String? bookId;
   BookModel(
-      {this.nameAr,
+      {this.name,
       this.picture,
-      this.nameEn,
       this.isValid = true,
       this.authorName,
       this.category,
       this.ownerUid,
       this.bookId});
   BookModel.fromJson(Map<String, dynamic> map) {
-    nameAr = map['nameAr'];
-    nameEn = map['nameEn'];
+    name = map['name'];
     authorName = map['authorName'];
     picture = map['picture'];
     isValid = map['isValid'];
@@ -30,9 +27,8 @@ class BookModel {
   }
   Map<String, dynamic> toJson() {
     return {
-      'nameAr': nameAr,
+      'name': name,
       'authorName': authorName,
-      'nameEn': nameEn,
       'picture': picture,
       'isValid': isValid,
       'category': category,
@@ -46,8 +42,7 @@ class BookModel {
       final Map<String, dynamic> dataMap =
           snapshot.data() as Map<String, dynamic>;
       return BookModel(
-        nameAr: dataMap['nameAr'],
-        nameEn: dataMap['nameEn'],
+        name: dataMap['name'],
         authorName: dataMap['authorName'],
         picture: dataMap['picture'],
         isValid: dataMap['isValid'],

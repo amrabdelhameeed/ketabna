@@ -55,8 +55,7 @@ class HomeScreen extends StatelessWidget {
           cubit.addBook(
               category: InterstsModel
                   .categorys[Random().nextInt(InterstsModel.categorys.length)],
-              nameAr: "احاديث",
-              nameEn: "ahadith",
+              name: "ahadith",
               authorName: "bokhari");
         },
         child: const Icon(Icons.add),
@@ -90,15 +89,12 @@ class HomeScreen extends StatelessWidget {
                             onPressed: () {
                               showMenu<String>(
                                   context: context,
-                                  position: RelativeRect.fromLTRB(0, 0, 0, 0),
-                                  items: [
+                                  position:
+                                      const RelativeRect.fromLTRB(0, 0, 0, 0),
+                                  items: const [
                                     PopupMenuItem(
-                                      child: Text('nameEn'),
-                                      value: 'nameEn',
-                                    ),
-                                    PopupMenuItem(
-                                      child: Text('nameAr'),
-                                      value: 'nameAr',
+                                      child: Text('name'),
+                                      value: 'name',
                                     ),
                                     PopupMenuItem(
                                       child: Text('authorName'),
@@ -190,13 +186,13 @@ class HomeScreen extends StatelessWidget {
                             children: [
                               Text(
                                 '${CategoryModel.categories[index].categoryName}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
                                 textAlign: TextAlign.center,
                                 maxLines: 3,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Container(
@@ -206,7 +202,7 @@ class HomeScreen extends StatelessWidget {
                                         color: Colors.black.withOpacity(0.5),
                                         blurStyle: BlurStyle.normal,
                                         blurRadius: 10,
-                                        offset: Offset(0, 10))
+                                        offset: const Offset(0, 10))
                                   ],
                                 ),
                                 height: MediaQuery.of(context).size.height / 5,
@@ -241,14 +237,14 @@ class HomeScreen extends StatelessWidget {
               ),
               CustomListView(listOfBook: cubit.studingInterstBooks),
               BlocListener<AuthCubit, AuthState>(
-                  listener: (context, state) {
-                    if (state is BookAddedSuccessState) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Uploaded Successfully')));
-                    }
-                  },
-                  child: Container(),
-                )
+                listener: (context, state) {
+                  if (state is BookAddedSuccessState) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Uploaded Successfully')));
+                  }
+                },
+                child: Container(),
+              )
             ],
           );
         }),
