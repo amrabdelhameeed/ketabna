@@ -49,6 +49,7 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
 
             onPressed:(){
               setState(() {
+                // new
                 showPass = !showPass;
                 suffix = showPass ?  Icons.visibility_outlined :  Icons.visibility_off_outlined;
               });
