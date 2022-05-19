@@ -45,7 +45,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   ];
 
   bool isLast = false;
-
+  double sizeIcon = 24;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,12 +83,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     if (index == boarding.length - 1) {
                       setState(() {
                         isLast =true;
+                        sizeIcon =32;
                         loginColor = const Color(0xfff5b53f);
                       });
 
                     } else {
                       setState(() {
                         isLast =false;
+                        sizeIcon =24;
                         loginColor = const Color(0xffefe9c2);
 
                       });
@@ -122,18 +124,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   controller: boardController,
                   count: boarding.length,
                 ),
-                const  Spacer(
-
-                ),
+                const  Spacer(),
                 FloatingActionButton(
-
                   tooltip: 'next page',
                   elevation: 0,
-                  mini: true,
+                  mini: isLast?false :true ,
                   backgroundColor:const Color(0xfff5b53f),
-                  child: const Icon(
+                  child:  Icon(
                     Icons.navigate_next,
-
+                    size: sizeIcon,
                   ),
                   onPressed: (){
                     if (isLast){
@@ -152,6 +151,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     }
 
                   },),
+
               ],
             ),
 
