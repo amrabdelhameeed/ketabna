@@ -30,48 +30,68 @@ class _SplashViewState extends State<SplashView> {
     Navigator.pushReplacementNamed(context, onBoardingScreen);
   }
 
+  DateTime pre_backpress = DateTime.now();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xffefe9c2),
-      body: Stack(
-        children: [
-          Positioned(
-            top: MediaQuery.of(context).size.height / 2,
-            child: Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                alignment: AlignmentDirectional.center,
-                child: AnimatedOpacity(
-                  child: const Text(
-                    'Borrowed Books',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
-                        color: Color(0xfff5b53f)),
-                    textAlign: TextAlign.center,
-                    maxLines: 3,
+    return WillPopScope(
+      onWillPop: () async{
+        final timegap = DateTime.now().difference(pre_backpress);
+
+        final cantExit = timegap >= Duration(seconds: 2);
+
+        pre_backpress = DateTime.now();
+
+        if(cantExit){
+          //show snackbar
+          final snack = SnackBar(content: Text('Press Back button again to Exit'),duration: Duration(seconds: 2),);
+
+          ScaffoldMessenger.of(context).showSnackBar(snack);
+          return false;
+        }else{
+          return true;
+        }
+      },
+      child: Scaffold(
+        backgroundColor: const Color(0xffefe9c2),
+        body: Stack(
+          children: [
+            Positioned(
+              top: MediaQuery.of(context).size.height / 2,
+              child: Center(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  alignment: AlignmentDirectional.center,
+                  child: AnimatedOpacity(
+                    child: const Text(
+                      'Borrowed Books',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                          color: Color(0xfff5b53f)),
+                      textAlign: TextAlign.center,
+                      maxLines: 3,
+                    ),
+                    duration: const Duration(seconds: 6),
+                    opacity: opacity,
                   ),
-                  duration: const Duration(seconds: 6),
-                  opacity: opacity,
                 ),
               ),
             ),
-          ),
-          AnimatedPositioned(
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height/3,
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: const Image(
-                image: AssetImage('assets/image/Books.png'),
+            AnimatedPositioned(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height/3,
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: const Image(
+                  image: AssetImage('assets/image/Books.png'),
+                ),
               ),
-            ),
-            duration: const Duration(seconds: 4),
-            curve: Curves.bounceIn,
-            top: !showMessage ? 100 : MediaQuery.of(context).size.height / 3,
-            left: MediaQuery.of(context).size.width / 20,
-          )
-        ],
+              duration: const Duration(seconds: 4),
+              curve: Curves.bounceIn,
+              top: !showMessage ? 100 : MediaQuery.of(context).size.height / 3,
+              left: MediaQuery.of(context).size.width / 20,
+            )
+          ],
+        ),
       ),
     );
   }
