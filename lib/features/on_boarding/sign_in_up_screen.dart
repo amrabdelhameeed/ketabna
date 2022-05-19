@@ -143,28 +143,33 @@ class SignInUPScreen extends StatelessWidget {
                     ),
 
                     /// Sign Up Button
-                    Container(
-                      height:SizeConfig.screenHeight!/12,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: const Color.fromRGBO(245, 181, 63, .93),
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: MaterialButton(
-
-                        onPressed:(){
-                          Navigator.pushNamed(context, registerScreen);
-                        },
-                        child: const Text(
-                          'Sign Up',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                          textAlign: TextAlign.center,
-                          softWrap: false,
+                    InkWell(
+                      onTap: (){
+                        Navigator.pushNamed(context, registerScreen);
+                      },
+                      child: Container(
+                        height:SizeConfig.screenHeight!/12,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: const Color.fromRGBO(245, 181, 63, .93),
+                          borderRadius: BorderRadius.circular(20.0),
                         ),
-                        elevation: 0.0,
+                        child: MaterialButton(
+
+                          onPressed:(){
+                            Navigator.pushNamed(context, registerScreen);
+                          },
+                          child: const Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                            textAlign: TextAlign.center,
+                            softWrap: false,
+                          ),
+                          elevation: 0.0,
+                        ),
                       ),
                     ),
                   ],
