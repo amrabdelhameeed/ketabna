@@ -116,7 +116,9 @@ class SigninPage extends StatelessWidget {
                               if (formKey.currentState!.validate()) {
                                 await cubit.loginWithEmailAndPassword(
                                     email: _emailController.text,
-                                    password: _passwordController.text);
+                                    password: _passwordController.text,
+                                    context: context
+                                );
                               }
                             },
                           );

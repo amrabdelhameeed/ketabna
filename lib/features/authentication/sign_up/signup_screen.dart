@@ -8,6 +8,7 @@ import 'package:ketabna/core/utils/app_colors.dart';
 import 'package:ketabna/core/widgets/default_check_box.dart';
 import 'package:ketabna/core/widgets/default_form_button.dart';
 import 'package:ketabna/core/widgets/default_text_form_field.dart';
+import 'package:ketabna/features/home/home_screen.dart';
 
 class SignupPage extends StatelessWidget {
   SignupPage({Key? key}) : super(key: key);
@@ -126,25 +127,33 @@ class SignupPage extends StatelessWidget {
 
                                 fillColor: AppColors.secondaryColor,
                                 onPressed: () async {
-                                  if (formKey.currentState!.validate()) {
-                                    await cubit.signUpWithEmailAndPassword(
-                                      isWhatsapp: value,
-                                      interstsModel: InterstsModel(
-                                        biography: true,
-                                        children: true,
-                                        fantasy: true,
-                                        graphicNovels: true,
-                                        history: true,
-                                        horror: true,
-                                        romance: true,
-                                        scienceFiction: true,
-                                      ),
-                                      email: _emailController.text,
-                                      password: _passwordController.text,
-                                      name: _nameController.text,
-                                      phone: _mobileController.text,
-                                    );
+                                  try{
+                                    if (formKey.currentState!.validate()) {
+                                      await cubit.signUpWithEmailAndPassword(
+                                        isWhatsapp: value,
+                                        interstsModel: InterstsModel(
+                                          biography: true,
+                                          children: true,
+                                          fantasy: true,
+                                          graphicNovels: true,
+                                          history: true,
+                                          horror: true,
+                                          romance: true,
+                                          scienceFiction: true,
+                                        ),
+                                        email: _emailController.text,
+                                        password: _passwordController.text,
+                                        name: _nameController.text,
+                                        phone: _mobileController.text,
+                                        context: context,
+                                      );
+                                    }
+                                  }catch (error){
+
+                                     print("TO String" + error.toString());
+
                                   }
+
                                 },
                               ),
                               Row(

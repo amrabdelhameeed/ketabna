@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ketabna/features/on_boarding/sign_in_up_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../core/utils/shared_pref_helper.dart';
+
 class BoardingModel {
   late final String image;
   late final String title;
@@ -55,6 +57,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 if (loginColor == Color(0xfff5b53f)) {
                   setState(() {
                     navigateAndFinish(context, SignInUPScreen());
+                    SharedPrefHelper.putBool(key: 'onBoarding',value: true);
                   });
                 }
               },
@@ -141,12 +144,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       );
 }
 
-void navigateAndFinish(
-  context,
-  widget,
-) =>
-    Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (context) => widget), (route) => true);
+void navigateAndFinish(  context,
+    widget,) {
+  Navigator.pushReplacement<void, void>(
+    context,
+    MaterialPageRoute<void>(
+      builder: (BuildContext context) => widget,
+    ),
+  );
+}
 
 // FloatingActionButton(
 // onPressed: (){
