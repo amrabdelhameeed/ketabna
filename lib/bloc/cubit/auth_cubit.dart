@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ketabna/core/models/book_model.dart';
@@ -52,6 +53,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String phone,
     required InterstsModel interstsModel,
     required bool isWhatsapp,
+    context,
   }) async {
     instance
         .createUserWithEmailAndPassword(email: email, password: password)
@@ -80,8 +82,13 @@ class AuthCubit extends Cubit<AuthState> {
         emit(EmailauthError(onError.toString()));
         debugPrint("eltanya ha eltanya ${onError.toString()}");
       });
+    }).then((value) => {
+      emit(RegisterSuccessState())
     }).catchError((onError) {
       debugPrint("eltanya ha eltanya ${onError.toString()}");
+      final snack = SnackBar(backgroundColor:Colors.red ,content: Text(onError.toString()),duration: Duration(seconds: 2),);
+
+      ScaffoldMessenger.of(context).showSnackBar(snack);
       emit(EmailauthError(onError.toString()));
     });
   }
@@ -280,12 +287,16 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> loginWithEmailAndPassword({
     required String email,
     required String password,
+    context
   }) async {
     await instance
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
       emit(LogedInSuccessState());
     }).catchError((onError) {
+      final snack = SnackBar(backgroundColor:Colors.red ,content: Text(onError.toString()),duration: Duration(seconds: 2),);
+
+      ScaffoldMessenger.of(context).showSnackBar(snack);
       debugPrint("5ra error fe login ${onError.toString()}");
     });
   }

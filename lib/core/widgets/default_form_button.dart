@@ -4,6 +4,9 @@ import 'package:ketabna/core/utils/app_colors.dart';
 class DefaultFormButton extends StatelessWidget {
   DefaultFormButton(
       {Key? key,
+        this.width = double.infinity,
+        this.height = 65,
+        this.radius = 20,
       this.onPressed,
       required this.text,
       this.fillColor,
@@ -16,14 +19,18 @@ class DefaultFormButton extends StatelessWidget {
   Color? textColor = AppColors.secondaryColor;
   Color? fillColor = Colors.transparent;
   double? fontSize = 17.0;
+  double width ;
+  double height ;
+  double radius  ;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
       child: Container(
+        height: height,
         padding: const EdgeInsets.symmetric(vertical: 20.0),
-        width: double.infinity,
+        width: width,
         child: Center(
           child: Text(
             text,
@@ -37,7 +44,7 @@ class DefaultFormButton extends StatelessWidget {
         decoration: BoxDecoration(
             color: fillColor,
             border: Border.all(color: AppColors.secondaryColor),
-            borderRadius: const BorderRadius.all(Radius.circular(20.0))),
+            borderRadius:  BorderRadius.all(Radius.circular(radius))),
       ),
     );
   }

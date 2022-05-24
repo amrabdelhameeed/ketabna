@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ketabna/core/utils/shared_pref_helper.dart';
-import 'package:ketabna/core/widgets/components.dart';
 import 'package:ketabna/features/on_boarding/sign_in_up_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../../core/utils/shared_pref_helper.dart';
 
 class BoardingModel {
   late final String image;
@@ -24,24 +24,24 @@ class OnBoardingScreen extends StatefulWidget {
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   var boardController = PageController();
-  var loginColor = const Color(0xffefe9c2);
+  var loginColor = Color(0xffefe9c2);
   double shadow = 0;
 
   List<BoardingModel> boarding = [
     BoardingModel(
         image: 'assets/image/on_boarding1.png',
-        title: 'Over 20+ book from all genders',
-        body: 'We\'ve successfully connecting readers across egypt'),
+        title: 'over 20+ book from all genders',
+        body: 'We\'ve successfully Connecting Readers across Egypt'),
     BoardingModel(
         image: 'assets/image/on_boarding2.png',
-        title: 'Sell or trade your books with other readers',
+        title: 'Sell or trade Your Old Books With Other Readers',
         body:
-            'If you\'re looking to downsize, sell or recycle books, Borrowed Books can help.'),
+            'If you\'re looking to downsize, sell or recycle old books, Borrowed Books can help.'),
     BoardingModel(
         image: 'assets/image/G.png',
-        title: 'Starting now ',
+        title: 'Sell or trade Your Old Books With Other Readers',
         body:
-            'Let\'s Go'),
+            'If you\'re looking to downsize, sell or recycle old books, Borrowed Books can help.'),
   ];
 
   bool isLast = false;
@@ -49,175 +49,110 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffefe9c2),
+      backgroundColor: Color(0xffefe9c2),
       appBar: AppBar(
         actions: [
           TextButton(
-
               onPressed: () {
-                if (loginColor == const Color(0xfff5b53f)) {
+                if (loginColor == Color(0xfff5b53f)) {
                   setState(() {
-                    submit();
+                    navigateAndFinish(context, SignInUPScreen());
+                    SharedPrefHelper.putBool(key: 'onBoarding',value: true);
                   });
                 }
               },
               child: Text(
-                'SKIP',
-                style: Theme.of(context).textTheme.headline6!.copyWith(
-                  color:const Color(0xfff5b53f),
-                  decoration: TextDecoration.underline,
+                'Lets start',
+                style: TextStyle(
+                  color: loginColor,
                 ),
               ))
         ],
         elevation: 0,
-        backgroundColor: const Color(0xffefe9c2),
+        backgroundColor: Color(0xffefe9c2),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: PageView.builder(
-                onPageChanged: (int index) {
-                  setState(() {
-                    if (index == boarding.length - 1) {
-                      setState(() {
-                        isLast =true;
-                        loginColor = const Color(0xfff5b53f);
-                      });
-
-                    } else {
-                      setState(() {
-                        isLast =false;
-                        loginColor = const Color(0xffefe9c2);
-
-                      });
-                    }
-                  });
-                },
-                controller: boardController,
-                physics:const  BouncingScrollPhysics(),
-                itemBuilder: (context, index) =>
-                    buildBoardingItem(boarding[index]),
-                itemCount: boarding.length,
-              ),
+      body: Column(
+        children: [
+          Expanded(
+            child: PageView.builder(
+              onPageChanged: (int index) {
+                setState(() {
+                  if (index == boarding.length - 1) {
+                    loginColor = Color(0xfff5b53f);
+                  } else {
+                    loginColor = Color(0xffefe9c2);
+                  }
+                });
+              },
+              controller: boardController,
+              physics: BouncingScrollPhysics(),
+              itemBuilder: (context, index) =>
+                  buildBoardingItem(boarding[index]),
+              itemCount: boarding.length,
             ),
-            const SizedBox(
-              height: 20,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          SmoothPageIndicator(
+            effect: ColorTransitionEffect(
+              dotColor: Color(0xffe2d6af),
+              activeDotColor: Color(0xfff5b53f),
+              spacing: 20,
             ),
-            Row(
-              children: [
-                SmoothPageIndicator(
-                  effect: const ExpandingDotsEffect(
-                    activeDotColor:  Color(0xfff5b53f),
-                    spacing: 10.0,
-                    dotHeight: 10,
-                    dotWidth: 10,
-                    expansionFactor: 3,
-
-                    // dotColor: Color(0xffe2d6af),
-
-
-                  ),
-                  controller: boardController,
-                  count: boarding.length,
-                ),
-                const  Spacer(
-
-                ),
-                FloatingActionButton(
-
-                  tooltip: 'next page',
-                  elevation: 0,
-                  mini: true,
-                  backgroundColor:const Color(0xfff5b53f),
-                  child: const Icon(
-                    Icons.navigate_next,
-
-                  ),
-                  onPressed: (){
-                    if (isLast){
-
-                      setState(() {
-                        submit();
-                      });
-                    }
-                    else
-                    {
-                      boardController.nextPage(
-                          duration: const Duration(
-                            milliseconds: 700,
-                          ),
-                          curve: Curves.fastLinearToSlowEaseIn);
-                    }
-
-                  },),
-              ],
-            ),
-
-          ],
-        ),
+            controller: boardController,
+            count: boarding.length,
+          ),
+          SizedBox(
+            height: 80,
+          ),
+        ],
       ),
     );
   }
 
   Widget buildBoardingItem(BoardingModel model) => Center(
-    child: Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-
-        children: [
-          // PageView.builder(itemBuilder: (context , index) => )
-         const  SizedBox(
-            height: 20,
-          ),
-          Text(
-            model.title,
-            style:const  TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-                color: Color(0xfff5b53f)),
-            // textAlign: TextAlign.center,
-            maxLines: 3,
-          ),
-         const  SizedBox(
-            height: 10,
-          ),
-          Text(
-            model.body,
-            style:Theme.of(context).textTheme.bodyText1!.copyWith(
-              fontSize: 20,
-                color: const Color(0xfff5b53f),
-              fontWeight: FontWeight.w900,
+        child: Column(
+          children: [
+            // PageView.builder(itemBuilder: (context , index) => )
+            SizedBox(
+              height: 20,
             ),
-            // textAlign: TextAlign.center,
-          ),
-          Expanded(child: Image(image: AssetImage(model.image))),
-        ],
-      ),
-    ),
-  );
-
-  void submit(){
-
-    SharedPrefHelper.saveData(key: 'onBoarding', value: true).then((value){
-      if (value){
-        navigateAndFinish(context, const SignInUpScreen());
-      }
-    });
-  }
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(
+                '${model.title}',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    color: Color(0xfff5b53f)),
+                textAlign: TextAlign.center,
+                maxLines: 3,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(
+                '${model.body}',
+                style: TextStyle(fontSize: 15, color: Color(0xfff5b53f)),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Expanded(child: Image(image: AssetImage('${model.image}'))),
+          ],
+        ),
+      );
 }
 
-
-
-// void navigateAndFinish(
-//   context,
-//   widget,
-// ) =>
-//     Navigator.pushAndRemoveUntil(context,
-//         MaterialPageRoute(builder: (context) => widget), (route) => true);
-
-
+void navigateAndFinish(  context,
+    widget,) {
+  Navigator.pushReplacement<void, void>(
+    context,
+    MaterialPageRoute<void>(
+      builder: (BuildContext context) => widget,
+    ),
+  );
+}
 
 // FloatingActionButton(
 // onPressed: (){

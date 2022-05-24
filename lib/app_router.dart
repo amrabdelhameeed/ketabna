@@ -71,7 +71,7 @@ class AppRouter {
         });
       case signInUpScreen:
         return MaterialPageRoute(builder: (_) {
-          return const SignInUpScreen();
+          return SignInUPScreen();
         });
       case chossingCategoryScreen:
         return MaterialPageRoute(builder: (_) {
