@@ -48,8 +48,6 @@ Widget defaultHeader(
 
 
 
-
-
 void navigateAndFinish (context , widget)
 => Navigator.pushAndRemoveUntil(
   context,
