@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/widgets/components.dart';
 
+// ignore: must_be_immutable
 class VerificationScreen extends StatelessWidget {
   var verificationCode = TextEditingController();
   final labelMessage =
@@ -9,6 +10,8 @@ class VerificationScreen extends StatelessWidget {
   final colorButtonVerify = 0xFFF5B53F;
   String labelCode = 'Code ';
   var formKey = GlobalKey<FormState>();
+
+  VerificationScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -20,6 +20,12 @@ class SigninPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
+          // Updated by Baly
+          iconTheme: const IconThemeData(
+            color: AppColors.secondaryColor,
+            size: 32,
+          ),
+
           // leading: IconButton(
           //   padding: EdgeInsets.only(top: 20.0),
           //   onPressed: () {
@@ -27,13 +33,16 @@ class SigninPage extends StatelessWidget {
           //     // Navigator.pushReplacementNamed(context, loginScreen);
           //   },
           //   icon: const Icon(
-          //     Icons.arrow_back_ios_new,
+          //     Icons.arrow_back,
           //     color: AppColors.secondaryColor,
-          //     size: 22.0,
+          //     size: 32.0,
           //   ),
           // ),
         ),
-        body: SafeArea(
+
+        // Updated by Baly
+        body: Center(
+          heightFactor: 1.3,
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -53,7 +62,7 @@ class SigninPage extends StatelessWidget {
                       ),
                       formVerticalDistance,
                       DefaultTextFormField(
-                        hint: 'Email Address',
+                        hint: 'Email address',
                         controller: _emailController,
                         inputType: TextInputType.emailAddress,
                         validationText: 'Email Address can\'t be empty.',
@@ -72,13 +81,13 @@ class SigninPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const DefaultCheckBox(
-                            checkInfo: 'Stay Logged In',
+                            checkInfo: 'Stay Login In',
                           ),
                           TextButton(
                               onPressed: () {
                                 // here you will push the forgotten password screen
                               },
-                              child: const Text('Forgotten Password?',
+                              child: const Text('Forgot Password ?',
                                   style: TextStyle(
                                     color: AppColors.formFontColor,
                                     fontFamily: 'SFPro',

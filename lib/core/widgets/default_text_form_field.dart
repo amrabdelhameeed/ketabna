@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:ketabna/core/utils/app_colors.dart';
 
-class DefaultTextFormField extends StatelessWidget {
-  const DefaultTextFormField(
-      {Key? key,
-      required this.hint,
-      this.controller,
-      this.inputType,
-      this.isPassword = false,
-      this.validationText})
-      : super(key: key);
+// Updated by Baly
+class DefaultTextFormField extends StatefulWidget {
+  DefaultTextFormField({
+    Key? key,
+    required this.hint,
+    this.controller,
+    this.inputType,
+    this.isPassword = false,
+    this.validationText,
+  }) : super(key: key);
   final String hint;
   final TextEditingController? controller;
   final TextInputType? inputType;
@@ -17,23 +18,46 @@ class DefaultTextFormField extends StatelessWidget {
   final String? validationText;
 
   @override
+  State<DefaultTextFormField> createState() => _DefaultTextFormFieldState();
+}
+
+class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
+  bool showPass = false;
+
+  IconData suffix = Icons.visibility_off_outlined;
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
-      obscureText: isPassword!,
-      keyboardType: inputType,
+      controller: widget.controller,
+      obscureText: widget.isPassword! ? showPass : false,
+      keyboardType: widget.inputType,
       style: const TextStyle(
         color: AppColors.formFontColor,
       ),
       validator: (error) {
-        if (controller!.text.isEmpty) {
-          return validationText;
+        if (widget.controller!.text.isEmpty) {
+          return widget.validationText;
         }
         return null;
       },
       decoration: InputDecoration(
+        suffixIcon: widget.isPassword!
+            ? MaterialButton(
+                elevation: 0,
+                onPressed: () {
+                  setState(() {
+                    showPass = !showPass;
+                    suffix = showPass
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined;
+                  });
+                },
+                child: Icon(suffix),
+              )
+            : SizedBox(),
         contentPadding: const EdgeInsets.all(20.0),
-        hintText: hint,
+        hintText: widget.hint,
         errorStyle: const TextStyle(
           fontFamily: 'SFPro',
         ),

@@ -14,10 +14,12 @@ void main() async {
   bool onBoarding = SharedPrefHelper.getBool(key: 'onBoarding');
   await Firebase.initializeApp();
   FirebaseAuth.instance.authStateChanges().listen((user) {
-    if (user == null && !onBoarding) {
+    if (!onBoarding) {
       initialRoute = splashScreen;
-    } else if (user == null && onBoarding) {
+    } else if (user == null) {
       initialRoute = signInUpScreen;
+    } else if (user.phoneNumber == null) {
+      initialRoute = verificationScreen;
     } else {
       initialRoute = mainScreen;
     }
