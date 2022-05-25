@@ -8,7 +8,6 @@ import 'package:ketabna/core/utils/app_colors.dart';
 import 'package:ketabna/core/widgets/default_check_box.dart';
 import 'package:ketabna/core/widgets/default_form_button.dart';
 import 'package:ketabna/core/widgets/default_text_form_field.dart';
-import 'package:ketabna/features/home/home_screen.dart';
 
 class SignupPage extends StatelessWidget {
   SignupPage({Key? key}) : super(key: key);
@@ -27,12 +26,6 @@ class SignupPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
-          // Updated by Baly
-          iconTheme: const IconThemeData(
-            color: AppColors.secondaryColor,
-            size: 32,
-          ),
-
           // leading: IconButton(
           //   padding: EdgeInsets.only(top: 20.0),
           //   onPressed: () {
@@ -48,7 +41,6 @@ class SignupPage extends StatelessWidget {
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Form(
@@ -117,6 +109,7 @@ class SignupPage extends StatelessWidget {
                         },
                         builder: (context, state) {
                           var cubit = AuthCubit.get(context);
+
                           return Column(
                             children: [
                               DefaultFormButton(
@@ -172,13 +165,19 @@ class SignupPage extends StatelessWidget {
                                             color: AppColors.secondaryColor,
                                           ),
                                     ),
+
                                   ),
-                                ],
-                              ),
-                            ],
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                  name: _nameController.text,
+                                  phone: _mobileController.text,
+                                );
+                              }
+                            },
                           );
                         },
                       ),
+
 
                       // DefaultFormButton(
                       //   text: 'Sign In',
@@ -186,6 +185,7 @@ class SignupPage extends StatelessWidget {
                       //     Navigator.pushReplacementNamed(context, loginScreen);
                       //   },
                       // )
+
                     ],
                   )),
             ),
