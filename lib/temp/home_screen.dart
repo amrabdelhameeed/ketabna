@@ -31,7 +31,7 @@ class HomeTemp extends StatelessWidget {
                 cubit.addBook(
                     category: InterstsModel.categorys[
                         Random().nextInt(InterstsModel.categorys.length)],
-                    name: ' name',
+                    name: 'name',
                     authorName: ' authorName');
               },
               label: Text('Add Book')),

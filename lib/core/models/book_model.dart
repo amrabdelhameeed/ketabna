@@ -7,6 +7,7 @@ class BookModel {
   bool? isValid;
   String? category;
   String? ownerUid;
+  String? ownerName;
   String? bookId;
   BookModel(
       {this.name,
@@ -15,6 +16,7 @@ class BookModel {
       this.authorName,
       this.category,
       this.ownerUid,
+      this.ownerName,
       this.bookId});
   BookModel.fromJson(Map<String, dynamic> map) {
     name = map['name'];
@@ -23,6 +25,7 @@ class BookModel {
     isValid = map['isValid'];
     category = map['category'];
     ownerUid = map['ownerUid'];
+    ownerName = map['ownerName'];
     bookId = map['bookId'];
   }
   Map<String, dynamic> toJson() {
@@ -33,6 +36,7 @@ class BookModel {
       'isValid': isValid,
       'category': category,
       'ownerUid': ownerUid,
+      'ownerName': ownerName,
       'bookId': bookId,
     };
   }
@@ -48,6 +52,7 @@ class BookModel {
         isValid: dataMap['isValid'],
         category: dataMap['category'],
         ownerUid: dataMap['ownerUid'],
+        ownerName: dataMap['ownerName'],
         bookId: dataMap['bookId'],
       );
     }).toList();

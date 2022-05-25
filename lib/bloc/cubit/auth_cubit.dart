@@ -11,18 +11,25 @@ import 'package:ketabna/core/models/intersts_model.dart';
 import 'package:ketabna/core/models/request_model.dart';
 import 'package:ketabna/core/models/user_model.dart';
 import 'package:ketabna/core/utils/random_string.dart';
+import 'package:ketabna/core/utils/shared_pref_helper.dart';
 import 'package:meta/meta.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
+import '../../core/constants/strings.dart';
+
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
+
   static AuthCubit get(context) => BlocProvider.of(context);
   bool isTechnical = false;
   late String verificationId;
+  String userName = SharedPrefHelper.getStr(key: userNameKey);
   var instance = FirebaseAuth.instance;
   final ImagePicker _picker = ImagePicker();
   File? bookImage;
+
   Future<String> pickBookImage(String bookId) async {
     String? photoUrl;
     await _picker.pickImage(source: ImageSource.gallery).then((value) {
@@ -31,7 +38,10 @@ class AuthCubit extends Cubit<AuthState> {
       emit(PickPhotoLoadingState());
       await firebase_storage.FirebaseStorage.instance
           .ref()
-          .child('books/${Uri.file(bookImage!.path).pathSegments.last}')
+          .child('books/${Uri
+          .file(bookImage!.path)
+          .pathSegments
+          .last}')
           .putFile(bookImage!)
           .then((p0) async {
         await p0.ref.getDownloadURL().then((photoLink) async {
@@ -82,11 +92,14 @@ class AuthCubit extends Cubit<AuthState> {
         emit(EmailauthError(onError.toString()));
         debugPrint("eltanya ha eltanya ${onError.toString()}");
       });
-    }).then((value) => {
+    }).then((value) =>
+    {
       emit(RegisterSuccessState())
     }).catchError((onError) {
       debugPrint("eltanya ha eltanya ${onError.toString()}");
-      final snack = SnackBar(backgroundColor:Colors.red ,content: Text(onError.toString()),duration: Duration(seconds: 2),);
+      final snack = SnackBar(backgroundColor: Colors.red,
+        content: Text(onError.toString()),
+        duration: Duration(seconds: 2),);
 
       ScaffoldMessenger.of(context).showSnackBar(snack);
       emit(EmailauthError(onError.toString()));
@@ -160,9 +173,11 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> logOut() async {
     await instance.signOut();
+    SharedPrefHelper.putStr(key: userNameKey, value: '');
   }
 
   UserModel? userModel;
+
   Future<List<BookModel>> getSomeBooksByCategory(
       {required String category, int? limit}) async {
     List<BookModel> books = [];
@@ -270,6 +285,7 @@ class AuthCubit extends Cubit<AuthState> {
     await pickBookImage(bookId).then((value) async {
       BookModel bookModel = BookModel(
           ownerUid: instance.currentUser!.uid,
+          ownerName : userName,
           category: category,
           picture: value,
           name: name,
@@ -293,8 +309,16 @@ class AuthCubit extends Cubit<AuthState> {
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
       emit(LogedInSuccessState());
+      FirebaseFirestore
+          .instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid.toString()).get().then((
+          value) =>
+      {
+        SharedPrefHelper.putStr(key: userNameKey, value: value['name'])
+      });
     }).catchError((onError) {
-      final snack = SnackBar(backgroundColor:Colors.red ,content: Text(onError.toString()),duration: Duration(seconds: 2),);
+      final snack = SnackBar(backgroundColor: Colors.red,
+        content: Text(onError.toString()),
+        duration: Duration(seconds: 2),);
 
       ScaffoldMessenger.of(context).showSnackBar(snack);
       debugPrint("5ra error fe login ${onError.toString()}");

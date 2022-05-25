@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ketabna/bloc/cubit/auth_cubit.dart';
@@ -10,6 +11,7 @@ import 'package:ketabna/core/models/intersts_model.dart';
 import 'package:ketabna/core/widgets/components.dart';
 import 'package:ketabna/features/home/widgets/custom_listview.dart';
 import 'package:ketabna/features/on_boarding/sign_in_up_screen.dart';
+import '../chat/chat_main_screen.dart';
 import 'widgets/customShape.dart';
 import 'widgets/get_books.dart';
 import 'widgets/customcarousel.dart';
@@ -17,6 +19,7 @@ import 'widgets/customcarousel.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
+  String?  userEmail = FirebaseAuth.instance.currentUser?.email.toString();
   List<String> image_genres = [
     'assets/images/Biography.jpg',
     'assets/images/Cookery.jpg',
@@ -45,24 +48,26 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async{
+      onWillPop: () async {
         final timegap = DateTime.now().difference(pre_backpress);
 
         final cantExit = timegap >= Duration(seconds: 2);
 
         pre_backpress = DateTime.now();
 
-        if(cantExit){
+        if (cantExit) {
           //show snackbar
-          final snack = SnackBar(content: Text('Press Back button again to Exit'),duration: Duration(seconds: 2),);
+          final snack = SnackBar(
+            content: Text('Press Back button again to Exit'),
+            duration: Duration(seconds: 2),);
 
           ScaffoldMessenger.of(context).showSnackBar(snack);
           return false;
-        }else{
+        } else {
           return true;
         }
       },
-      child:  Scaffold(
+      child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             var cubit = AuthCubit.get(context);
@@ -74,7 +79,8 @@ class HomeScreen extends StatelessWidget {
             //     authorName: ' authorName');
             cubit.addBook(
                 category: InterstsModel
-                    .categorys[Random().nextInt(InterstsModel.categorys.length)],
+                    .categorys[Random().nextInt(
+                    InterstsModel.categorys.length)],
                 name: "ahadith",
                 authorName: "bokhari");
           },
@@ -130,8 +136,20 @@ class HomeScreen extends StatelessWidget {
                               icon: const Icon(Icons.search, size: 30),
                             ),
                             const SizedBox(
-                              width: 220,
+                              width: 170,
                             ),
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MainChatScreen(userData: userEmail,)),
+                                  );
+                                },
+                                icon: const Icon(
+                                  Icons.message,
+                                  size: 30,
+                                )),
                             IconButton(
                                 onPressed: () {},
                                 icon: const Icon(
@@ -192,53 +210,62 @@ class HomeScreen extends StatelessWidget {
                 ),
                 CarouselSlider.builder(
                     itemCount: name_genres.length,
-                    itemBuilder: (context, index, realIndex) => Stack(
-                      alignment: AlignmentDirectional.center,
-                      children: [
-                        Container(
-                          width: 180,
-                          decoration: BoxDecoration(
-                              color: colors[index],
-                              borderRadius: BorderRadius.circular(20)),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                    itemBuilder: (context, index, realIndex) =>
+                        Stack(
+                          alignment: AlignmentDirectional.center,
                           children: [
-                            Text(
-                              '${CategoryModel.categories[index].categoryName}',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                              textAlign: TextAlign.center,
-                              maxLines: 3,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
                             Container(
+                              width: 180,
                               decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.black.withOpacity(0.5),
-                                      blurStyle: BlurStyle.normal,
-                                      blurRadius: 10,
-                                      offset: const Offset(0, 10))
-                                ],
-                              ),
-                              height: MediaQuery.of(context).size.height / 5,
-                              width: 100,
-                              child: Image(
-                                image: AssetImage(
-                                    '${CategoryModel.categories[index].imagePath}'),
-                                fit: BoxFit.fill,
-                              ),
+                                  color: colors[index],
+                                  borderRadius: BorderRadius.circular(20)),
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '${CategoryModel.categories[index]
+                                      .categoryName}',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 3,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.black.withOpacity(0.5),
+                                          blurStyle: BlurStyle.normal,
+                                          blurRadius: 10,
+                                          offset: const Offset(0, 10))
+                                    ],
+                                  ),
+                                  height: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height / 5,
+                                  width: 100,
+                                  child: Image(
+                                    image: AssetImage(
+                                        '${CategoryModel.categories[index]
+                                            .imagePath}'),
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
                     options: CarouselOptions(
-                      height: MediaQuery.of(context).size.height / 3,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height / 3,
                       viewportFraction: 0.6,
                       autoPlay: true,
                       autoPlayAnimationDuration:
@@ -260,7 +287,8 @@ class HomeScreen extends StatelessWidget {
                   listener: (context, state) {
                     if (state is BookAddedSuccessState) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Uploaded Successfully')));
+                          const SnackBar(
+                              content: Text('Uploaded Successfully')));
                     }
                   },
                   child: Container(),
