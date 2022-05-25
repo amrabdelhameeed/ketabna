@@ -5,8 +5,10 @@ class Hi extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('hello'),
+    return SizedBox(
+      child: Container(
+        child: Text('hello'),
+      ),
     );
   }
 }
