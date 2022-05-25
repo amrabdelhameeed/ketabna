@@ -28,6 +28,17 @@ class SharedPrefHelper {
     return sharedPreferences!.getString(key) ?? "";
   }
 
+  static Future<bool> putlstStr(
+      {required String key, required List<String> value}) async {
+    init();
+    return await sharedPreferences!.setStringList(key, value);
+  }
+
+  static List<String> getlstStr({required String key}) {
+    init();
+    return sharedPreferences!.getStringList(key) ?? [];
+  }
+
   static Future<bool> deleteSharedPref() {
     return sharedPreferences!.clear();
   }

@@ -7,16 +7,16 @@ Widget textFormField({
   required final label,
   double radius = 0,
   int? maxLength,
-  Function? onTab,
+  // Function? onTab,
   double? labelSized,
   bool obscureText = false,
 }) {
   return TextFormField(
-    onTap: () {
-      onTab!();
-    },
+    // onTap: () {
+    //   // onTab!();
+    // },
     maxLength: maxLength,
-    controller: TextEditingController(),
+    controller: controller,
     obscureText: obscureText,
     keyboardType: keyboardType,
     decoration: InputDecoration(
@@ -32,37 +32,33 @@ Widget textFormField({
   );
 }
 
-Widget defaultHeader(
-    {
-      required String? text,
-    }) => Padding(
-  padding: const EdgeInsetsDirectional.only(start: 10),
-  child: Text(
-    '$text',
-    style: const TextStyle(
-      fontSize: 20,
-      fontWeight: FontWeight.bold,
-    ),
-  ),
-);
+Widget defaultHeader({
+  required String? text,
+}) =>
+    Padding(
+      padding: const EdgeInsetsDirectional.only(start: 10),
+      child: Text(
+        '$text',
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
 
+void navigateAndFinish(context, widget) => Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => widget,
+      ),
 
-
-void navigateAndFinish (context , widget)
-=> Navigator.pushAndRemoveUntil(
-  context,
-  MaterialPageRoute(
-    builder: (context) => widget,
-  ),
       (Route<dynamic> route) => false,
-
-);
+    );
 
 // Write be BALY
-void navigateTo (context , widget)
-=> Navigator.push(
-  context,
-  MaterialPageRoute(
-    builder: (context) => widget,
-  ),
-);
+void navigateTo(context, widget) => Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => widget,
+      ),
+    );

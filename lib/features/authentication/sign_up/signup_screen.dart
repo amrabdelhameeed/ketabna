@@ -109,21 +109,63 @@ class SignupPage extends StatelessWidget {
                         },
                         builder: (context, state) {
                           var cubit = AuthCubit.get(context);
-                          return DefaultFormButton(
-                            text: 'Sign Up',
-                            onPressed: () async {
-                              if (formKey.currentState!.validate()) {
-                                await cubit.signUpWithEmailAndPassword(
-                                  isWhatsapp: value,
-                                  interstsModel: InterstsModel(
-                                    biography: true,
-                                    children: true,
-                                    fantasy: true,
-                                    graphicNovels: true,
-                                    history: true,
-                                    horror: true,
-                                    romance: true,
-                                    scienceFiction: true,
+
+                          return Column(
+                            children: [
+                              DefaultFormButton(
+                                text: 'Sign Up',
+                                fontSize: 20,
+                                fillColor: AppColors.secondaryColor,
+                                onPressed: () async {
+                                  if (formKey.currentState!.validate()) {
+                                    await cubit.signUpWithEmailAndPassword(
+                                      isWhatsapp: value,
+                                      interstsModel: InterstsModel(
+                                        biography: true,
+                                        children: true,
+                                        fantasy: true,
+                                        graphicNovels: true,
+                                        history: true,
+                                        horror: true,
+                                        romance: true,
+                                        scienceFiction: true,
+                                      ),
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                      name: _nameController.text,
+                                      phone: _mobileController.text,
+                                    );
+                                  }
+                                },
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '  Do you have account ? ',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .copyWith(
+                                          fontSize: 15,
+                                        ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pushReplacementNamed(
+                                          context, loginScreen);
+                                    },
+                                    child: Text(
+                                      'Sign In ',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .copyWith(
+                                            fontSize: 20,
+                                            color: AppColors.secondaryColor,
+                                          ),
+                                    ),
+
                                   ),
                                   email: _emailController.text,
                                   password: _passwordController.text,
@@ -135,12 +177,15 @@ class SignupPage extends StatelessWidget {
                           );
                         },
                       ),
-                      DefaultFormButton(
-                        text: 'Sign In',
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(context, loginScreen);
-                        },
-                      )
+
+
+                      // DefaultFormButton(
+                      //   text: 'Sign In',
+                      //   onPressed: () {
+                      //     Navigator.pushReplacementNamed(context, loginScreen);
+                      //   },
+                      // )
+
                     ],
                   )),
             ),

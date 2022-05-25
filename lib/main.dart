@@ -7,17 +7,23 @@ import 'package:ketabna/core/constants/observer.dart';
 import 'package:ketabna/core/constants/strings.dart';
 import 'package:ketabna/core/utils/shared_pref_helper.dart';
 
+List<String> listOfUsersChoosedCategories = [];
 String initialRoute = "";
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefHelper.init();
   bool onBoarding = SharedPrefHelper.getBool(key: 'onBoarding');
+  List<String> listOfUsersChoosedCategories =
+      SharedPrefHelper.getlstStr(key: keylst);
+  print(listOfUsersChoosedCategories);
   await Firebase.initializeApp();
   FirebaseAuth.instance.authStateChanges().listen((user) {
-    if (user == null && !onBoarding) {
+    if (!onBoarding) {
       initialRoute = splashScreen;
-    } else if (user == null && onBoarding) {
+    } else if (user == null) {
       initialRoute = signInUpScreen;
+    } else if (user.phoneNumber == null || user.phoneNumber!.isEmpty) {
+      initialRoute = verificationScreen;
     } else {
       initialRoute = mainScreen;
     }

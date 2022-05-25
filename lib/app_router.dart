@@ -4,6 +4,7 @@ import 'package:ketabna/bloc/cubit/auth_cubit.dart';
 import 'package:ketabna/core/constants/strings.dart';
 import 'package:ketabna/core/models/book_model.dart';
 import 'package:ketabna/features/authentication/otp/otp_screen.dart';
+import 'package:ketabna/features/authentication/otp/varification_screen.dart';
 import 'package:ketabna/features/book_screen/book_screen.dart';
 import 'package:ketabna/features/authentication/sign_up/signup_screen.dart';
 import 'package:ketabna/features/choosing_categories_screen/intersted_screen.dart';
@@ -87,18 +88,18 @@ class AppRouter {
             child: SearchScreen(searchBy: searchBy),
           );
         });
-      // case profileScreen:
-      //   return MaterialPageRoute(builder: (_) {
-      //     return BlocProvider<AuthCubit>.value(
-      //       value: authCubit!,
-      //       child: ProfileScreen(),
-      //     );
-      //   });
       case registerScreen:
         return MaterialPageRoute(builder: (_) {
           return BlocProvider<AuthCubit>.value(
             value: authCubit!,
             child: SignupPage(),
+          );
+        });
+      case verificationScreen:
+        return MaterialPageRoute(builder: (_) {
+          return BlocProvider<AuthCubit>.value(
+            value: authCubit!,
+            child: VerificationScreen(),
           );
         });
       case loginScreen:
