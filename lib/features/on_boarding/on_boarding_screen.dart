@@ -38,10 +38,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         body:
             'If you\'re looking to downsize, sell or recycle books, Borrowed Books can help.'),
     BoardingModel(
-        image: 'assets/image/G.png',
-        title: 'Starting now ',
-        body:
-            'Let\'s Go'),
+        image: 'assets/image/G.png', title: 'Starting now ', body: 'Let\'s Go'),
   ];
 
   bool isLast = false;
@@ -53,7 +50,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       appBar: AppBar(
         actions: [
           TextButton(
-
               onPressed: () {
                 if (loginColor == const Color(0xfff5b53f)) {
                   setState(() {
@@ -64,9 +60,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               child: Text(
                 'SKIP',
                 style: Theme.of(context).textTheme.headline6!.copyWith(
-                  color:const Color(0xfff5b53f),
-                  decoration: TextDecoration.underline,
-                ),
+                      color: const Color(0xfff5b53f),
+                      decoration: TextDecoration.underline,
+                    ),
               ))
         ],
         elevation: 0,
@@ -82,23 +78,21 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   setState(() {
                     if (index == boarding.length - 1) {
                       setState(() {
-                        isLast =true;
-                        sizeIcon =32;
+                        isLast = true;
+                        sizeIcon = 32;
                         loginColor = const Color(0xfff5b53f);
                       });
-
                     } else {
                       setState(() {
-                        isLast =false;
-                        sizeIcon =24;
+                        isLast = false;
+                        sizeIcon = 24;
                         loginColor = const Color(0xffefe9c2);
-
                       });
                     }
                   });
                 },
                 controller: boardController,
-                physics:const  BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) =>
                     buildBoardingItem(boarding[index]),
                 itemCount: boarding.length,
@@ -111,50 +105,43 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               children: [
                 SmoothPageIndicator(
                   effect: const ExpandingDotsEffect(
-                    activeDotColor:  Color(0xfff5b53f),
+                    activeDotColor: Color(0xfff5b53f),
                     spacing: 10.0,
                     dotHeight: 10,
                     dotWidth: 10,
                     expansionFactor: 3,
 
                     // dotColor: Color(0xffe2d6af),
-
-
                   ),
                   controller: boardController,
                   count: boarding.length,
                 ),
-                const  Spacer(),
+                const Spacer(),
                 FloatingActionButton(
                   tooltip: 'next page',
                   elevation: 0,
-                  mini: isLast?false :true ,
-                  backgroundColor:const Color(0xfff5b53f),
-                  child:  Icon(
+                  mini: isLast ? false : true,
+                  backgroundColor: const Color(0xfff5b53f),
+                  child: Icon(
                     Icons.navigate_next,
                     size: sizeIcon,
                   ),
-                  onPressed: (){
-                    if (isLast){
-
+                  onPressed: () {
+                    if (isLast) {
                       setState(() {
                         submit();
                       });
-                    }
-                    else
-                    {
+                    } else {
                       boardController.nextPage(
                           duration: const Duration(
                             milliseconds: 700,
                           ),
                           curve: Curves.fastLinearToSlowEaseIn);
                     }
-
-                  },),
-
+                  },
+                ),
               ],
             ),
-
           ],
         ),
       ),
@@ -162,47 +149,45 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   Widget buildBoardingItem(BoardingModel model) => Center(
-    child: Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              // PageView.builder(itemBuilder: (context , index) => )
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                model.title,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    color: Color(0xfff5b53f)),
+                // textAlign: TextAlign.center,
+                maxLines: 3,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                model.body,
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      fontSize: 20,
+                      color: const Color(0xfff5b53f),
+                      fontWeight: FontWeight.w900,
+                    ),
+                // textAlign: TextAlign.center,
+              ),
+              Expanded(child: Image(image: AssetImage(model.image))),
+            ],
+          ),
+        ),
+      );
 
-        children: [
-          // PageView.builder(itemBuilder: (context , index) => )
-         const  SizedBox(
-            height: 20,
-          ),
-          Text(
-            model.title,
-            style:const  TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-                color: Color(0xfff5b53f)),
-            // textAlign: TextAlign.center,
-            maxLines: 3,
-          ),
-         const  SizedBox(
-            height: 10,
-          ),
-          Text(
-            model.body,
-            style:Theme.of(context).textTheme.bodyText1!.copyWith(
-              fontSize: 20,
-                color: const Color(0xfff5b53f),
-              fontWeight: FontWeight.w900,
-            ),
-            // textAlign: TextAlign.center,
-          ),
-          Expanded(child: Image(image: AssetImage(model.image))),
-        ],
-      ),
-    ),
-  );
-
-  void submit(){
-
-    SharedPrefHelper.saveData(key: 'onBoarding', value: true).then((value){
-      if (value){
-        navigateAndFinish(context, const SignInUpScreen());
+  void submit() {
+    SharedPrefHelper.saveData(key: 'onBoarding', value: true).then((value) {
+      if (value) {
+        navigateAndFinish(context, SignInUPScreen());
       }
     });
   }

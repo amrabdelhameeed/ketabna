@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "753299412122-u1b33qpv4i96d8ppi3pkea640k7p1t9j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ketabna",
+            "certificate_hash": "60743de66f3c0cf9272efbf2438995823ffe33f1"
+          }
+        },
+        {
           "client_id": "753299412122-mob8f9qdquk6o17kr49cu40bledi9fto.apps.googleusercontent.com",
           "client_type": 3
         }

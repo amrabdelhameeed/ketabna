@@ -13,9 +13,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefHelper.init();
   bool onBoarding = SharedPrefHelper.getBool(key: 'onBoarding');
-  List<String> listOfUsersChoosedCategories =
-      SharedPrefHelper.getlstStr(key: keylst);
-  print(listOfUsersChoosedCategories);
+  // List<String> listOfUsersChoosedCategories =
+  //     SharedPrefHelper.getlstStr(key: keylst);
+  // print(listOfUsersChoosedCategories);
   await Firebase.initializeApp();
   FirebaseAuth.instance.authStateChanges().listen((user) {
     if (!onBoarding) {
