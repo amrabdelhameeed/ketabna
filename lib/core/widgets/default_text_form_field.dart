@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:ketabna/core/utils/app_colors.dart';
+
 // Updated by Baly
 class DefaultTextFormField extends StatefulWidget {
-   DefaultTextFormField(
-      {Key? key,
-      required this.hint,
-        this.controller,
-      this.inputType,
-      this.isPassword = false,
-      this.validationText,
-      })
-      : super(key: key);
+  DefaultTextFormField({
+    Key? key,
+    required this.hint,
+    this.controller,
+    this.inputType,
+    this.isPassword = false,
+    this.validationText,
+  }) : super(key: key);
   final String hint;
   final TextEditingController? controller;
   final TextInputType? inputType;
@@ -22,7 +22,7 @@ class DefaultTextFormField extends StatefulWidget {
 }
 
 class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
-  bool showPass=false ;
+  bool showPass = false;
 
   IconData suffix = Icons.visibility_off_outlined;
 
@@ -30,7 +30,7 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
-      obscureText: widget.isPassword! ? showPass: false,
+      obscureText: widget.isPassword! ? showPass : false,
       keyboardType: widget.inputType,
       style: const TextStyle(
         color: AppColors.formFontColor,
@@ -40,21 +40,22 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
           return widget.validationText;
         }
         return null;
-
       },
       decoration: InputDecoration(
-        suffixIcon: widget.isPassword! ?
-        MaterialButton(
-          elevation: 0,
-
-            onPressed:(){
-              setState(() {
-                showPass = !showPass;
-                suffix = showPass ?  Icons.visibility_outlined :  Icons.visibility_off_outlined;
-              });
-             },
-          child: Icon(suffix) ,
-        ) : SizedBox() ,
+        suffixIcon: widget.isPassword!
+            ? MaterialButton(
+                elevation: 0,
+                onPressed: () {
+                  setState(() {
+                    showPass = !showPass;
+                    suffix = showPass
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined;
+                  });
+                },
+                child: Icon(suffix),
+              )
+            : SizedBox(),
         contentPadding: const EdgeInsets.all(20.0),
         hintText: widget.hint,
         errorStyle: const TextStyle(

@@ -118,42 +118,31 @@ class SignupPage extends StatelessWidget {
                         builder: (context, state) {
                           var cubit = AuthCubit.get(context);
                           return Column(
-
                             children: [
                               DefaultFormButton(
                                 text: 'Sign Up',
                                 fontSize: 20,
-
-
                                 fillColor: AppColors.secondaryColor,
                                 onPressed: () async {
-                                  try{
-                                    if (formKey.currentState!.validate()) {
-                                      await cubit.signUpWithEmailAndPassword(
-                                        isWhatsapp: value,
-                                        interstsModel: InterstsModel(
-                                          biography: true,
-                                          children: true,
-                                          fantasy: true,
-                                          graphicNovels: true,
-                                          history: true,
-                                          horror: true,
-                                          romance: true,
-                                          scienceFiction: true,
-                                        ),
-                                        email: _emailController.text,
-                                        password: _passwordController.text,
-                                        name: _nameController.text,
-                                        phone: _mobileController.text,
-                                        context: context,
-                                      );
-                                    }
-                                  }catch (error){
-
-                                     print("TO String" + error.toString());
-
+                                  if (formKey.currentState!.validate()) {
+                                    await cubit.signUpWithEmailAndPassword(
+                                      isWhatsapp: value,
+                                      interstsModel: InterstsModel(
+                                        biography: true,
+                                        children: true,
+                                        fantasy: true,
+                                        graphicNovels: true,
+                                        history: true,
+                                        horror: true,
+                                        romance: true,
+                                        scienceFiction: true,
+                                      ),
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                      name: _nameController.text,
+                                      phone: _mobileController.text,
+                                    );
                                   }
-
                                 },
                               ),
                               Row(
@@ -161,24 +150,27 @@ class SignupPage extends StatelessWidget {
                                 children: [
                                   Text(
                                     '  Do you have account ? ',
-                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                      fontSize: 15,
-                                    ),
-
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .copyWith(
+                                          fontSize: 15,
+                                        ),
                                   ),
-
                                   TextButton(
-                                    onPressed: (){
-                                      Navigator.pushReplacementNamed(context, loginScreen);
-
+                                    onPressed: () {
+                                      Navigator.pushReplacementNamed(
+                                          context, loginScreen);
                                     },
                                     child: Text(
                                       'Sign In ',
-                                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                        fontSize: 20,
-                                        color: AppColors.secondaryColor,
-                                      ),
-
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .copyWith(
+                                            fontSize: 20,
+                                            color: AppColors.secondaryColor,
+                                          ),
                                     ),
                                   ),
                                 ],
@@ -194,8 +186,6 @@ class SignupPage extends StatelessWidget {
                       //     Navigator.pushReplacementNamed(context, loginScreen);
                       //   },
                       // )
-                      
-
                     ],
                   )),
             ),

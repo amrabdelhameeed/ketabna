@@ -1,20 +1,17 @@
-
 // Writen by BALY
 import 'package:flutter/material.dart';
 
 class InterestedScreen extends StatefulWidget {
-   const InterestedScreen({Key? key}) : super(key: key);
+  const InterestedScreen({Key? key}) : super(key: key);
 
   @override
   State<InterestedScreen> createState() => _InterestedScreenState();
 }
 
 class _InterestedScreenState extends State<InterestedScreen> {
+  final colorButton = 0xFFF5B53F;
 
-  final colorButton =0xFFF5B53F;
-
-List<bool> isChecked  = List.generate(9, (index) => false);
-
+  List<bool> isChecked = List.generate(9, (index) => false);
 
   @override
   Widget build(BuildContext context) {
@@ -29,54 +26,47 @@ List<bool> isChecked  = List.generate(9, (index) => false);
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-
             Text(
               'What genres are you interested in ?',
               style: Theme.of(context).textTheme.headline4!.copyWith(
-                color: Colors.black,
-              ),
-
+                    color: Colors.black,
+                  ),
             ),
             const SizedBox(
               height: 10,
             ),
             Text(
-              'What genres are you interested in What genres are you interested in ?',
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                fontSize: 18,
-                color: Colors.grey
-              )
-
-            ),
+                'What genres are you interested in What genres are you interested in ?',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2!
+                    .copyWith(fontSize: 18, color: Colors.grey)),
             const SizedBox(
               height: 20,
             ),
             /*********Grid View ******** */
             Expanded(
-          child: GridView.count(
-            primary: false,
-            physics: const BouncingScrollPhysics(),
-            clipBehavior: Clip.hardEdge,
-
-
-            crossAxisSpacing: 16,
-
-            crossAxisCount: 3,
-            children: [
-                for(int i=0;i<9;i++) item2(
-                  context: context,
-                  text: 'BALY',
-                  image: 'assets/image/ph.jpg',
-                isChecked: isChecked[i],
-                  fun: (){
-                    setState(() {
-                      isChecked[i]=!isChecked[i];
-                    });
-                  }
-                ),
-              ],
-          ),
-        ),
+              child: GridView.count(
+                primary: false,
+                physics: const BouncingScrollPhysics(),
+                clipBehavior: Clip.hardEdge,
+                crossAxisSpacing: 16,
+                crossAxisCount: 3,
+                children: [
+                  for (int i = 0; i < 9; i++)
+                    item2(
+                        context: context,
+                        text: 'BALY',
+                        image: 'assets/image/ph.jpg',
+                        isChecked: isChecked[i],
+                        fun: () {
+                          setState(() {
+                            isChecked[i] = !isChecked[i];
+                          });
+                        }),
+                ],
+              ),
+            ),
             const SizedBox(
               height: 20,
             ),
@@ -91,32 +81,21 @@ List<bool> isChecked  = List.generate(9, (index) => false);
             Container(
               width: double.infinity,
               height: 50,
-
-
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 50),
                 child: MaterialButton(
-
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
                       side: BorderSide(color: Color(colorButton))),
                   color: Color(colorButton),
-                  onPressed: () {
-
-
-                  },
+                  onPressed: () {},
                   child: const Text(
                     'Continue',
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white
-                    ),
+                    style: TextStyle(fontSize: 20, color: Colors.white),
                   ),
                   elevation: 20,
-
                 ),
               ),
-
             ),
             const SizedBox(
               height: 20,
@@ -129,42 +108,34 @@ List<bool> isChecked  = List.generate(9, (index) => false);
   }
 }
 
-
-
-Widget item2 (
-{
+Widget item2({
   required BuildContext context,
   required String text,
   required String image,
   required bool isChecked,
   required Function fun,
-}
-    ){
+}) {
   return Stack(
-    children:  [
+    children: [
       Image(
-
-        image: AssetImage(
-            image
-        ),
-
+        image: AssetImage(image),
       ),
-
       Positioned(
-        right: 1/10,
-        top: 1/10,
+        right: 1 / 10,
+        top: 1 / 10,
         child: IconButton(
           splashRadius: 1,
           iconSize: 28,
           tooltip: 'select',
           color: Colors.white,
-          onPressed: (){
+          onPressed: () {
             fun();
             // isChecked = !isChecked;
           },
-          icon:Icon( !isChecked ? Icons.check_box_outline_blank :Icons.check_box,),
+          icon: Icon(
+            !isChecked ? Icons.check_box_outline_blank : Icons.check_box,
+          ),
         ),
-
       ),
       Positioned(
         left: 10,
@@ -172,7 +143,8 @@ Widget item2 (
         child: Text(
           text,
           style: Theme.of(context).textTheme.headline6,
-        ),),
+        ),
+      ),
     ],
   );
 }

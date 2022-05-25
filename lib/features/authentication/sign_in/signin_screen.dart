@@ -72,7 +72,6 @@ class SigninPage extends StatelessWidget {
                         hint: 'Password',
                         controller: _passwordController,
                         isPassword: true,
-
                         validationText: 'Password can\'t be empty.',
                       ),
                       const SizedBox(
@@ -101,8 +100,16 @@ class SigninPage extends StatelessWidget {
                       ),
                       BlocConsumer<AuthCubit, AuthState>(
                         listener: (context, state) {
+                          var cubit = AuthCubit.get(context);
                           if (state is LogedInSuccessState) {
-                            Navigator.pushReplacementNamed(context, mainScreen);
+                            if (cubit.instance.currentUser!.phoneNumber !=
+                                null) {
+                              Navigator.pushReplacementNamed(
+                                  context, mainScreen);
+                            } else {
+                              Navigator.pushReplacementNamed(
+                                  context, verificationScreen);
+                            }
                           }
                         },
                         builder: (context, state) {
@@ -117,8 +124,7 @@ class SigninPage extends StatelessWidget {
                                 await cubit.loginWithEmailAndPassword(
                                     email: _emailController.text,
                                     password: _passwordController.text,
-                                    context: context
-                                );
+                                    context: context);
                               }
                             },
                           );
