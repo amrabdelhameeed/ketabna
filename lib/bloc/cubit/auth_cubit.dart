@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,7 +10,6 @@ import 'package:ketabna/core/models/intersts_model.dart';
 import 'package:ketabna/core/models/request_model.dart';
 import 'package:ketabna/core/models/user_model.dart';
 import 'package:ketabna/core/utils/random_string.dart';
-import 'package:meta/meta.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 part 'auth_state.dart';
 
@@ -23,6 +21,7 @@ class AuthCubit extends Cubit<AuthState> {
   var instance = FirebaseAuth.instance;
   final ImagePicker _picker = ImagePicker();
   File? bookImage;
+
   Future<String> pickBookImage(String bookId) async {
     String? photoUrl;
     await _picker.pickImage(source: ImageSource.gallery).then((value) {
@@ -95,6 +94,47 @@ class AuthCubit extends Cubit<AuthState> {
           ScaffoldMessenger.of(context).showSnackBar(snack);
           emit(EmailauthError(onError.toString()));
         });
+  }
+
+  Future<void> updateName({
+    required String name,
+  }) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(getLoggedInUser().uid)
+        .update({'user': name}).then((value) {
+      print('updateName success');
+      emit(EmailSubmitted());
+    }).catchError((onError) {
+      print('error fe updateName');
+    });
+  }
+
+  Future<void> toggleSwitchOfBooks({required BookModel book}) async {
+    bool localIsValid = !book.isValid!;
+    print(localIsValid);
+    await FirebaseFirestore.instance
+        .collection('books')
+        .doc(book.bookId)
+        .update({'isValid': localIsValid}).then((value) {
+      print('toggleSwitchOfBooks success');
+      emit(EmailSubmitted());
+    }).catchError((onError) {
+      print('error fe toggleSwitchOfBooks');
+    });
+  }
+
+  Future<void> deleteBook({required BookModel book}) async {
+    await FirebaseFirestore.instance
+        .collection('books')
+        .doc(book.bookId)
+        .delete()
+        .then((value) {
+      print('delete book state');
+      emit(EmailSubmitted());
+    }).catchError((onError) {
+      print('error fe delete book');
+    });
   }
 
   Future<void> updateInterstedModel({
