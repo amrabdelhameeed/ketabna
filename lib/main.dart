@@ -22,7 +22,7 @@ void main() async {
       initialRoute = splashScreen;
     } else if (user == null) {
       initialRoute = signInUpScreen;
-    } else if (user.phoneNumber == null) {
+    } else if (user.phoneNumber == null || user.phoneNumber!.isEmpty) {
       initialRoute = verificationScreen;
     } else {
       initialRoute = mainScreen;
