@@ -5,7 +5,9 @@ import 'package:ketabna/bloc/cubit/auth_cubit.dart';
 import 'package:ketabna/core/constants/strings.dart';
 import 'package:ketabna/core/models/category_model.dart';
 import 'package:ketabna/core/models/intersts_model.dart';
+import 'package:ketabna/core/utils/shared_pref_helper.dart';
 import 'package:ketabna/features/choosing_categories_screen/widgets/category_item.dart';
+import 'package:ketabna/main.dart';
 
 class InterestedScreen extends StatefulWidget {
   const InterestedScreen({Key? key}) : super(key: key);
@@ -120,6 +122,15 @@ class _InterestedScreenState extends State<InterestedScreen> {
                               horror: categories[5].isSelected,
                               romance: categories[6].isSelected,
                               scienceFiction: categories[7].isSelected));
+
+                      listOfUsersChoosedCategories
+                          .add(cubit.instance.currentUser!.uid);
+                      SharedPrefHelper.putlstStr(
+                              key: keylst, value: listOfUsersChoosedCategories)
+                          .then((value) {
+                        print('eyh eldnya fe list : $value');
+                        print(listOfUsersChoosedCategories);
+                      });
                       Navigator.pushReplacementNamed(context, mainScreen);
                     },
                     child: const Text(

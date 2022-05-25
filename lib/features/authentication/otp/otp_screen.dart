@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ketabna/bloc/cubit/auth_cubit.dart';
 import 'package:ketabna/core/constants/strings.dart';
+import 'package:ketabna/main.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class OtpScreen extends StatelessWidget {
@@ -112,8 +113,14 @@ class OtpScreen extends StatelessWidget {
         // if (state is PhoneauthLoading) {
         //   return showProgressIndicator(context);
         // }
+        var cubit = AuthCubit.get(context);
         if (state is OtpVerfied) {
-          Navigator.of(context).pushReplacementNamed(chossingCategoryScreen);
+          if (listOfUsersChoosedCategories
+              .contains(cubit.instance.currentUser!.uid)) {
+            Navigator.of(context).pushReplacementNamed(mainScreen);
+          } else {
+            Navigator.of(context).pushReplacementNamed(chossingCategoryScreen);
+          }
         }
         if (state is PhoneauthError) {
           Navigator.pop(context);

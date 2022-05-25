@@ -58,39 +58,43 @@ class AuthCubit extends Cubit<AuthState> {
     instance
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) {
-      UserModel userModel = UserModel(
-        interstsModel: interstsModel,
-        email: email,
-        name: name,
-        location: "Cairo",
-        isWhatsApp: isWhatsapp,
-        phone: phone,
-      );
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(value.user!.uid)
-          .set(userModel.toJson())
-          .then((value) {
-        instance.currentUser!.updateDisplayName(name).then((value) {
-          debugPrint("name updated");
-        });
-        instance.currentUser?.updateEmail(email).then((value) {
-          debugPrint("email updated");
-        });
-        submitPhoneNum(phone);
-      }).catchError((onError) {
-        emit(EmailauthError(onError.toString()));
-        debugPrint("eltanya ha eltanya ${onError.toString()}");
-      });
-    }).then((value) => {
-      emit(RegisterSuccessState())
-    }).catchError((onError) {
-      debugPrint("eltanya ha eltanya ${onError.toString()}");
-      final snack = SnackBar(backgroundColor:Colors.red ,content: Text(onError.toString()),duration: Duration(seconds: 2),);
+          UserModel userModel = UserModel(
+            interstsModel: interstsModel,
+            email: email,
+            name: name,
+            location: "Cairo",
+            isWhatsApp: isWhatsapp,
+            phone: phone,
+          );
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(value.user!.uid)
+              .set(userModel.toJson())
+              .then((value) {
+            instance.currentUser!.updateDisplayName(name).then((value) {
+              debugPrint("name updated");
+            });
+            instance.currentUser?.updateEmail(email).then((value) {
+              debugPrint("email updated");
+            });
+            submitPhoneNum(phone);
+          }).catchError((onError) {
+            emit(EmailauthError(onError.toString()));
+            debugPrint("eltanya ha eltanya ${onError.toString()}");
+          });
+        })
+        .then((value) => {emit(RegisterSuccessState())})
+        .catchError((onError) {
+          debugPrint("eltanya ha eltanya ${onError.toString()}");
+          final snack = SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(onError.toString()),
+            duration: Duration(seconds: 2),
+          );
 
-      ScaffoldMessenger.of(context).showSnackBar(snack);
-      emit(EmailauthError(onError.toString()));
-    });
+          ScaffoldMessenger.of(context).showSnackBar(snack);
+          emit(EmailauthError(onError.toString()));
+        });
   }
 
   Future<void> updateInterstedModel({
@@ -231,6 +235,15 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
+  UserModel getCurrentFirestoreUser() {
+    UserModel? internalUserModel;
+    String userUid = getLoggedInUser().uid;
+    FirebaseFirestore.instance.collection('users').doc(userUid).get().then((v) {
+      return internalUserModel = UserModel.fromJson(v.data()!);
+    });
+    return internalUserModel!;
+  }
+
   void getRecommended() async {
     UserModel? internalUserModel;
     String userUid = getLoggedInUser().uid;
@@ -284,17 +297,18 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  Future<void> loginWithEmailAndPassword({
-    required String email,
-    required String password,
-    context
-  }) async {
+  Future<void> loginWithEmailAndPassword(
+      {required String email, required String password, context}) async {
     await instance
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
       emit(LogedInSuccessState());
     }).catchError((onError) {
-      final snack = SnackBar(backgroundColor:Colors.red ,content: Text(onError.toString()),duration: Duration(seconds: 2),);
+      final snack = SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(onError.toString()),
+        duration: Duration(seconds: 2),
+      );
 
       ScaffoldMessenger.of(context).showSnackBar(snack);
       debugPrint("5ra error fe login ${onError.toString()}");
