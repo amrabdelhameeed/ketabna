@@ -7,6 +7,7 @@ class DefaultFormButton extends StatelessWidget {
         this.width = double.infinity,
         this.height = 65,
         this.radius = 20,
+        this.padding = 20,
       this.onPressed,
       required this.text,
       this.fillColor,
@@ -22,6 +23,7 @@ class DefaultFormButton extends StatelessWidget {
   double width ;
   double height ;
   double radius  ;
+  double padding;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class DefaultFormButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         height: height,
-        padding: const EdgeInsets.symmetric(vertical: 20.0),
+        padding:  EdgeInsets.symmetric(vertical: padding),
         width: width,
         child: Center(
           child: Text(
@@ -37,6 +39,7 @@ class DefaultFormButton extends StatelessWidget {
             style: TextStyle(
               color: textColor,
               fontFamily: 'SFPro',
+              fontWeight: FontWeight.bold,
               fontSize: fontSize,
             ),
           ),
