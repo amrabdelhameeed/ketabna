@@ -12,7 +12,7 @@ class VerificationScreen extends StatelessWidget {
   //     'We sent you verification code on your number check it out to continue signing up';
   final labelMessage = 'write your phone number to verify';
   final colorButtonVerify = 0xFFF5B53F;
-  String labelCode = 'Code ';
+  String labelCode = 'Phone Number ';
   var formKey = GlobalKey<FormState>();
 
   VerificationScreen({Key? key}) : super(key: key);
