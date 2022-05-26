@@ -9,9 +9,7 @@ import 'package:ketabna/core/models/category_model.dart';
 import 'package:ketabna/core/models/intersts_model.dart';
 import 'package:ketabna/core/widgets/components.dart';
 import 'package:ketabna/features/home/widgets/custom_listview.dart';
-import 'package:ketabna/features/on_boarding/sign_in_up_screen.dart';
 import 'widgets/customShape.dart';
-import 'widgets/get_books.dart';
 import 'widgets/customcarousel.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -148,7 +146,7 @@ class HomeScreen extends StatelessWidget {
                                 onPressed: () {
                                   AuthCubit.get(context).logOut().then((value) {
                                     Navigator.pushReplacementNamed(
-                                        context, registerScreen);
+                                        context, signInUpScreen);
                                   });
                                 },
                                 icon: const Icon(Icons.exit_to_app))

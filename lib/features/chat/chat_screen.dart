@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flash_chat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'constants.dart';
 
 final _firestore = FirebaseFirestore.instance;
-late User loggedUser;
+final String? _auth = FirebaseAuth.instance.currentUser?.uid.toString();
+int numberOfMessages = 0;
+int readedMessages = 0;
+int totalMessages = 0;
 
 class ChatScreen extends StatefulWidget {
-  static String id = 'Chat_Screen';
-  final userData;
+  final String ownerName;
+  final String ownerUid;
 
-
-  const ChatScreen({this.userData});
+  const ChatScreen({required this.ownerName, required this.ownerUid});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -19,80 +23,104 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final messageTextController = TextEditingController();
-  final _auth = FirebaseAuth.instance;
-  List<MessageBuble> messagesWidget = [];
-  int numberOfMessages = 0;
+  String conversationDocId = '';
+
 
   late String message;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    getUserData();
-    getMessages();
+    checkForOldConversation();
+  }
+  @override
+  void dispose() {
+    numberOfMessages = 0;
+    super.dispose();
   }
 
-  Future getUserData() async {
-    var loggedUser = await _auth.currentUser;
-    var userEmail = loggedUser?.email;
-    print(userEmail);
+  Future<bool> checkForOldConversation() async {
+    String ids;
+    bool containUid_1 = false;
+    bool containUid_2 = false;
+    bool oldchat = false;
+    try {
+      await FirebaseFirestore.instance
+          .collection("chats")
+          .get()
+          .then((value) => {
+                value.docs.forEach((element) {
+                  ids = element.data()['ids'].toString();
+                  containUid_1 = ids.contains(widget.ownerUid);
+                  containUid_2 = ids.contains(_auth!);
+                  if (containUid_1 && containUid_2) {
+                    print("element.id : "+element.id);
+                    conversationDocId = element.id;
+                  }
+                  oldchat = true;
+                })
+              });
+    } catch (error) {
+      print(error.toString());
+    }
+    if (!oldchat) {
+      setNewConversation();
+    }
+    return containUid_1;
   }
-  Future getMessages() async {
-    // print(FirebaseFirestore.instance.collection("chats").doc('ZevO7IDZJZl6EonKGUCv'));
-    await FirebaseFirestore.instance.collection("chats").get().then((value) => {
-      value.docs.forEach((element) {
-        String ids = element.data()['ids'].toString();
-        bool contain = ids.contains('PdIjVD5AU7T0fYKDJPyZlp6TRl52');
-        try {
-          if (contain) {
-            numberOfMessages = element.data()['messages'].length;
-            print("numberOfMessages : " + numberOfMessages.toString());
-            for (int i = 0; i < numberOfMessages; i++) {
 
-              final text = element.data()['messages'][i]['text'];
-              final sender = element.data()['messages'][i]['sender'];
-              final time = DateTime.parse(element.data()['messages'][i]['time']) ;
+  // Future getMessages() async {
+  //   await FirebaseFirestore.instance.collection("chats").get().then((value) => {
+  //         value.docs.forEach((element) {
+  //           try {
+  //             numberOfMessages = element.data()['messages'].length;
+  //             print("numberOfMessages : " + numberOfMessages.toString());
+  //             readedMessages = element.data()['readedMessages'];
+  //             totalMessages = element.data()['totalMessages'];
+  //             for (int i = 0; i < numberOfMessages; i++) {
+  //               final text = element.data()['messages'][i]['text'];
+  //               final sender = element.data()['messages'][i]['sender'];
+  //               final time =
+  //                   DateTime.parse(element.data()['messages'][i]['time']);
+  //
+  //               messagesWidget.add(MessageBuble(
+  //                 text: text,
+  //                 sender: sender,
+  //                 time: time,
+  //                 isMe: element.data()['messages'][i]['sender'] == _auth,
+  //               ));
+  //             }
+  //             messagesWidget.sort((a, b) => a.time.compareTo(b.time));
+  //             print("sender : " + messagesWidget[0].text);
+  //           } catch (error) {
+  //             print(error.toString());
+  //             return;
+  //           }
+  //         })
+  //       });
+  // }
 
-              messagesWidget.add(MessageBuble(
-                text: text,
-                sender: sender,
-                time: time,
-                isMe: element.data()['messages'][i]['sender'] ==
-                    'PdIjVD5AU7T0fYKDJPyZlp6TRl52',
-              ));
-            }
-            messagesWidget.sort((a, b) => a.time.compareTo(b.time));
-            print("sender : " + messagesWidget[0].sender);
-          }else{
-
-          }
-        } catch (error) {
-          return;
-        }
-      })
-    });
-  }
-  Future setNewConversation()async{
-    await FirebaseFirestore.instance.collection("chats").add({
-      'ids':[FirebaseAuth.instance.currentUser?.uid.toString(),]
-    });
+  Future setNewConversation() async {
+    await _firestore.collection("chats").add({
+      'ids': [
+        widget.ownerUid,
+        _auth,
+      ],
+      'messages': [],
+      'readedMessages': 0,
+      'totalMessages': 0,
+    }).then((documentSnapshot) => {
+          print("Added Data with ID: ${documentSnapshot.id}"),
+          conversationDocId = documentSnapshot.id,
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: null,
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () {
-                _auth.signOut();
-                Navigator.pop(context);
-              }),
-          IconButton(icon: Icon(Icons.chat), onPressed: () {}),
-        ],
-        title: Text('⚡️Chat'),
+        centerTitle: true,
+        title: Text(widget.ownerName),
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: SafeArea(
@@ -100,12 +128,18 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            MessageStream(messagesWidget: messagesWidget,),
+            MessageStream(),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
+                  IconButton(
+                    onPressed: () {
+                      pickImage();
+                    },
+                    icon: const Icon(Icons.photo_size_select_actual),
+                  ),
                   Expanded(
                     child: TextField(
                       controller: messageTextController,
@@ -119,14 +153,22 @@ class _ChatScreenState extends State<ChatScreen> {
                   FlatButton(
                     onPressed: () async {
                       messageTextController.clear();
+                      message = '';
                       //Implement send functionality.
-                      await _firestore.collection('messages').add({
-                        'text': message,
-                        'sender': widget.userData,
-                        'date': DateTime.now().toIso8601String().toString(),
-                      });
+                      await _firestore
+                          .collection('chats')
+                          .doc(conversationDocId)
+                          .update({
+                        'messages': FieldValue.arrayUnion([
+                          {
+                            'sender': _auth,
+                            'text': message,
+                            'time': DateTime.now().toIso8601String().toString(),
+                          }
+                        ])
+                      }, );
                     },
-                    child: Text(
+                    child: const Text(
                       'Send',
                       style: kSendButtonTextStyle,
                     ),
@@ -143,18 +185,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
 class MessageStream extends StatelessWidget {
 
-  final List<MessageBuble> messagesWidget;
-
-  MessageStream({
-
-    required this.messagesWidget
-  });
-
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection('chats').snapshots(),
+    return StreamBuilder<DocumentSnapshot>(
+        stream: _firestore.collection('chats').doc('').snapshots(),
         builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Text("Loading");
+          }
           if (!snapshot.hasData) {
             return const Center(
               child: CircularProgressIndicator(
@@ -163,6 +201,8 @@ class MessageStream extends StatelessWidget {
             );
           }
 
+          List<MessageBuble> messagesWidget = [];
+          print(snapshot.data!['ids'][0]);
 
           return Expanded(
             child: ListView(
@@ -194,7 +234,7 @@ class MessageBuble extends StatelessWidget {
             isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
-            sender,
+            isMe ? '' : '',
             style: const TextStyle(color: Colors.black45),
           ),
           Material(
@@ -227,3 +267,45 @@ class MessageBuble extends StatelessWidget {
     );
   }
 }
+
+pickImage()async{
+  final ImagePicker _picker = ImagePicker();
+  final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+}
+
+// Future getMessages(messagesWidget) async {
+//
+//   await FirebaseFirestore.instance.collection("chats").get().then((value) => {
+//     value.docs.forEach((element) {
+//       try {
+//         numberOfMessages = element.data()['messages'].length;
+//         print("numberOfMessages : " + numberOfMessages.toString());
+//         readedMessages = element.data()['readedMessages'];
+//         totalMessages = element.data()['totalMessages'];
+//         for (int i = 0; i < numberOfMessages; i++) {
+//           final text = element.data()['messages'][i]['text'];
+//           final sender = element.data()['messages'][i]['sender'];
+//           final time =
+//           DateTime.parse(element.data()['messages'][i]['time']);
+//
+//           messagesWidget.add(MessageBuble(
+//             text: text,
+//             sender: sender,
+//             time: time,
+//             isMe: element.data()['messages'][i]['sender'] == _auth,
+//           ));
+//
+//         }
+//        messagesWidget.sort((a, b) => a.time.compareTo(b.time));
+//
+//       } catch (error) {
+//         print(error.toString());
+//         return;
+//       }
+//     })
+//
+//   });
+//   _messagesWidget = messagesWidget;
+//   print('text :'+messagesWidget[0].text);
+//   return  messagesWidget;
+// }
