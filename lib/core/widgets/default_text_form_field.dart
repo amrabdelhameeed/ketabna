@@ -10,12 +10,14 @@ class DefaultTextFormField extends StatefulWidget {
     this.inputType,
     this.isPassword = false,
     this.validationText,
+    this.radius = 20,
   }) : super(key: key);
   final String hint;
   final TextEditingController? controller;
   final TextInputType? inputType;
   final bool? isPassword;
   final String? validationText;
+  double radius;
 
   @override
   State<DefaultTextFormField> createState() => _DefaultTextFormFieldState();
@@ -67,20 +69,20 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
           fontSize: 15.0,
           color: AppColors.formFontColor,
         ),
-        errorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        errorBorder:  OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
           borderSide: BorderSide.none,
         ),
-        focusedErrorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        focusedErrorBorder:  OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
           borderSide: BorderSide.none,
         ),
-        focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        focusedBorder:  OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
           borderSide: BorderSide.none,
         ),
-        enabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        enabledBorder:  OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
           borderSide: BorderSide.none,
         ),
       ),

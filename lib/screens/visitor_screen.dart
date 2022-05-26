@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:ketabna/core/widgets/default_form_button.dart';
 
+import '../core/utils/app_colors.dart';
+
 
 class VisitorScreen extends StatefulWidget {
   const VisitorScreen({Key? key}) : super(key: key);
@@ -11,8 +13,7 @@ class VisitorScreen extends StatefulWidget {
 }
 
 class _VisitorScreenState extends State<VisitorScreen> {
-  bool isSwitch1 = false;
-  bool isSwitch2 = false;
+
 
   List<Map<String,Object>> itemBook = [
     {
@@ -106,7 +107,7 @@ class _VisitorScreenState extends State<VisitorScreen> {
                   radius: 10,
                   padding: 10,
                   textColor: Colors.white,
-                  fillColor: const Color(0xFFF5B53F) ,
+                  fillColor: AppColors.secondaryColor ,
 
                 ),
               ],
