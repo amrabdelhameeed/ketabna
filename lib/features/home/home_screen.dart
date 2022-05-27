@@ -52,9 +52,8 @@ class HomeScreen extends StatelessWidget {
 
         if(cantExit){
           //show snackbar
-          final snack = SnackBar(content: Text('Press Back button again to Exit'),duration: Duration(seconds: 2),);
+          buildSnackBar(context,'Press Back button again to Exit');
 
-          ScaffoldMessenger.of(context).showSnackBar(snack);
           return false;
         }else{
           return true;

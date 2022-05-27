@@ -61,3 +61,9 @@ void navigateTo(context, widget) => Navigator.push(
         builder: (context) => widget,
       ),
     );
+
+buildSnackBar(context,text){
+  final snack = SnackBar(content:  Text(text),duration: const Duration(seconds: 2),);
+
+  ScaffoldMessenger.of(context).showSnackBar(snack);
+}
