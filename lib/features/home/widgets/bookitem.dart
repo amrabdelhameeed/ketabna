@@ -6,51 +6,56 @@ class BookItem extends StatelessWidget {
   final BookModel bookModel;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height / 3,
-      width: 150,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+    return InkWell(
+      onTap: (){
+        print("uid : "+ bookModel.ownerUid.toString());
+      },
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height / 3,
+        width: 150,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                width: 135,
+                height: 160,
+                child: Image(
+                  image: NetworkImage('${bookModel.picture}'),
+                  fit: BoxFit.cover,
+                ),
               ),
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              width: 135,
-              height: 160,
-              child: Image(
-                image: NetworkImage('${bookModel.picture}'),
-                fit: BoxFit.cover,
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(
+              '${bookModel.name}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
               ),
+              textAlign: TextAlign.center,
+              maxLines: 3,
             ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Text(
-            '${bookModel.name}',
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
+            const SizedBox(
+              height: 5,
             ),
-            textAlign: TextAlign.center,
-            maxLines: 3,
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Text(
-            '${bookModel.authorName}',
-            style: TextStyle(
-              color: Colors.grey[500],
-              fontStyle: FontStyle.italic,
+            Text(
+              '${bookModel.authorName}',
+              style: TextStyle(
+                color: Colors.grey[500],
+                fontStyle: FontStyle.italic,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
             ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

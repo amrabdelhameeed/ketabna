@@ -5,9 +5,11 @@ import 'package:ketabna/core/constants/strings.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/widgets/components.dart';
 import '../../../core/widgets/default_check_box.dart';
 import '../../../core/widgets/default_form_button.dart';
 import '../../../core/widgets/default_text_form_field.dart';
+import '../../../screens/forget_screen.dart';
 
 class SigninPage extends StatelessWidget {
   SigninPage({Key? key}) : super(key: key);
@@ -86,6 +88,7 @@ class SigninPage extends StatelessWidget {
                           TextButton(
                               onPressed: () {
                                 // here you will push the forgotten password screen
+                                navigateTo(context:context,widget:ForgetScreen());
                               },
                               child: const Text('Forgot Password ?',
                                   style: TextStyle(

@@ -10,7 +10,6 @@ import 'package:ketabna/core/utils/shared_pref_helper.dart';
 List<String> listOfUsersChoosedCategories = [];
 String initialRoute = "";
 void main() async {
-  //hello
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefHelper.init();
   bool onBoarding = SharedPrefHelper.getBool(key: 'onBoarding');

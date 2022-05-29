@@ -9,28 +9,34 @@ import 'package:ketabna/core/models/category_model.dart';
 import 'package:ketabna/core/models/intersts_model.dart';
 import 'package:ketabna/core/widgets/components.dart';
 import 'package:ketabna/features/home/widgets/custom_listview.dart';
-import 'package:ketabna/features/on_boarding/sign_in_up_screen.dart';
 import 'widgets/customShape.dart';
-import 'widgets/get_books.dart';
 import 'widgets/customcarousel.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
+  List<String> image_genres = [
+    'assets/images/Biography.jpg',
+    'assets/images/Cookery.jpg',
+    'assets/images/Children.jpg',
+    'assets/images/Business.jpg',
+    'assets/images/Graphic Novels.jpg',
+  ];
   List<Color> colors = [
     Colors.pink,
     Colors.deepOrangeAccent,
-    Colors.amber.shade500,
-    Colors.red.shade900,
-    Colors.brown.shade400,
-    Colors.black54,
+    Colors.red,
     Colors.amber,
-    const Color(0xFFEF5350),
-
+    Colors.blueAccent,
   ];
 
-
-  var category = CategoryModel.categories;
+  List<String> name_genres = [
+    'technology',
+    'horror',
+    'fantasy',
+    'novel',
+    'studying'
+  ];
 
   DateTime pre_backpress = DateTime.now();
 
@@ -46,9 +52,8 @@ class HomeScreen extends StatelessWidget {
 
         if(cantExit){
           //show snackbar
-          final snack = SnackBar(content: Text('Press Back button again to Exit'),duration: Duration(seconds: 2),);
+          buildSnackBar(context:context, text:'Press Back button again to Exit');
 
-          ScaffoldMessenger.of(context).showSnackBar(snack);
           return false;
         }else{
           return true;
@@ -91,76 +96,61 @@ class HomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AppBar(
-                        elevation: 0.0,
-                        backgroundColor: Colors.transparent,
-                        leading: IconButton(
-                          onPressed: () {
-                            showMenu<String>(
-                                context: context,
-                                color: Colors.white,
-                                elevation: 5,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10) ) ,
-                                position:
-                                const RelativeRect.fromLTRB(30, 40, double.infinity, 0),
-                                items: const [
-                                  PopupMenuItem(
-                                    value: 'name',
-                                    child: Text('name'),
-                                  ),
-                                  PopupMenuItem(
-                                    value: 'authorName',
-                                    child: Text('authorName'),
-                                  )
-                                ]).then((value) {
-                              if (value != null) {
-                                Navigator.pushNamed(context, searchScreen,
-                                    arguments: value);
-
-                              }
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.search,
-                            color: Colors.black,
-                            size: 35,
-                          ),
-                          splashRadius:20,
-                          splashColor: Colors.transparent,
-
-
-
-                        ),
-                        actions: [
-                          InkWell(
-                            onTap: (){
-                              Navigator.pushNamed(context, profileScreen);
-
-                            },
-                            hoverColor: Colors.transparent,
-                            borderRadius: BorderRadius.circular(200),
-                            focusColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            child: const Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: CircleAvatar(
-                                backgroundColor: Colors.white70,
-                                radius: 20,
-                                // backgroundImage: user.profilePic! !=""?  NetworkImage(
-                                //       user.profilePic!,
-                                // ) : const NetworkImage(
-                                //   'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
-                                // )
-                                backgroundImage: NetworkImage(
-                                  'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
-                                ),
-
-
-
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      Center(
+                        child: Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                showMenu<String>(
+                                    context: context,
+                                    position:
+                                    const RelativeRect.fromLTRB(0, 0, 0, 0),
+                                    items: const [
+                                      PopupMenuItem(
+                                        child: Text('name'),
+                                        value: 'name',
+                                      ),
+                                      PopupMenuItem(
+                                        child: Text('authorName'),
+                                        value: 'authorName',
+                                      )
+                                    ]).then((value) {
+                                  if (value != null) {
+                                    Navigator.pushNamed(context, searchScreen,
+                                        arguments: value);
+                                  }
+                                });
+                              },
+                              icon: const Icon(Icons.search, size: 30),
+                            ),
+                            const SizedBox(
+                              width: 220,
+                            ),
+                            IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.notifications,
+                                  size: 30,
+                                )),
+                            const CircleAvatar(
+                              radius: 15,
+                              backgroundImage: NetworkImage(
+                                'https://th.bing.com/th/id/R.94add630f7d00e412d90070db8587021?rik=Mv4xaEwvaqalTg&pid=ImgRaw&r=0',
                               ),
                             ),
-                          ),
-                        ],
+                            IconButton(
+                                onPressed: () {
+                                  AuthCubit.get(context).logOut().then((value) {
+                                    Navigator.pushReplacementNamed(
+                                        context, signInUpScreen);
+                                  });
+                                },
+                                icon: const Icon(Icons.exit_to_app))
+                          ],
+                        ),
                       ),
                       defaultHeader(
                         text: 'Recommended',
@@ -178,9 +168,9 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ]),
 
-                /// Header ==> New Realeses
+                /// Header ==> Recommended
                 defaultHeader(
-                  text: 'New Realeses',
+                  text: 'horror',
                 ),
                 const SizedBox(
                   height: 10,
@@ -198,66 +188,71 @@ class HomeScreen extends StatelessWidget {
                   height: 10,
                 ),
                 CarouselSlider.builder(
-                    itemCount: category.length,
-                    itemBuilder: (context, index, realIndex) => InkWell(
-                      borderRadius: BorderRadius.circular(20),
-                      onTap: (){
-                        // Navigator.pushNamed(context, categoryScreen);
-                      },
-                      child: Stack(
-                        alignment: AlignmentDirectional.center,
-                        children: [
-                          Container(
-                            width: 180,
-                            decoration: BoxDecoration(
-                                color: colors[index],
-                                borderRadius: BorderRadius.circular(20)
+                    itemCount: name_genres.length,
+                    itemBuilder: (context, index, realIndex) => Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        Container(
+                          width: 180,
+                          decoration: BoxDecoration(
+                              color: colors[index],
+                              borderRadius: BorderRadius.circular(20)),
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${CategoryModel.categories[index].categoryName}',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                              textAlign: TextAlign.center,
+                              maxLines: 3,
                             ),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                category[index].categoryName,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                                textAlign: TextAlign.center,
-                                maxLines: 3,
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  boxShadow:[BoxShadow(
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
                                       color: Colors.black.withOpacity(0.5),
-                                      blurStyle:BlurStyle.normal,
+                                      blurStyle: BlurStyle.normal,
                                       blurRadius: 10,
-                                      offset: Offset(0,10)
-                                  )] ,
-                                ),
-                                height: MediaQuery.of(context).size.height / 5,
-                                width: 100,
-                                child: Image(
-                                  image: AssetImage(category[index].imagePath),
-                                  fit: BoxFit.fill,
-                                ),
+                                      offset: const Offset(0, 10))
+                                ],
                               ),
-                            ],
-                          ),
-
-                        ],
-                      ),
-                    ) ,
+                              height: MediaQuery.of(context).size.height / 5,
+                              width: 100,
+                              child: Image(
+                                image: AssetImage(
+                                    '${CategoryModel.categories[index].imagePath}'),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                     options: CarouselOptions(
                       height: MediaQuery.of(context).size.height / 3,
                       viewportFraction: 0.6,
                       autoPlay: true,
-                      autoPlayAnimationDuration: const Duration(milliseconds: 600),
+                      autoPlayAnimationDuration:
+                      const Duration(milliseconds: 600),
                     )), //Genres
+                const SizedBox(
+                  height: 10,
+                ),
 
-
+                /// Recently Viewed
+                defaultHeader(
+                  text: 'children',
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                CustomListView(listOfBook: cubit.studingInterstBooks),
                 BlocListener<AuthCubit, AuthState>(
                   listener: (context, state) {
                     if (state is BookAddedSuccessState) {
