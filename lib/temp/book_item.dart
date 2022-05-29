@@ -39,7 +39,7 @@ class BookItem extends StatelessWidget {
           navigateTo(context : context , widget :ChatScreen(
             ownerName: ownerName,
             ownerUid: ownerUid,
-            conversationDocId: conversationDocId,
+            conversationDocId: value,
           )),
 
         });
@@ -95,7 +95,7 @@ FadeInImage(
                   )
 
  */
-Future<bool> checkForOldConversation(
+Future<String> checkForOldConversation(
     {bookOwnerUid,bookOwnerName, myId}) async {
   String ids;
   bool containUid_1 = false;
@@ -114,7 +114,6 @@ Future<bool> checkForOldConversation(
         containUid_2 = ids.contains(myId);
 
         if (containUid_1 && containUid_2) {
-          print("element.id : "+element.id);
           conversationDocId = element.id;
           _firestore.collection('chats').doc(conversationDocId).update({
             'readed_messages':{
@@ -132,7 +131,7 @@ Future<bool> checkForOldConversation(
   if (!oldchat) {
      await setNewConversation(bookOwnerUid:bookOwnerUid,bookOwnerName: bookOwnerName);
   }
-  return containUid_1;
+  return conversationDocId;
 }
 Future setNewConversation({bookOwnerUid, bookOwnerName}) async {
   await _firestore.collection("chats").add({
