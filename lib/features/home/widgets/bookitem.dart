@@ -12,7 +12,7 @@ final String? myUid = FirebaseAuth.instance.currentUser?.uid.toString();
 
 class BookItem extends StatelessWidget {
   final myName = SharedPrefHelper.getStr(key: 'userName');
-  Future<bool> checkForOldConversation(
+  Future<String> checkForOldConversation(
       {bookOwnerUid, bookOwnerName, myId}) async {
     String ids;
     bool containUid_1 = false;
@@ -54,7 +54,7 @@ class BookItem extends StatelessWidget {
       await setNewConversation(
           bookOwnerUid: bookOwnerUid, bookOwnerName: bookOwnerName);
     }
-    return containUid_1;
+    return conversationDocId;
   }
 
   Future setNewConversation({bookOwnerUid, bookOwnerName}) async {
@@ -98,7 +98,7 @@ class BookItem extends StatelessWidget {
           navigateTo(context : context , widget :ChatScreen(
             ownerName: ownerName,
             ownerUid: ownerUid,
-            conversationDocId: conversationDocId,
+            conversationDocId: value,
           )),
 
         });
