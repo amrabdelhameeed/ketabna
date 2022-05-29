@@ -61,13 +61,11 @@ class HomeScreen extends StatelessWidget {
             //     nameAr: ' nameAr',
             //     nameEn: ' nameEn',
             //     authorName: ' authorName');
-            // cubit.addBook(
-            //     category: InterstsModel
-            //         .categorys[Random().nextInt(InterstsModel.categorys.length)],
-            //     name: "ahadith",
-            //     authorName: "bokhari");
-
-            navigateTo(context: context, widget: const MyActiveChats());
+            cubit.addBook(
+                category: InterstsModel
+                    .categorys[Random().nextInt(InterstsModel.categorys.length)],
+                name: "ahadith",
+                authorName: "bokhari");
           },
           child: const Icon(Icons.add),
         ),
@@ -136,8 +134,8 @@ class HomeScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(200),
                             focusColor: Colors.transparent,
                             highlightColor: Colors.transparent,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
+                            child: const Padding(
+                              padding: EdgeInsets.all(10.0),
                               child: CircleAvatar(
                                 backgroundColor: Colors.white70,
                                 radius: 20,
@@ -211,7 +209,7 @@ class HomeScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     category[index].categoryName,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white),
                                     textAlign: TextAlign.center,
