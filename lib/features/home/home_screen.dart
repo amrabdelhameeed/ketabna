@@ -52,7 +52,7 @@ class HomeScreen extends StatelessWidget {
 
         if(cantExit){
           //show snackbar
-          buildSnackBar(context,'Press Back button again to Exit');
+          buildSnackBar(context:context, text:'Press Back button again to Exit');
 
           return false;
         }else{

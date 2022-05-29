@@ -55,15 +55,15 @@ void navigateAndFinish(context, widget) => Navigator.pushAndRemoveUntil(
     );
 
 // Write be BALY
-void navigateTo(context, widget) => Navigator.push(
+void navigateTo({context, widget}) => Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => widget,
       ),
     );
 
-buildSnackBar(context,text){
-  final snack = SnackBar(content:  Text(text),duration: const Duration(seconds: 2),);
+buildSnackBar({context, text,color=Colors.black}){
+  final snack = SnackBar(content:  Text(text),duration: const Duration(seconds: 2),backgroundColor: color,);
 
   ScaffoldMessenger.of(context).showSnackBar(snack);
 }

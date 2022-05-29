@@ -162,7 +162,7 @@ class _ChatScreenState extends State<ChatScreen> {
         centerTitle: true,
         title: InkWell(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>MediaForChat(imagesUrl: imagesUrl,),),);
+            navigateTo(context : context , widget :MediaForChat(imagesUrl: imagesUrl,),);
           },
           child: Text(widget.ownerName),
         ),
@@ -335,7 +335,7 @@ launchUri(Uri url)async{
                     },
                     onLongPress: (){
                       Clipboard.setData(ClipboardData(text: text)).then((value) => {
-                        buildSnackBar(context, 'Copied to clipboard.')
+                        buildSnackBar(context:context,text: 'Copied to clipboard.')
                       });
                     },
                     child: Text(

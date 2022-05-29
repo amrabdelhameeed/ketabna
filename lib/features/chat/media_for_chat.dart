@@ -14,10 +14,10 @@ class MediaForChat extends StatefulWidget {
 }
 
 saveImageToGallery(path, context) async {
-  buildSnackBar(context, 'Downloading....');
+  buildSnackBar(context:context,text: 'Downloading....');
   await GallerySaver.saveImage(path).then((value) => {
         //show snackbar
-        buildSnackBar(context, 'Saved to gallery'),
+        buildSnackBar(context:context, text:'Saved to gallery'),
         Navigator.pop(context),
       });
 }
