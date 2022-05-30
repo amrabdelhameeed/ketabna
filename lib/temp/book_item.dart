@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:ketabna/core/models/book_model.dart';
+import 'package:ketabna/core/widgets/components.dart';
 
+import '../core/utils/shared_pref_helper.dart';
 import '../features/chat/chat_screen.dart';
 
 /*
@@ -11,7 +13,9 @@ list view in recommended in home screen
  */
 String conversationDocId = '';
 final _firestore = FirebaseFirestore.instance;
-final String? _auth = FirebaseAuth.instance.currentUser?.uid.toString();
+final String? myUid = FirebaseAuth.instance.currentUser?.uid.toString();
+final myName = SharedPrefHelper.getStr(key: 'userName');
+
 
 class BookItem extends StatelessWidget {
   const BookItem({Key? key, required this.bookModel}) : super(key: key);
@@ -20,7 +24,7 @@ class BookItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final myId = FirebaseAuth.instance.currentUser?.uid.toString();
+
 
     return InkWell(
       onTap: () async {
@@ -31,15 +35,13 @@ class BookItem extends StatelessWidget {
             .doc(ownerUid)
             .get()
             .then((value) => {ownerName = value['name']});
-        checkForOldConversation(ownerUid: ownerUid,myId:myId ).then((value) => {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ChatScreen(
-                        ownerName: ownerName,
-                        ownerUid: ownerUid,
-                        conversationDocId: conversationDocId,
-                      )))
+        checkForOldConversation(bookOwnerUid: ownerUid,myId:myUid ).then((value) => {
+          navigateTo(context : context , widget :ChatScreen(
+            ownerName: ownerName,
+            ownerUid: ownerUid,
+            conversationDocId: value,
+          )),
+
         });
 
       },
@@ -93,8 +95,8 @@ FadeInImage(
                   )
 
  */
-Future<bool> checkForOldConversation(
-    {ownerUid, myId}) async {
+Future<String> checkForOldConversation(
+    {bookOwnerUid,bookOwnerName, myId}) async {
   String ids;
   bool containUid_1 = false;
   bool containUid_2 = false;
@@ -105,13 +107,21 @@ Future<bool> checkForOldConversation(
         .get()
         .then((value) => {
       value.docs.forEach((element) {
+
         ids = element.data()['ids'].toString();
-        containUid_1 = ids.contains(ownerUid);
+        final numberOfMessagesOfChat = element.data()['messages'].length;
+        containUid_1 = ids.contains(bookOwnerUid);
         containUid_2 = ids.contains(myId);
+
         if (containUid_1 && containUid_2) {
-          print("element.id : "+element.id);
           conversationDocId = element.id;
+          _firestore.collection('chats').doc(conversationDocId).update({
+            'readed_messages':{
+              '$myId':'$numberOfMessagesOfChat',
+            },
+          });
         }
+
         oldchat = true;
       })
     });
@@ -119,19 +129,23 @@ Future<bool> checkForOldConversation(
     print(error.toString());
   }
   if (!oldchat) {
-     await setNewConversation(ownerUid);
+     await setNewConversation(bookOwnerUid:bookOwnerUid,bookOwnerName: bookOwnerName);
   }
-  return containUid_1;
+  return conversationDocId;
 }
-Future setNewConversation(ownerUid) async {
+Future setNewConversation({bookOwnerUid, bookOwnerName}) async {
   await _firestore.collection("chats").add({
+    'names':[bookOwnerName,myName],
     'ids': [
-      ownerUid,
-      _auth,
+      bookOwnerUid,
+      myUid,
     ],
     'messages': [],
-    'readedMessages': 0,
-    'totalMessages': 0,
+    'readed_messages': {
+      '$bookOwnerUid':'0',
+      '$myUid':'0',
+    },
+
   }).then((documentSnapshot) => {
     print("Added Data with ID: ${documentSnapshot.id}"),
     conversationDocId = documentSnapshot.id,

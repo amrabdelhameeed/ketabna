@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 
+import '../../core/utils/app_colors.dart';
 import '../../core/widgets/components.dart';
 
 class MediaForChat extends StatefulWidget {
@@ -27,8 +28,14 @@ class _MediaForChatState extends State<MediaForChat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chat Media'),
+        title: const Text('Chat Media',style: TextStyle(color: Colors.black),),
         centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        iconTheme: const IconThemeData(
+          color: AppColors.secondaryColor,
+          size: 32,
+        ),
       ),
       body: GridView.builder(
           padding: const EdgeInsets.all(10),

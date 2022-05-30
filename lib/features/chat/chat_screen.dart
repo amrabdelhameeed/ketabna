@@ -11,6 +11,7 @@ import 'package:ketabna/core/widgets/components.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../core/utils/app_colors.dart';
 import 'constants.dart';
 import 'media_for_chat.dart';
 
@@ -43,7 +44,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    // checkForOldConversation();
+
   }
 
   @override
@@ -53,15 +54,17 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   sendMessage(message) async {
+    final timeNow = DateTime.now().toIso8601String().toString();
     await _firestore.collection('chats').doc(widget.conversationDocId).update(
       {
         'messages': FieldValue.arrayUnion([
           {
             'sender': _auth,
             'text': message,
-            'time': DateTime.now().toIso8601String().toString(),
+            'time': timeNow,
           }
-        ])
+        ]),
+        'lastMessageTime':timeNow,
       },
     );
   }
@@ -164,9 +167,14 @@ class _ChatScreenState extends State<ChatScreen> {
           onTap: (){
             navigateTo(context : context , widget :MediaForChat(imagesUrl: imagesUrl,),);
           },
-          child: Text(widget.ownerName),
+          child: Text(widget.ownerName,style:const TextStyle(color: Colors.black87),),
         ),
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        iconTheme: const IconThemeData(
+          color: AppColors.secondaryColor,
+          size: 32,
+        ),
       ),
       body: SafeArea(
         child: Column(
@@ -236,12 +244,11 @@ class MessageStream extends StatelessWidget {
             );
           }
           final conversationDoc = snapshot.data!;
-          List<MessageBuble> messagesWidget = [];
+          List<MessageBubble> messagesWidget = [];
           imagesUrl = [];
-          print("snapshot : " + conversationDoc['ids'][0]);
-          numberOfMessages = conversationDoc['messages'].length;
-          readedMessages = conversationDoc['readedMessages'];
-          totalMessages = conversationDoc['totalMessages'];
+            numberOfMessages = conversationDoc['messages'].length;
+          // readedMessages = conversationDoc['readedMessages'];
+          // totalMessages = conversationDoc['totalMessages'];
           for (int i = 0; i < numberOfMessages; i++) {
             final text = conversationDoc['messages'][i]['text'];
             final sender = conversationDoc['messages'][i]['sender'];
@@ -251,12 +258,13 @@ class MessageStream extends StatelessWidget {
               imagesUrl.add(text);
               print('imagesUrl : ' + imagesUrl.length.toString());
             }
-            messagesWidget.add(MessageBuble(
+            messagesWidget.add(MessageBubble(
               text: text,
               sender: sender,
               time: time,
               isMe: conversationDoc['messages'][i]['sender'] == _auth,
             ));
+
           }
           messagesWidget.sort((a, b) => a.time.compareTo(b.time));
 
@@ -269,13 +277,13 @@ class MessageStream extends StatelessWidget {
   }
 }
 
-class MessageBuble extends StatelessWidget {
+class MessageBubble extends StatelessWidget {
   final String sender;
   final String text;
   final DateTime time;
   final bool isMe;
 
-  MessageBuble(
+  MessageBubble(
       {required this.sender,
       required this.text,
       required this.isMe,
@@ -341,13 +349,13 @@ launchUri(Uri url)async{
                     child: Text(
                         text,
                         style: TextStyle(
-                          color: isMe ? Colors.white : Colors.black45,
+                          color: isMe ? Colors.white : Colors.black87,
                           fontSize: 15.0,
                         ),
                       ),
                   ),
             ),
-            color: isMe ? Colors.lightBlueAccent : Colors.white,
+            color: isMe ? AppColors.secondaryColor : Colors.white,
           ),
         ],
       ),

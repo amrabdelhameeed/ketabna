@@ -9,6 +9,7 @@ import 'package:ketabna/core/models/category_model.dart';
 import 'package:ketabna/core/models/intersts_model.dart';
 import 'package:ketabna/core/widgets/components.dart';
 import 'package:ketabna/features/home/widgets/custom_listview.dart';
+import '../chat/my_active_chats.dart';
 import 'widgets/customShape.dart';
 import 'widgets/customcarousel.dart';
 
@@ -24,9 +25,7 @@ class HomeScreen extends StatelessWidget {
     Colors.black54,
     Colors.amber,
     const Color(0xFFEF5350),
-
   ];
-
 
   var category = CategoryModel.categories;
 
@@ -35,23 +34,24 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async{
+      onWillPop: () async {
         final timegap = DateTime.now().difference(pre_backpress);
 
         final cantExit = timegap >= Duration(seconds: 2);
 
         pre_backpress = DateTime.now();
 
-        if(cantExit){
+        if (cantExit) {
           //show snackbar
-          buildSnackBar(context:context, text:'Press Back button again to Exit');
+          buildSnackBar(
+              context: context, text: 'Press Back button again to Exit');
 
           return false;
-        }else{
+        } else {
           return true;
         }
       },
-      child:  Scaffold(
+      child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             var cubit = AuthCubit.get(context);
@@ -97,9 +97,10 @@ class HomeScreen extends StatelessWidget {
                                 context: context,
                                 color: Colors.white,
                                 elevation: 5,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10) ) ,
-                                position:
-                                const RelativeRect.fromLTRB(30, 40, double.infinity, 0),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                position: const RelativeRect.fromLTRB(
+                                    30, 40, double.infinity, 0),
                                 items: const [
                                   PopupMenuItem(
                                     value: 'name',
@@ -121,24 +122,20 @@ class HomeScreen extends StatelessWidget {
                             color: Colors.black,
                             size: 35,
                           ),
-                          splashRadius:20,
+                          splashRadius: 20,
                           splashColor: Colors.transparent,
-
-
-
                         ),
                         actions: [
                           InkWell(
-                            onTap: (){
+                            onTap: () {
                               Navigator.pushNamed(context, profileScreen);
-
                             },
                             hoverColor: Colors.transparent,
                             borderRadius: BorderRadius.circular(200),
                             focusColor: Colors.transparent,
                             highlightColor: Colors.transparent,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
+                            child: const Padding(
+                              padding: EdgeInsets.all(10.0),
                               child: CircleAvatar(
                                 backgroundColor: Colors.white70,
                                 radius: 20,
@@ -150,9 +147,6 @@ class HomeScreen extends StatelessWidget {
                                 backgroundImage: NetworkImage(
                                   'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
                                 ),
-
-
-
                               ),
                             ),
                           ),
@@ -163,13 +157,13 @@ class HomeScreen extends StatelessWidget {
                       ),
                       cubit.reccomendedBooks.isNotEmpty
                           ? CustomCarousel(
-                        listOfBookModel: cubit.reccomendedBooks,
-                      )
+                              listOfBookModel: cubit.reccomendedBooks,
+                            )
                           : const Center(
-                        child: SizedBox(
-                          child: Text('No items Yet'),
-                        ),
-                      )
+                              child: SizedBox(
+                                child: Text('No items Yet'),
+                              ),
+                            )
                     ],
                   ),
                 ]),
@@ -181,7 +175,8 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                CustomListView(listOfBook: cubit.horrorInterstBooks), //هتغير هنا
+                CustomListView(
+                    listOfBook: cubit.horrorInterstBooks), //هتغير هنا
                 const SizedBox(
                   height: 10,
                 ),
@@ -196,61 +191,64 @@ class HomeScreen extends StatelessWidget {
                 CarouselSlider.builder(
                     itemCount: category.length,
                     itemBuilder: (context, index, realIndex) => InkWell(
-                      borderRadius: BorderRadius.circular(20),
-                      onTap: (){
-                        // Navigator.pushNamed(context, categoryScreen);
-                      },
-                      child: Stack(
-                        alignment: AlignmentDirectional.center,
-                        children: [
-                          Container(
-                            width: 180,
-                            decoration: BoxDecoration(
-                                color: colors[index],
-                                borderRadius: BorderRadius.circular(20)
-                            ),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          borderRadius: BorderRadius.circular(20),
+                          onTap: () {
+                            // Navigator.pushNamed(context, categoryScreen);
+                          },
+                          child: Stack(
+                            alignment: AlignmentDirectional.center,
                             children: [
-                              Text(
-                                category[index].categoryName,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                                textAlign: TextAlign.center,
-                                maxLines: 3,
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
                               Container(
+                                width: 180,
                                 decoration: BoxDecoration(
-                                  boxShadow:[BoxShadow(
-                                      color: Colors.black.withOpacity(0.5),
-                                      blurStyle:BlurStyle.normal,
-                                      blurRadius: 10,
-                                      offset: Offset(0,10)
-                                  )] ,
-                                ),
-                                height: MediaQuery.of(context).size.height / 5,
-                                width: 100,
-                                child: Image(
-                                  image: AssetImage(category[index].imagePath),
-                                  fit: BoxFit.fill,
-                                ),
+                                    color: colors[index],
+                                    borderRadius: BorderRadius.circular(20)),
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    category[index].categoryName,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 3,
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                            blurStyle: BlurStyle.normal,
+                                            blurRadius: 10,
+                                            offset: Offset(0, 10))
+                                      ],
+                                    ),
+                                    height:
+                                        MediaQuery.of(context).size.height / 5,
+                                    width: 100,
+                                    child: Image(
+                                      image:
+                                          AssetImage(category[index].imagePath),
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-
-                        ],
-                      ),
-                    ) ,
+                        ),
                     options: CarouselOptions(
                       height: MediaQuery.of(context).size.height / 3,
                       viewportFraction: 0.6,
                       autoPlay: true,
-                      autoPlayAnimationDuration: const Duration(milliseconds: 600),
+                      autoPlayAnimationDuration:
+                          const Duration(milliseconds: 600),
                     )),
                 const SizedBox(
                   height: 10,
@@ -259,8 +257,8 @@ class HomeScreen extends StatelessWidget {
                 BlocListener<AuthCubit, AuthState>(
                   listener: (context, state) {
                     if (state is BookAddedSuccessState) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Uploaded Successfully')));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Uploaded Successfully')));
                     }
                   },
                   child: Container(),

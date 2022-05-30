@@ -73,6 +73,10 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) {
           return SignInUPScreen();
         });
+      case profileScreen:
+        return MaterialPageRoute(builder: (_) {
+          return ProfileScreen();
+        });
       case chossingCategoryScreen:
         return MaterialPageRoute(builder: (_) {
           return BlocProvider<AuthCubit>.value(
