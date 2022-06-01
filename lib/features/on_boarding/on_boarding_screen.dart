@@ -163,7 +163,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     fontWeight: FontWeight.bold,
                     fontSize: 30,
                     color: Color(0xfff5b53f)),
-                // textAlign: TextAlign.center,
+                textAlign: TextAlign.center,
                 maxLines: 3,
               ),
               const SizedBox(
@@ -176,7 +176,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       color: const Color(0xfff5b53f),
                       fontWeight: FontWeight.w900,
                     ),
-                // textAlign: TextAlign.center,
+                textAlign: TextAlign.center,
               ),
               Expanded(child: Image(image: AssetImage(model.image))),
             ],
