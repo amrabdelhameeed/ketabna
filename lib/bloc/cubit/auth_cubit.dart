@@ -66,6 +66,7 @@ class AuthCubit extends Cubit<AuthState> {
             name: name,
             location: "Cairo",
             isWhatsApp: isWhatsapp,
+            isSemesterPaid: false,
             phone: phone,
           );
           FirebaseFirestore.instance

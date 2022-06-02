@@ -42,10 +42,14 @@ dependencies:
   full_screen_image_null_safe: ^2.0.0
   gallery_saver: ^2.3.2
   url_launcher: ^6.1.2
+  uc_pdfview: ^0.0.3
   pin_code_fields: ^7.3.0
   shared_preferences: ^2.0.13
   smooth_page_indicator: ^1.0.0+2
   conditional_builder_null_safety: ^0.0.6
+  file_picker: ^4.6.1
+  path_provider: ^2.0.10
+  flutter_windowmanager: ^0.2.0
 
 dev_dependencies:
   flutter_lints: ^1.0.0
@@ -63,6 +67,10 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/data.pdf
+    - assets/simulation.pdf
+    - assets/compiler.pdf
+    - assets/book_scientific_computing.pdf
     - assets/image/
     - assets/image/b.png
     - assets/image/f.png

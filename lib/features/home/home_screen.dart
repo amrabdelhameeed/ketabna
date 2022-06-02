@@ -10,6 +10,7 @@ import 'package:ketabna/core/models/intersts_model.dart';
 import 'package:ketabna/core/widgets/components.dart';
 import 'package:ketabna/features/home/widgets/custom_listview.dart';
 import '../chat/my_active_chats.dart';
+import '../store/chose_grade.dart';
 import 'widgets/customShape.dart';
 import 'widgets/customcarousel.dart';
 
@@ -66,6 +67,7 @@ class HomeScreen extends StatelessWidget {
                     .categorys[Random().nextInt(InterstsModel.categorys.length)],
                 name: "ahadith",
                 authorName: "bokhari");
+            //navigateTo(context: context,widget: ChoseGrade());
           },
           child: const Icon(Icons.add),
         ),

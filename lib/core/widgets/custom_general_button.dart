@@ -3,10 +3,11 @@ import 'package:ketabna/core/constants/strings.dart';
 import 'package:ketabna/core/utils/size_config.dart';
 
 class CustomGeneralButton extends StatelessWidget {
-  const CustomGeneralButton({Key? key, this.text, this.callback})
+  const CustomGeneralButton({Key? key, this.text, this.color, this.callback})
       : super(key: key);
   final String? text;
   final VoidCallback? callback;
+  final Color? color;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -15,7 +16,7 @@ class CustomGeneralButton extends StatelessWidget {
         width: SizeConfig.screenWidth,
         height: 60,
         decoration: BoxDecoration(
-            color: kmMainColor, borderRadius: BorderRadius.circular(15)),
+            color: color, borderRadius: BorderRadius.circular(15)),
         child: Center(
             child: Text(
           text ?? "Next",
