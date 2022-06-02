@@ -24,17 +24,20 @@ class _MyActiveChatsState extends State<MyActiveChats> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        title: const Text(
+          'All Chats',
+          style: TextStyle(color: Colors.black87),
+        ),
+        centerTitle: true,
         elevation: 0.0,
         iconTheme: const IconThemeData(
           color: AppColors.secondaryColor,
           size: 32,
         ),
       ),
-      body:SafeArea(
+      body: SafeArea(
         child: Column(
-          children: [
-            ChatsStream()
-          ],
+          children: [ChatsStream(),],
         ),
       ), //ChatsStream(),
     );
@@ -42,23 +45,26 @@ class _MyActiveChatsState extends State<MyActiveChats> {
 }
 
 class ChatsStream extends StatelessWidget {
-late String chatOwnerName ;
- Future<String> getChatOwnerName({required messageSender,required chatOwnerUidIndex})async{
+  late String chatOwnerName;
 
-    await fireStore.collection('users').doc(
-        messageSender[chatOwnerUidIndex]).get().then((value) =>
-    {
-     chatOwnerName = value['name'],
-      print('chatOwnerName :'+chatOwnerName)
-
-    });
+  Future<String> getChatOwnerName(
+      {required messageSender, required chatOwnerUidIndex}) async {
+    await fireStore
+        .collection('users')
+        .doc(messageSender[chatOwnerUidIndex])
+        .get()
+        .then((value) => {
+              chatOwnerName = value['name'],
+              print('chatOwnerName :' + chatOwnerName)
+            });
     return messageSender;
   }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: fireStore.collection('chats').snapshots(),
-      builder: ( context, snapshot) {
+      builder: (context, snapshot) {
         if (!snapshot.hasData ||
             snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -76,50 +82,49 @@ late String chatOwnerName ;
 
         for (var chat in activeChats!) {
           List messageSender = chat.get('ids');
-          if(myId == 1){
+          if (myId == 1) {
             chatOwnerId = messageSender[0];
-          }else{
+          } else {
             chatOwnerId = messageSender[1];
           }
 
           if (messageSender.contains(myId)) {
             conversationDocId = chat.id;
             final lastMessageTime = chat.get('lastMessageTime');
-            final lastMessageSent = chat
-                .get('messages')
-                .last['text'];
-            final numberOfMessagesOfChat = chat
-                .get('messages')
-                .length;
-
+            final lastMessageSent = chat.get('messages').last['text'];
+            final numberOfMessagesOfChat = chat.get('messages').length;
 
             final List nameOfTwoUsers = chat.get('names');
             final myNameIndex = nameOfTwoUsers.indexOf(myName);
-            if(myNameIndex == 1){
+            if (myNameIndex == 1) {
               chatOwnerName = nameOfTwoUsers[0];
-            }else{
+            } else {
               chatOwnerName = nameOfTwoUsers[1];
             }
-            final readed_messages= chat.get('readed_messages')[myId];
-             int myReadedMessage = int.parse(readed_messages);
+            final readed_messages = chat.get('readed_messages')[myId];
+            int myReadedMessage = int.parse(readed_messages);
 
-            final numberOfUnreadMessage = numberOfMessagesOfChat - myReadedMessage;
+            final numberOfUnreadMessage =
+                numberOfMessagesOfChat - myReadedMessage;
 
-            activeChatWidget.add(ActiveChatWidget(
-              conversationDocId: conversationDocId,
-              chatOwnerName: chatOwnerName,
-              numberOfMessagesOfChat: numberOfMessagesOfChat.toString(),
-              chatOwnerId: chatOwnerId,
-              numberOfUnreadMessage: numberOfUnreadMessage.toString(),
-              lastMessageTime: lastMessageTime,
-              lastMessageSent: lastMessageSent,),);
-            activeChatWidget.sort((a, b) => a.lastMessageTime.compareTo(b.lastMessageTime));
+            activeChatWidget.add(
+              ActiveChatWidget(
+                conversationDocId: conversationDocId,
+                chatOwnerName: chatOwnerName,
+                numberOfMessagesOfChat: numberOfMessagesOfChat.toString(),
+                chatOwnerId: chatOwnerId,
+                numberOfUnreadMessage: numberOfUnreadMessage.toString(),
+                lastMessageTime: lastMessageTime,
+                lastMessageSent: lastMessageSent,
+              ),
+            );
+            activeChatWidget
+                .sort((a, b) => a.lastMessageTime.compareTo(b.lastMessageTime));
           }
-
-
         }
         return Expanded(
           child: ListView(
+            reverse: true,
             children: activeChatWidget,
           ),
         );
@@ -127,6 +132,7 @@ late String chatOwnerName ;
     );
   }
 }
+
 class ActiveChatWidget extends StatelessWidget {
   final String chatOwnerName;
   final String chatOwnerId;
@@ -136,43 +142,88 @@ class ActiveChatWidget extends StatelessWidget {
   final String numberOfMessagesOfChat;
   final String conversationDocId;
 
-  ActiveChatWidget({required this.chatOwnerName,
-    required this.numberOfUnreadMessage,
-    required this.lastMessageTime,
-    required this.chatOwnerId,
-    required this.numberOfMessagesOfChat,
-    required this.conversationDocId,
-    required this.lastMessageSent});
+  ActiveChatWidget(
+      {required this.chatOwnerName,
+      required this.numberOfUnreadMessage,
+      required this.lastMessageTime,
+      required this.chatOwnerId,
+      required this.numberOfMessagesOfChat,
+      required this.conversationDocId,
+      required this.lastMessageSent});
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: ()async{
-        fireStore.collection('chats').doc(conversationDocId).update({
-          'readed_messages':{
-            '$myId':numberOfMessagesOfChat,
-          },
-        });
-        navigateTo(context : context , widget :ChatScreen(
-          ownerName: chatOwnerName,
-          ownerUid: chatOwnerId,
-          conversationDocId: conversationDocId,
-        ));
-      },
-      child: Card(
-        elevation: 3,
-        shadowColor: AppColors.secondaryColor,
-        child: ListTile(
-          leading: const CircleAvatar(
-            backgroundImage: AssetImage('assets/image/Cooking.jpg'),
-            radius: 30,
+    return Dismissible(
+      key: const Key('key'),
+      onDismissed: (direction) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Delete?'),
+            content: const Text('Do you want to delete this chat?'),
+            actions: [
+              FlatButton(
+                onPressed: () {
+                  fireStore.collection('chats').doc(conversationDocId).delete();
+                },
+                child: const Text('Yes'),
+              ),
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('No'),
+              ),
+            ],
           ),
-          title: Text(chatOwnerName,style: TextStyle(color: Colors.black),),
-          subtitle: Text(lastMessageSent), 
-         
-          trailing:int.parse(numberOfUnreadMessage)==0 ?const Text('') : CircleAvatar(
-            radius: 10,
-            child:Text(numberOfUnreadMessage),
+          barrierDismissible: false,
+        );
+      },
+      background: Container(
+        alignment: Alignment.centerRight,
+        child: const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Icon(
+            Icons.delete_rounded,
+            color: Colors.white,
+          ),
+        ),
+        color: Colors.red,
+      ),
+      child: InkWell(
+        onTap: () async {
+          fireStore.collection('chats').doc(conversationDocId).update({
+            'readed_messages': {
+              '$myId': numberOfMessagesOfChat,
+            },
+          });
+          navigateTo(
+              context: context,
+              widget: ChatScreen(
+                ownerName: chatOwnerName,
+                ownerUid: chatOwnerId,
+                conversationDocId: conversationDocId,
+              ));
+        },
+        child: Card(
+          elevation: 3,
+          shadowColor: AppColors.secondaryColor,
+          child: ListTile(
+            leading: const CircleAvatar(
+              backgroundImage: AssetImage('assets/image/Cooking.jpg'),
+              radius: 30,
+            ),
+            title: Text(
+              chatOwnerName,
+              style: TextStyle(color: Colors.black),
+            ),
+            subtitle: Text(lastMessageSent),
+            trailing: int.parse(numberOfUnreadMessage) == 0
+                ? const Text('')
+                : CircleAvatar(
+                    radius: 10,
+                    child: Text(numberOfUnreadMessage),
+                  ),
           ),
         ),
       ),
