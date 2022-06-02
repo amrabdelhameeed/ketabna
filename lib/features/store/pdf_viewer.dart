@@ -1,6 +1,7 @@
 import'dart:io';
 import'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:path/path.dart';
 import 'package:uc_pdfview/uc_pdfview.dart';
 
@@ -9,11 +10,21 @@ import '../../core/utils/app_colors.dart';
 class PdfViewerPage extends StatefulWidget {
   const PdfViewerPage({Key? key, required this.file}) : super(key: key);
   final File file;
+
   @override
   _PdfViewerPageState createState() => _PdfViewerPageState();
 }
 
 class _PdfViewerPageState extends State<PdfViewerPage> {
+  preventScreenShot()async{
+    print('start secure');
+    await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+  }
+  @override
+  void initState() {
+    preventScreenShot();
+    super.initState();
+  }
   late PDFViewController pdfViewController;
   int pages=0;
   int indexPages=0;

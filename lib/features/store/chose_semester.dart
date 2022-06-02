@@ -40,7 +40,10 @@ class ChoseSemester extends StatelessWidget {
             late String? gradeNumber = (index+1).toString();
             return InkWell(
               onTap: (){
-                if(isSemesterPaid!){
+                print('index :'+index.toString());
+                if(isSemesterPaid!&&index==0){
+                  return;
+                }else if(isSemesterPaid!){
                   navigateTo(context: context,widget: SemesterBooks(),);
                 }else{
                   navigateTo(context: context,widget: const  PaySemesterBooks(),);

@@ -10,6 +10,7 @@ import '../../core/utils/app_colors.dart';
 List<String> books=[
   'compiler',
   'simulation',
+  'book_scientific_computing',
 ];
 
 class SemesterBooks extends StatelessWidget {
@@ -32,7 +33,7 @@ class SemesterBooks extends StatelessWidget {
         ),
       ),
       body:ListView.builder(
-          itemCount: 2,
+          itemCount: 3,
           itemBuilder: (BuildContext context,int index){
             late String? gradeNumber = (index+1).toString();
             return InkWell(

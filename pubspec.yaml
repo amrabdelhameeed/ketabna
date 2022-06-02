@@ -49,6 +49,7 @@ dependencies:
   conditional_builder_null_safety: ^0.0.6
   file_picker: ^4.6.1
   path_provider: ^2.0.10
+  flutter_windowmanager: ^0.2.0
 
 dev_dependencies:
   flutter_lints: ^1.0.0
@@ -69,6 +70,7 @@ flutter:
     - assets/data.pdf
     - assets/simulation.pdf
     - assets/compiler.pdf
+    - assets/book_scientific_computing.pdf
     - assets/image/
     - assets/image/b.png
     - assets/image/f.png
