@@ -88,3 +88,9 @@ class BookRequestedState extends AuthState {}
 
 // class PickPhotoLoadingState extends AuthState{}
 class BookAddedSuccessState extends AuthState {}
+
+
+class AppChangeSheetShowState extends AuthState {}
+
+class dropdownValueSheetShowState extends AuthState {}
+

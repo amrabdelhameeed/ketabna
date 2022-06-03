@@ -11,16 +11,22 @@ import 'package:ketabna/core/models/request_model.dart';
 import 'package:ketabna/core/models/user_model.dart';
 import 'package:ketabna/core/utils/random_string.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:ketabna/core/utils/shared_pref_helper.dart';
+
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
+
   static AuthCubit get(context) => BlocProvider.of(context);
   bool isTechnical = false;
   late String verificationId;
   var instance = FirebaseAuth.instance;
   final ImagePicker _picker = ImagePicker();
   File? bookImage;
+  bool isBottomSheetShow = false;
+  IconData fabIcon = Icons.add;
+  String dropdownValue = 'Biography';
 
   Future<String> pickBookImage(String bookId) async {
     String? photoUrl;
@@ -81,7 +87,15 @@ class AuthCubit extends Cubit<AuthState> {
             debugPrint("eltanya ha eltanya ${onError.toString()}");
           });
         })
-        .then((value) => {emit(RegisterSuccessState())})
+        .then(
+          (value) async => {
+            await SharedPrefHelper.putStr(
+                key: 'userName', value: name),
+            emit(
+              RegisterSuccessState(),
+            ),
+          },
+        )
         .catchError((onError) {
           debugPrint("eltanya ha eltanya ${onError.toString()}");
           final snack = SnackBar(
@@ -205,6 +219,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   UserModel? userModel;
+
   Future<List<BookModel>> getSomeBooksByCategory(
       {required String category, int? limit}) async {
     List<BookModel> books = [];
@@ -338,6 +353,15 @@ class AuthCubit extends Cubit<AuthState> {
     await instance
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .get()
+          .then((value) async => {
+            print('name : '+value['name']),
+                await SharedPrefHelper.putStr(
+                    key: 'userName', value: value['name'])
+              });
       emit(LogedInSuccessState());
     }).catchError((onError) {
       final snack = SnackBar(
@@ -366,4 +390,20 @@ class AuthCubit extends Cubit<AuthState> {
       emit(BookRequestedState());
     });
   }
+
+  void bottomSheetShowState ({required bool isShow, required IconData icon })
+  {
+    isBottomSheetShow =isShow;
+    fabIcon=icon;
+    emit(AppChangeSheetShowState());
+  }
+
+
+  void dropdownValueState ({required String value})
+{
+   dropdownValue = value ;
+   emit(dropdownValueSheetShowState());
+}
+
+
 }

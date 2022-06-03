@@ -5,7 +5,7 @@ import 'package:ketabna/core/constants/strings.dart';
 import 'package:ketabna/core/models/book_model.dart';
 import 'package:ketabna/features/authentication/otp/otp_screen.dart';
 import 'package:ketabna/features/authentication/otp/varification_screen.dart';
-import 'package:ketabna/features/book_screen/book_screen.dart';
+import 'package:ketabna/temp/book_screen.dart';
 import 'package:ketabna/features/authentication/sign_up/signup_screen.dart';
 import 'package:ketabna/features/choosing_categories_screen/intersted_screen.dart';
 import 'package:ketabna/features/home/home_screen.dart';
@@ -72,6 +72,10 @@ class AppRouter {
       case signInUpScreen:
         return MaterialPageRoute(builder: (_) {
           return SignInUPScreen();
+        });
+      case profileScreen:
+        return MaterialPageRoute(builder: (_) {
+          return ProfileScreen();
         });
       case chossingCategoryScreen:
         return MaterialPageRoute(builder: (_) {

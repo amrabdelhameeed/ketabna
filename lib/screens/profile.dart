@@ -4,6 +4,8 @@
 import 'package:flutter/material.dart';
 import 'package:ketabna/core/widgets/default_form_button.dart';
 
+import '../core/utils/app_colors.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -44,7 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         iconTheme: const IconThemeData(
-          color:Color(0xFFF5B53F)  , // AppColors.secondaryColor
+          color:AppColors.secondaryColor  ,
           size: 32,
         ),
 
@@ -109,7 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 radius: 10,
                 padding: 10,
                 textColor: Colors.white,
-                fillColor: const Color(0xFFF5B53F) ,
+                fillColor: AppColors.secondaryColor ,
 
               ),
 
@@ -225,7 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               bottom: 0,
               child: Switch(
                   value: isCheckedSwitch,
-                  activeColor: const Color(0xFFF5B53F),
+                  activeColor: AppColors.secondaryColor,
                   inactiveTrackColor: Colors.grey,
                   onChanged: (value){
                     switchChange(value);

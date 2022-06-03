@@ -10,27 +10,36 @@ class DefaultTextFormField extends StatefulWidget {
     this.inputType,
     this.isPassword = false,
     this.validationText,
+    this.radius = 20,
   }) : super(key: key);
   final String hint;
   final TextEditingController? controller;
   final TextInputType? inputType;
-  final bool? isPassword;
+  final bool isPassword;
   final String? validationText;
+  double radius;
 
   @override
   State<DefaultTextFormField> createState() => _DefaultTextFormFieldState();
 }
 
 class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
-  bool showPass = false;
+  late bool isPass ;
+
 
   IconData suffix = Icons.visibility_off_outlined;
+
+  @override
+  void initState() {
+    isPass = widget.isPassword;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
-      obscureText: widget.isPassword! ? showPass : false,
+      obscureText: isPass,
       keyboardType: widget.inputType,
       style: const TextStyle(
         color: AppColors.formFontColor,
@@ -42,13 +51,13 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
         return null;
       },
       decoration: InputDecoration(
-        suffixIcon: widget.isPassword!
+        suffixIcon: widget.isPassword
             ? MaterialButton(
                 elevation: 0,
                 onPressed: () {
                   setState(() {
-                    showPass = !showPass;
-                    suffix = showPass
+                    isPass = !isPass;
+                    suffix = isPass == false
                         ? Icons.visibility_outlined
                         : Icons.visibility_off_outlined;
                   });
@@ -67,23 +76,24 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
           fontSize: 15.0,
           color: AppColors.formFontColor,
         ),
-        errorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        errorBorder:  OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
           borderSide: BorderSide.none,
         ),
-        focusedErrorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        focusedErrorBorder:  OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
           borderSide: BorderSide.none,
         ),
-        focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        focusedBorder:  OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
           borderSide: BorderSide.none,
         ),
-        enabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        enabledBorder:  OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
           borderSide: BorderSide.none,
         ),
       ),
     );
   }
 }
+// widget.isPassword! ? showPass : false
