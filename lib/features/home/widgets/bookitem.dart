@@ -105,44 +105,43 @@ class BookItem extends StatelessWidget {
       },
       child: SizedBox(
         height: MediaQuery.of(context).size.height / 3,
-        width: 150,
+        width: 130,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                width: 135,
-                height: 160,
-                child: Image(
-                  image: NetworkImage('${bookModel.picture}'),
-                  fit: BoxFit.cover,
-                ),
+                    image: bookModel.picture != ""
+                        ? DecorationImage(
+                      image: NetworkImage(
+                        bookModel.picture!,
+                      ),
+                      fit: BoxFit.cover,
+                    )
+                        : const DecorationImage(
+                      image: AssetImage(
+                        'assets/image/Books.png',
+                      ),
+                    ),
+                    borderRadius: BorderRadius.circular(13),
+                    border: Border.all(width: 1)),
+                height: 140,
               ),
             ),
-            const SizedBox(
-              height: 5,
-            ),
+
+
             Text(
               '${bookModel.name}',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               maxLines: 3,
             ),
-            const SizedBox(
-              height: 5,
-            ),
+
             Text(
               '${bookModel.authorName}',
-              style: TextStyle(
-                color: Colors.grey[500],
-                fontStyle: FontStyle.italic,
-              ),
+              style: TextStyle( color: Colors.grey[500],fontSize: 12, fontWeight: FontWeight.w300),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
