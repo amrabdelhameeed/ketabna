@@ -64,12 +64,12 @@ class AuthCubit extends Cubit<AuthState> {
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) {
           UserModel userModel = UserModel(
-            interstsModel: interstsModel,
-            email: email,
-            name: name,
-            location: location,
-            phone: phone,
-          );
+              interstsModel: interstsModel,
+              email: email,
+              name: name,
+              location: location,
+              phone: phone,
+              picture: '');
           FirebaseFirestore.instance
               .collection('users')
               .doc(value.user!.uid)
@@ -89,8 +89,7 @@ class AuthCubit extends Cubit<AuthState> {
         })
         .then(
           (value) async => {
-            await SharedPrefHelper.putStr(
-                key: 'userName', value: name),
+            await SharedPrefHelper.putStr(key: 'userName', value: name),
             emit(
               RegisterSuccessState(),
             ),
@@ -101,7 +100,7 @@ class AuthCubit extends Cubit<AuthState> {
           final snack = SnackBar(
             backgroundColor: Colors.red,
             content: Text(onError.toString()),
-            duration: Duration(seconds: 2),
+            duration: const Duration(seconds: 2),
           );
           ScaffoldMessenger.of(context).showSnackBar(snack);
           emit(EmailauthError(onError.toString()));
@@ -358,7 +357,7 @@ class AuthCubit extends Cubit<AuthState> {
           .doc(FirebaseAuth.instance.currentUser?.uid)
           .get()
           .then((value) async => {
-            print('name : '+value['name']),
+                print('name : ' + value['name']),
                 await SharedPrefHelper.putStr(
                     key: 'userName', value: value['name'])
               });
@@ -391,19 +390,14 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  void bottomSheetShowState ({required bool isShow, required IconData icon })
-  {
-    isBottomSheetShow =isShow;
-    fabIcon=icon;
+  void bottomSheetShowState({required bool isShow, required IconData icon}) {
+    isBottomSheetShow = isShow;
+    fabIcon = icon;
     emit(AppChangeSheetShowState());
   }
 
-
-  void dropdownValueState ({required String value})
-{
-   dropdownValue = value ;
-   emit(dropdownValueSheetShowState());
-}
-
-
+  void dropdownValueState({required String value}) {
+    dropdownValue = value;
+    emit(dropdownValueSheetShowState());
+  }
 }

@@ -44,7 +44,6 @@ class BookItem extends StatelessWidget {
                       },
                     });
                   }
-
                 })
               });
     } catch (error) {
@@ -75,33 +74,32 @@ class BookItem extends StatelessWidget {
         });
   }
 
-   BookItem({Key? key, required this.bookModel}) : super(key: key);
+  BookItem({Key? key, required this.bookModel}) : super(key: key);
   final BookModel bookModel;
 
   @override
   Widget build(BuildContext context) {
-
     return InkWell(
       onTap: () async {
-        String ownerUid = bookModel.ownerUid.toString();
-        print('ownerUid'+ownerUid);
-        String ownerName = '';
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(ownerUid)
-            .get()
-            .then((value) => {
-                  ownerName = value['name'],
-          print('ownerName :'+ownerName)
-                });
-        checkForOldConversation(bookOwnerUid: ownerUid,myId:myUid,bookOwnerName: ownerName ).then((value) => {
-          navigateTo(context : context , widget :ChatScreen(
-            ownerName: ownerName,
-            ownerUid: ownerUid,
-            conversationDocId: value,
-          )),
+        // String ownerUid = bookModel.ownerUid.toString();
+        // print('ownerUid'+ownerUid);
+        // String ownerName = '';
+        // await FirebaseFirestore.instance
+        //     .collection('users')
+        //     .doc(ownerUid)
+        //     .get()
+        //     .then((value) => {
+        //           ownerName = value['name'],
+        //   print('ownerName :'+ownerName)
+        //         });
+        // checkForOldConversation(bookOwnerUid: ownerUid,myId:myUid,bookOwnerName: ownerName ).then((value) => {
+        //   navigateTo(context : context , widget :ChatScreen(
+        //     ownerName: ownerName,
+        //     ownerUid: ownerUid,
+        //     conversationDocId: value,
+        //   )),
 
-        });
+        // });
       },
       child: SizedBox(
         height: MediaQuery.of(context).size.height / 3,
@@ -114,23 +112,21 @@ class BookItem extends StatelessWidget {
                 decoration: BoxDecoration(
                     image: bookModel.picture != ""
                         ? DecorationImage(
-                      image: NetworkImage(
-                        bookModel.picture!,
-                      ),
-                      fit: BoxFit.cover,
-                    )
+                            image: NetworkImage(
+                              bookModel.picture!,
+                            ),
+                            fit: BoxFit.fill,
+                          )
                         : const DecorationImage(
-                      image: AssetImage(
-                        'assets/image/Books.png',
-                      ),
-                    ),
+                            image: AssetImage(
+                              'assets/image/Books.png',
+                            ),
+                          ),
                     borderRadius: BorderRadius.circular(13),
                     border: Border.all(width: 1)),
                 height: 140,
               ),
             ),
-
-
             Text(
               '${bookModel.name}',
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -138,10 +134,12 @@ class BookItem extends StatelessWidget {
               textAlign: TextAlign.center,
               maxLines: 3,
             ),
-
             Text(
               '${bookModel.authorName}',
-              style: TextStyle( color: Colors.grey[500],fontSize: 12, fontWeight: FontWeight.w300),
+              style: TextStyle(
+                  color: Colors.grey[500],
+                  fontSize: 12,
+                  fontWeight: FontWeight.w300),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
