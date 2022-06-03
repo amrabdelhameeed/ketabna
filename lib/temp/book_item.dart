@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:ketabna/core/models/book_model.dart';
 import 'package:ketabna/core/widgets/components.dart';
@@ -52,6 +52,13 @@ class BookItem extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.5),
+                        blurStyle: BlurStyle.normal,
+                        blurRadius: 10,
+                        offset: Offset(6 , 3))
+                  ],
                   image: bookModel.picture != ""
                       ? DecorationImage(
                           image: NetworkImage(
