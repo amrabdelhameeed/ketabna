@@ -46,50 +46,96 @@ class BookItem extends StatelessWidget {
 
       },
       child: SizedBox(
-        width: 120,
-        height: 130,
+        height: MediaQuery.of(context).size.height / 3,
+        width: 130,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.5),
-                        blurStyle: BlurStyle.normal,
-                        blurRadius: 10,
-                        offset: Offset(6 , 3))
-                  ],
-                  image: bookModel.picture != ""
-                      ? DecorationImage(
-                          image: NetworkImage(
-                            bookModel.picture!,
-                          ),
-                          fit: BoxFit.fill,
-                        )
-                      : const DecorationImage(
-                          image: AssetImage(
-                            'assets/image/Books.png',
-                          ),
-                        ),
-                  borderRadius: BorderRadius.circular(13),
-                  border: Border.all(width: 1)),
-              height: 170,
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                    image: bookModel.picture != ""
+                        ? DecorationImage(
+                      image: NetworkImage(
+                        bookModel.picture!,
+                      ),
+                      fit: BoxFit.cover,
+                    )
+                        : const DecorationImage(
+                      image: AssetImage(
+                        'assets/image/Books.png',
+                      ),
+                    ),
+                    borderRadius: BorderRadius.circular(13),
+                    border: Border.all(width: 1)),
+                height: 140,
+              ),
             ),
+
+
             Text(
-              bookModel.name!,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2,
-              textAlign: TextAlign.center,
+              '${bookModel.name}',
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              bookModel.authorName!,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
-            )
+              textAlign: TextAlign.center,
+              maxLines: 3,
+            ),
+
+            Text(
+              '${bookModel.authorName}',
+              style: TextStyle( color: Colors.grey[500],fontSize: 12, fontWeight: FontWeight.w300),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),
+      // child: SizedBox(
+      //   width: 120,
+      //   height: 130,
+      //   child: Column(
+      //     children: [
+      //       Container(
+      //         decoration: BoxDecoration(
+      //             boxShadow: [
+      //               BoxShadow(
+      //                   color: Colors.black.withOpacity(0.5),
+      //                   blurStyle: BlurStyle.normal,
+      //                   blurRadius: 10,
+      //                   offset: Offset(6 , 3))
+      //             ],
+      //             image: bookModel.picture != ""
+      //                 ? DecorationImage(
+      //                     image: NetworkImage(
+      //                       bookModel.picture!,
+      //                     ),
+      //                     fit: BoxFit.fill,
+      //                   )
+      //                 : const DecorationImage(
+      //                     image: AssetImage(
+      //                       'assets/image/Books.png',
+      //                     ),
+      //                   ),
+      //             borderRadius: BorderRadius.circular(13),
+      //             border: Border.all(width: 1)),
+      //         height: 170,
+      //       ),
+      //       Text(
+      //         bookModel.name!,
+      //         overflow: TextOverflow.ellipsis,
+      //         maxLines: 2,
+      //         textAlign: TextAlign.center,
+      //         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      //       ),
+      //       Text(
+      //         bookModel.authorName!,
+      //         overflow: TextOverflow.ellipsis,
+      //         style: TextStyle( color: Colors.grey[500],fontSize: 12, fontWeight: FontWeight.w300),
+      //       )
+      //     ],
+      //   ),
+      // ),
     );
   }
 }
