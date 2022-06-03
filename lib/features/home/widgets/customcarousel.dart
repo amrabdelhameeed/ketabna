@@ -19,7 +19,7 @@ class CustomCarousel extends StatelessWidget {
             height: MediaQuery.of(context).size.height / 3,
             viewportFraction: 0.5,
             enlargeCenterPage: true,
-            autoPlay: true,
+            autoPlay: false,
           )),
       fallback: (context) =>   SizedBox(
           height: MediaQuery.of(context).size.height / 3,

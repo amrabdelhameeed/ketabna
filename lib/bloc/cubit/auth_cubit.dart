@@ -24,6 +24,9 @@ class AuthCubit extends Cubit<AuthState> {
   var instance = FirebaseAuth.instance;
   final ImagePicker _picker = ImagePicker();
   File? bookImage;
+  bool isBottomSheetShow = false;
+  IconData fabIcon = Icons.add;
+  String dropdownValue = 'Biography';
 
   Future<String> pickBookImage(String bookId) async {
     String? photoUrl;
@@ -391,4 +394,20 @@ class AuthCubit extends Cubit<AuthState> {
       emit(BookRequestedState());
     });
   }
+
+  void bottomSheetShowState ({required bool isShow, required IconData icon })
+  {
+    isBottomSheetShow =isShow;
+    fabIcon=icon;
+    emit(AppChangeSheetShowState());
+  }
+
+
+  void dropdownValueState ({required String value})
+{
+   dropdownValue = value ;
+   emit(dropdownValueSheetShowState());
+}
+
+
 }
