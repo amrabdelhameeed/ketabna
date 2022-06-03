@@ -46,6 +46,7 @@ dependencies:
   shared_preferences: ^2.0.13
   smooth_page_indicator: ^1.0.0+2
   conditional_builder_null_safety: ^0.0.6
+  curved_navigation_bar: ^1.0.3
 
 dev_dependencies:
   flutter_lints: ^1.0.0
