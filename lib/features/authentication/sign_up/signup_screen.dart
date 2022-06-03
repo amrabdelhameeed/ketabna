@@ -126,7 +126,8 @@ class SignupPage extends StatelessWidget {
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
                                     await cubit.signUpWithEmailAndPassword(
-                                      isWhatsapp: value,
+                                      location: 'cairo',
+                                      context: context,
                                       interstsModel: InterstsModel(
                                         biography: true,
                                         children: true,

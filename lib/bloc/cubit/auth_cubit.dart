@@ -51,7 +51,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String name,
     required String phone,
     required InterstsModel interstsModel,
-    required bool isWhatsapp,
+    required String location,
     context,
   }) async {
     instance
@@ -61,8 +61,7 @@ class AuthCubit extends Cubit<AuthState> {
             interstsModel: interstsModel,
             email: email,
             name: name,
-            location: "Cairo",
-            isWhatsApp: isWhatsapp,
+            location: location,
             phone: phone,
           );
           FirebaseFirestore.instance
@@ -90,7 +89,6 @@ class AuthCubit extends Cubit<AuthState> {
             content: Text(onError.toString()),
             duration: Duration(seconds: 2),
           );
-
           ScaffoldMessenger.of(context).showSnackBar(snack);
           emit(EmailauthError(onError.toString()));
         });
@@ -301,8 +299,6 @@ class AuthCubit extends Cubit<AuthState> {
         .toList();
     map.forEach((key) async {
       await getSomeBooksByCategory(category: key.key).then((vv) {
-        // reccomendedBooks =
-        //     vv.where((element) => !reccomendedBooks.contains(element)).toList();
         vv.forEach((book) {
           if (!reccomendedBooks.contains(book)) {
             reccomendedBooks.add(book);
