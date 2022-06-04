@@ -68,6 +68,8 @@ class GetUserByUidState extends AuthState {
 
 class GetRecommended extends AuthState {}
 
+class GetUserBooks extends AuthState {}
+
 class GetHorrorBooksState extends AuthState {}
 
 class GetTechnologyBooksState extends AuthState {}
@@ -89,8 +91,6 @@ class BookRequestedState extends AuthState {}
 // class PickPhotoLoadingState extends AuthState{}
 class BookAddedSuccessState extends AuthState {}
 
-
 class AppChangeSheetShowState extends AuthState {}
 
 class dropdownValueSheetShowState extends AuthState {}
-

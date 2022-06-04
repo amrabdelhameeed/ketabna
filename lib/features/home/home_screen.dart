@@ -9,6 +9,7 @@ import 'package:ketabna/core/models/category_model.dart';
 // import 'package:ketabna/core/models/intersts_model.dart';
 import 'package:ketabna/core/widgets/components.dart';
 import 'package:ketabna/features/home/widgets/custom_listview.dart';
+import 'package:ketabna/features/on_boarding/sign_in_up_screen.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/widgets/default_text_form_field.dart';
 // import '../chat/my_active_chats.dart';
@@ -107,7 +108,8 @@ class HomeScreen extends StatelessWidget {
                                         child: Center(
                                             child: image != null
                                                 ? Image.file(image!)
-                                                : const Text("No image selected")),
+                                                : const Text(
+                                                    "No image selected")),
                                       ),
                                       const SizedBox(
                                         width: 20,
@@ -202,16 +204,18 @@ class HomeScreen extends StatelessWidget {
                                     height: 10,
                                   ),
                                   Container(
-                                    padding: const EdgeInsetsDirectional.all(10),
+                                    padding:
+                                        const EdgeInsetsDirectional.all(10),
                                     decoration: BoxDecoration(
                                       color: Colors.grey[200],
-                                      borderRadius:
-                                          const BorderRadius.all(const Radius.circular(30)),
+                                      borderRadius: const BorderRadius.all(
+                                          const Radius.circular(30)),
                                     ),
                                     child: TextField(
                                       maxLines: 10,
                                       controller: descriptionController,
-                                      decoration: const InputDecoration.collapsed(
+                                      decoration:
+                                          const InputDecoration.collapsed(
                                         hintText:
                                             "Write your description here - اكتب وصفك هنا ",
                                         hintStyle: TextStyle(
@@ -305,7 +309,8 @@ class HomeScreen extends StatelessWidget {
                             actions: [
                               InkWell(
                                 onTap: () {
-                                  Navigator.pushNamed(context, profileScreen);
+                                  Navigator.pushNamed(context, profileScreen,
+                                      arguments: cubit.userModel);
                                 },
                                 hoverColor: Colors.transparent,
                                 borderRadius: BorderRadius.circular(200),
@@ -327,6 +332,14 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              IconButton(
+                                  onPressed: () {
+                                    cubit.logOut().then((value) {
+                                      navigateAndFinish(
+                                          context, SignInUPScreen());
+                                    });
+                                  },
+                                  icon: Icon(Icons.exit_to_app))
                             ],
                           ),
                           defaultHeader(

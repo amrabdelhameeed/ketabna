@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+
 // void main() => runApp(MaterialApp(home: BottomNavBar()));
 // blue navigation bar  Write by baly
 class BottomNavBar extends StatefulWidget {
@@ -10,7 +11,7 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   int _page = 0;
-   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +20,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
           key: _bottomNavigationKey,
           index: 0,
           height: 60.0,
-          items: const <Widget>  [
-            Icon(Icons.add, size: 30 ,color: Colors.white),
-            Icon(Icons.list, size: 30,color: Colors.white),
-            Icon(Icons.compare_arrows, size: 30,color: Colors.white),
-            Icon(Icons.call_split, size: 30,color: Colors.white),
-            Icon(Icons.perm_identity, size: 30,color: Colors.white),
+          items: const <Widget>[
+            Icon(Icons.add, size: 30, color: Colors.white),
+            Icon(Icons.list, size: 30, color: Colors.white),
+            Icon(Icons.compare_arrows, size: 30, color: Colors.white),
+            Icon(Icons.call_split, size: 30, color: Colors.white),
+            Icon(Icons.perm_identity, size: 30, color: Colors.white),
           ],
           color: Colors.orangeAccent,
           // buttonBackgroundColor: Colors.black,
@@ -37,7 +38,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
             });
           },
           letIndexChange: (index) => true,
-
         ),
         body: Container(
           color: Colors.white,

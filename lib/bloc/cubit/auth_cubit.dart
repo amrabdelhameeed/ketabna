@@ -121,8 +121,9 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  Future<void> toggleSwitchOfBooks({required BookModel book}) async {
-    bool localIsValid = !book.isValid!;
+  Future<void> toggleSwitchOfBooks(
+      {required BookModel book, required bool val}) async {
+    bool localIsValid = val;
     print(localIsValid);
     await FirebaseFirestore.instance
         .collection('books')
@@ -287,13 +288,17 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  UserModel getCurrentFirestoreUser() {
-    UserModel? internalUserModel;
+  Future<UserModel> getCurrentFirestoreUser() async {
     String userUid = getLoggedInUser().uid;
-    FirebaseFirestore.instance.collection('users').doc(userUid).get().then((v) {
-      return internalUserModel = UserModel.fromJson(v.data()!);
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userUid)
+        .get()
+        .then((v) {
+      userModel = UserModel.fromJson(v.data()!);
+      emit(GetBooksSuccessState());
     });
-    return internalUserModel!;
+    return userModel!;
   }
 
   void getRecommended() async {
@@ -322,6 +327,32 @@ class AuthCubit extends Cubit<AuthState> {
       emit(GetRecommended());
     });
     debugPrint(reccomendedBooks.length.toString());
+  }
+
+  List<BookModel> userBooks = [];
+  Future<List<BookModel>> getUserBook({
+    required String userUid,
+  }) async {
+    List<BookModel> books = [];
+    await FirebaseFirestore.instance
+        .collection('books')
+        .where('ownerUid', isEqualTo: userUid)
+        .get()
+        .then((value) {
+      for (var element in value.docs) {
+        books.add(BookModel.fromJson(element.data()));
+      }
+    });
+    debugPrint(books.length.toString());
+    return books;
+  }
+
+  void getUserBooks() async {
+    print(instance.currentUser!.uid);
+    getUserBook(userUid: instance.currentUser!.uid).then((x) {
+      userBooks = x;
+      emit(GetnovelBooksState());
+    });
   }
 
   void addBook({

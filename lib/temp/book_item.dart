@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:ketabna/core/constants/strings.dart';
 import 'package:ketabna/core/models/book_model.dart';
 import 'package:ketabna/core/widgets/components.dart';
+import 'package:ketabna/temp/book_screen.dart';
 
 import '../core/utils/shared_pref_helper.dart';
 import '../features/chat/chat_screen.dart';
@@ -24,6 +26,7 @@ class BookItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
+        Navigator.pushNamed(context, bookScreen, arguments: bookModel);
         // String ownerUid = bookModel.ownerUid.toString();
         // String ownerName = '';
         // await FirebaseFirestore.instance
