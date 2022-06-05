@@ -6,6 +6,8 @@ import 'package:ketabna/bloc/cubit/auth_cubit.dart';
 import 'package:ketabna/core/models/user_model.dart';
 import 'package:ketabna/core/widgets/default_form_button.dart';
 import 'package:ketabna/features/home/widgets/bookitem.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../core/utils/app_colors.dart';
 import '../core/utils/shared_pref_helper.dart';
@@ -114,6 +116,14 @@ class _VisitorScreenState extends State<VisitorScreen> {
         });
   }
 
+  Future<void> _makePhoneCall(String? phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
+  }
+
   List<Map<String, Object>> itemBook = [
     {
       'title': 'Book',
@@ -190,6 +200,9 @@ class _VisitorScreenState extends State<VisitorScreen> {
                         alignment: AlignmentDirectional.centerEnd,
                         children: [
                           DefaultFormButton(
+                            onPressed: (){
+                              _makePhoneCall(widget.userModel.phone);
+                            },
                               text: 'Call',
                               width: 120,
                               height: 35,

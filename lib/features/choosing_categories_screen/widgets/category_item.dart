@@ -15,7 +15,9 @@ class _CategoryItemState extends State<CategoryItem> {
       children: [
         Image.asset(
           widget.categoryModel.imagePath,
-          fit: BoxFit.cover,
+          fit: BoxFit.fill,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
         ),
         Positioned(
           right: 1 / 10,
@@ -39,11 +41,21 @@ class _CategoryItemState extends State<CategoryItem> {
           ),
         ),
         Positioned(
-          left: 10,
-          bottom: 20,
-          child: Text(
-            widget.categoryModel.categoryName,
-            style: Theme.of(context).textTheme.headline6,
+          left: 5,
+          bottom: 5,
+          child: Container(
+            width: 100,
+            color: Colors.grey.shade300,
+            child: Text(
+              widget.categoryModel.categoryName,
+              style: Theme.of(context).textTheme.headline6!.copyWith(
+                    color: Colors.grey.shade700,
+                    fontSize: 18,
+                  ),
+              softWrap: true,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
       ],
