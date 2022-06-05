@@ -49,6 +49,7 @@ class HomeScreen extends StatelessWidget {
     AuthCubit.get(context).getnovelBooks();
     AuthCubit.get(context).getTechnologyBooks();
     AuthCubit.get(context).getfictionBooks();
+    AuthCubit.get(context).getHorrorBooks();
   }
 
   @override
@@ -261,6 +262,7 @@ class HomeScreen extends StatelessWidget {
                 //   child: Icon(cubit.fabIcon),
                 // ),
                 body: RefreshIndicator(
+                  color: AppColors.secondaryColor,
                   onRefresh:(){
                     return _refresh(context);
                   },
