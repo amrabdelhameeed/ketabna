@@ -54,7 +54,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AuthCubit>.value(
-      value: authCubit!..getUserBooks(),
+      value: authCubit!
+        ..getCurrentFirestoreUser()
+        ..getUserBooks(),
       child: BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
         var cubit = AuthCubit.get(context);
         print(userModel!.name);

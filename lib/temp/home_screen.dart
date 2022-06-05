@@ -29,6 +29,7 @@ class HomeTemp extends StatelessWidget {
           floatingActionButton: FloatingActionButton.extended(
               onPressed: () {
                 cubit.addBook(
+                    describtion: '',
                     category: InterstsModel.categorys[
                         Random().nextInt(InterstsModel.categorys.length)],
                     name: ' name',

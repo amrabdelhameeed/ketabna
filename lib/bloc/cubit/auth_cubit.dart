@@ -73,6 +73,9 @@ class AuthCubit extends Cubit<AuthState> {
   int curIndex = 0;
   void changeIndex(int index) {
     curIndex = index;
+    if (index == 4) {
+      getCurrentFirestoreUser();
+    }
     emit(ChangeIndexState());
   }
 
@@ -421,6 +424,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String category,
     required String name,
     required String authorName,
+    required String describtion,
   }) async {
     String? photoUrl;
     String bookId = RandomString.getRandomString(20);
@@ -440,6 +444,7 @@ class AuthCubit extends Cubit<AuthState> {
               category: category,
               picture: photoUrl,
               name: name,
+              describtion: describtion,
               bookId: bookId,
               authorName: authorName);
           await FirebaseFirestore.instance

@@ -215,6 +215,7 @@ class _AddBookState extends State<AddBook> {
                         onPressed: () {
                           // pickImage();
                           cubit.addBook(
+                              describtion: descriptionController.text,
                               category: dropdownValue,
                               name: bookNameController.text,
                               authorName: authorNameController.text);
