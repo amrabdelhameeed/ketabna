@@ -131,7 +131,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                         print('eyh eldnya fe list : $value');
                         print(listOfUsersChoosedCategories);
                       });
-                      Navigator.pushReplacementNamed(context, mainScreen);
+                      Navigator.pushReplacementNamed(context, bottomNavBar);
                     },
                     child: const Text(
                       'Continue',

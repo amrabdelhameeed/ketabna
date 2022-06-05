@@ -1,73 +1,47 @@
 import 'package:flutter/material.dart';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ketabna/bloc/cubit/auth_cubit.dart';
+import 'package:ketabna/screens/profile.dart';
+
+import '../app_router.dart';
+import '../core/models/user_model.dart';
+import '../features/home/home_screen.dart';
+import '../features/home/widgets/add_book.dart';
+import '../features/search/search_screen.dart';
+
 // void main() => runApp(MaterialApp(home: BottomNavBar()));
 // blue navigation bar  Write by baly
-class BottomNavBar extends StatefulWidget {
-  @override
-  _BottomNavBarState createState() => _BottomNavBarState();
-}
-
-class _BottomNavBarState extends State<BottomNavBar> {
-  int _page = 0;
-  // new
-  List<Widget> screenWidget= [
-    // write screen widget
-    // 1 Home Screen
-    // 2 Search Screen
-    // 3 Add Screen
-    // 4 chat Screen
-    // 5 Profile Screen
-  ];
-   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
-
+class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        bottomNavigationBar: CurvedNavigationBar(
-          key: _bottomNavigationKey,
-          index: 0,
-          height: 60.0,
-          items: const <Widget>  [
-            Icon(Icons.home_outlined, size: 30 ,color: Colors.white),
-            Icon(Icons.search_outlined, size: 30,color: Colors.white),
-            Icon(Icons.add, size: 30,color: Colors.white),
-            Icon(Icons.message, size: 30,color: Colors.white),
-            Icon(Icons.perm_identity, size: 30,color: Colors.white),
-          ],
-          color: Colors.orangeAccent,
-          // buttonBackgroundColor: Colors.black,
-          backgroundColor: Colors.white,
-          animationCurve: Curves.easeInOut,
-          animationDuration: Duration(milliseconds: 600),
-          onTap: (index) {
-            setState(() {
-              _page = index;
-            });
-          },
-          letIndexChange: (index) => true,
-
-        ),
-        // new
-        // body : screenWidget[_page]
-        body: Container(
-          color: Colors.white,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(_page.toString(), textScaleFactor: 10.0),
-                ElevatedButton(
-                  child: Text('Go To Page of index 1'),
-                  onPressed: () {
-                    final CurvedNavigationBarState? navBarState =
-                        _bottomNavigationKey.currentState;
-                    navBarState?.setPage(1);
-                  },
-                )
-              ],
-            ),
-          ),
-        ));
+    return BlocConsumer<AuthCubit, AuthState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          var cubit = AuthCubit.get(context);
+          return Scaffold(
+              bottomNavigationBar: CurvedNavigationBar(
+                index: cubit.curIndex,
+                height: 60.0,
+                items: const <Widget>[
+                  Icon(Icons.home_outlined, size: 30, color: Colors.white),
+                  Icon(Icons.search_outlined, size: 30, color: Colors.white),
+                  Icon(Icons.add, size: 30, color: Colors.white),
+                  Icon(Icons.message, size: 30, color: Colors.white),
+                  Icon(Icons.perm_identity, size: 30, color: Colors.white),
+                ],
+                color: Colors.orangeAccent,
+                // buttonBackgroundColor: Colors.black,
+                backgroundColor: const Color(0xFFF5F1D7),
+                animationCurve: Curves.easeInOut,
+                animationDuration: const Duration(milliseconds: 600),
+                onTap: (index) {
+                  cubit.changeIndex(index);
+                },
+                letIndexChange: (index) => true,
+              ),
+              body: cubit.screenWidget[cubit.curIndex]);
+        });
   }
 }

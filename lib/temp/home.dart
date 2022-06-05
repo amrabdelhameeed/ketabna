@@ -88,6 +88,7 @@ class Home extends StatelessWidget {
                 ElevatedButton(
                     onPressed: () {
                       cubit.addBook(
+                          describtion: '',
                           category: "technologyInterst",
                           name: "قران",
                           authorName: "-");

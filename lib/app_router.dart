@@ -7,7 +7,10 @@ import 'package:ketabna/core/models/user_model.dart';
 import 'package:ketabna/features/authentication/otp/otp_screen.dart';
 import 'package:ketabna/features/authentication/otp/varification_screen.dart';
 import 'package:ketabna/features/book/book.dart';
+import 'package:ketabna/features/home/widgets/add_book.dart';
+import 'package:ketabna/screens/bottom_navigation.dart';
 import 'package:ketabna/screens/profile.dart';
+import 'package:ketabna/screens/visitor_screen.dart';
 import 'package:ketabna/temp/book_screen.dart';
 import 'package:ketabna/features/authentication/sign_up/signup_screen.dart';
 import 'package:ketabna/features/choosing_categories_screen/intersted_screen.dart';
@@ -44,11 +47,12 @@ class AppRouter {
             child: const SplashView(),
           );
         });
-      case mainScreen:
+
+      case bottomNavBar:
         return MaterialPageRoute(builder: (_) {
           return BlocProvider<AuthCubit>.value(
             value: authCubit!
-              ..getCurrentFirestoreUser()
+              // ..getCurrentFirestoreUser()
               ..getRecommended()
               ..getHorrorBooks()
               ..getTechnologyBooks()
@@ -56,6 +60,14 @@ class AppRouter {
               ..getnovelBooks()
               ..getfictionBooks()
               ..getbiographyBooks(),
+            child: BottomNavBar(),
+          );
+        });
+
+      case mainScreen:
+        return MaterialPageRoute(builder: (_) {
+          return BlocProvider<AuthCubit>.value(
+            value: authCubit!..getCurrentFirestoreUser(),
             child: HomeScreen(),
           );
         });
@@ -73,6 +85,14 @@ class AppRouter {
             child: OtpScreen(),
           );
         });
+      case visitorScreen:
+        return MaterialPageRoute(builder: (_) {
+          final userModel = settings.arguments as UserModel;
+          return BlocProvider<AuthCubit>.value(
+            value: authCubit!..getUserBooks(uId: userModel.userUid),
+            child: VisitorScreen(userModel: userModel),
+          );
+        });
       case signInUpScreen:
         return MaterialPageRoute(builder: (_) {
           return SignInUPScreen();
@@ -87,10 +107,16 @@ class AppRouter {
         });
       case profileScreen:
         return MaterialPageRoute(builder: (_) {
-          final userModel = settings.arguments as UserModel;
           return BlocProvider<AuthCubit>.value(
             value: authCubit!..getUserBooks(),
-            child: ProfileScreen(userModel: userModel),
+            child: ProfileScreen(),
+          );
+        });
+      case addBookScreen:
+        return MaterialPageRoute(builder: (_) {
+          return BlocProvider<AuthCubit>.value(
+            value: authCubit!,
+            child: AddBook(),
           );
         });
       case searchScreen:
