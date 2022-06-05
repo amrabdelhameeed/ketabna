@@ -66,7 +66,17 @@ class GetUserByUidState extends AuthState {
   GetUserByUidState(this.userModel);
 }
 
+class GetUserModelByUidState extends AuthState {
+  final UserModel userModel;
+
+  GetUserModelByUidState(this.userModel);
+}
+
+class ChangeIndexState extends AuthState {}
+
 class GetRecommended extends AuthState {}
+
+class GetUserBooks extends AuthState {}
 
 class GetHorrorBooksState extends AuthState {}
 
@@ -88,3 +98,7 @@ class BookRequestedState extends AuthState {}
 
 // class PickPhotoLoadingState extends AuthState{}
 class BookAddedSuccessState extends AuthState {}
+
+class AppChangeSheetShowState extends AuthState {}
+
+class dropdownValueSheetShowState extends AuthState {}

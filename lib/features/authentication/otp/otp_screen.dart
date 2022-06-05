@@ -117,7 +117,7 @@ class OtpScreen extends StatelessWidget {
         if (state is OtpVerfied) {
           if (listOfUsersChoosedCategories
               .contains(cubit.instance.currentUser!.uid)) {
-            Navigator.of(context).pushReplacementNamed(mainScreen);
+            Navigator.of(context).pushReplacementNamed(bottomNavBar);
           } else {
             Navigator.of(context).pushReplacementNamed(chossingCategoryScreen);
           }

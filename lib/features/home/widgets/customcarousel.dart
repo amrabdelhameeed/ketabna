@@ -6,26 +6,29 @@ import 'package:ketabna/temp/book_item.dart';
 
 class CustomCarousel extends StatelessWidget {
   final List<BookModel> listOfBookModel;
-  const CustomCarousel({Key? key, required this.listOfBookModel}) : super(key: key);
+  const CustomCarousel({Key? key, required this.listOfBookModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ConditionalBuilder(
       condition: listOfBookModel.isNotEmpty,
       builder: (context) => CarouselSlider.builder(
-          itemCount:listOfBookModel.length,
-          itemBuilder: (context, index, realIndex) =>BookItem(bookModel: listOfBookModel[index]),
+          itemCount: listOfBookModel.length,
+          itemBuilder: (context, index, realIndex) =>
+              BookItem(bookModel: listOfBookModel[index]),
           options: CarouselOptions(
             height: MediaQuery.of(context).size.height / 3,
             viewportFraction: 0.5,
             enlargeCenterPage: true,
-            autoPlay: true,
+            autoPlay: false,
           )),
-      fallback: (context) =>   SizedBox(
+      fallback: (context) => SizedBox(
           height: MediaQuery.of(context).size.height / 3,
-          child: const Center(child: CircularProgressIndicator(
+          child: const Center(
+              child: CircularProgressIndicator(
             color: Color(0xfff5b53f),
-          ))) ,
+          ))),
     );
   }
 }

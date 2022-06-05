@@ -15,7 +15,7 @@ class DefaultTextFormField extends StatefulWidget {
   final String hint;
   final TextEditingController? controller;
   final TextInputType? inputType;
-  final bool? isPassword;
+  final bool isPassword;
   final String? validationText;
   double radius;
 
@@ -24,15 +24,22 @@ class DefaultTextFormField extends StatefulWidget {
 }
 
 class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
-  bool showPass = false;
+  late bool isPass ;
+
 
   IconData suffix = Icons.visibility_off_outlined;
+
+  @override
+  void initState() {
+    isPass = widget.isPassword;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
-      obscureText: widget.isPassword! ? showPass : false,
+      obscureText: isPass,
       keyboardType: widget.inputType,
       style: const TextStyle(
         color: AppColors.formFontColor,
@@ -44,13 +51,13 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
         return null;
       },
       decoration: InputDecoration(
-        suffixIcon: widget.isPassword!
+        suffixIcon: widget.isPassword
             ? MaterialButton(
                 elevation: 0,
                 onPressed: () {
                   setState(() {
-                    showPass = !showPass;
-                    suffix = showPass
+                    isPass = !isPass;
+                    suffix = isPass == false
                         ? Icons.visibility_outlined
                         : Icons.visibility_off_outlined;
                   });
@@ -89,3 +96,4 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
     );
   }
 }
+// widget.isPassword! ? showPass : false

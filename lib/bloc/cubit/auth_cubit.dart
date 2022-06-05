@@ -12,6 +12,10 @@ import 'package:ketabna/core/models/user_model.dart';
 import 'package:ketabna/core/utils/random_string.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:ketabna/core/utils/shared_pref_helper.dart';
+import 'package:ketabna/features/home/home_screen.dart';
+import 'package:ketabna/features/home/widgets/add_book.dart';
+import 'package:ketabna/features/search/search_screen.dart';
+import 'package:ketabna/screens/profile.dart';
 
 part 'auth_state.dart';
 
@@ -24,28 +28,78 @@ class AuthCubit extends Cubit<AuthState> {
   var instance = FirebaseAuth.instance;
   final ImagePicker _picker = ImagePicker();
   File? bookImage;
+  bool isBottomSheetShow = false;
+  IconData fabIcon = Icons.add;
+  String dropdownValue = 'Biography';
+  List<Widget> screenWidget = [
+    // write screen widget
+    // /* 1 Home Screen */ BlocProvider<AuthCubit>.value(
+    //   value: authCubit!
+    //     ..getCurrentFirestoreUser()
+    //     ..getRecommended()
+    //     ..getHorrorBooks()
+    //     ..getTechnologyBooks()
+    //     ..getFantasyBooks()
+    //     ..getnovelBooks()
+    //     ..getfictionBooks()
+    //     ..getbiographyBooks(),
+    //   child:
+    HomeScreen(),
 
-  Future<String> pickBookImage(String bookId) async {
+    /* 2 Search Screen*/ SearchScreen(
+      searchBy: '',
+    ),
+    /* 3 Add Screen*/ AddBook(),
+    /* 4 chat Screen*/
+    // BlocProvider<AuthCubit>.value(
+    //   value: authCubit!,
+    //   child:
+    AddBook(),
+    // ),
+    // /* 5 Profile Screen*/ BlocProvider<AuthCubit>.value(
+    //   value: authCubit!..getUserBooks(),
+    //   child:
+    ProfileScreen(),
+    // ),
+  ];
+  Future<UserModel> getUserModelByOwnerUid(String uId) async {
+    UserModel? internalUserModel;
+    String userUid = uId;
+    final futureData =
+        await FirebaseFirestore.instance.collection('users').doc(userUid).get();
+    return UserModel.fromJson(futureData.data()!);
+  }
+
+  int curIndex = 0;
+  void changeIndex(int index) {
+    curIndex = index;
+    emit(ChangeIndexState());
+  }
+
+  Future<File> pickBookImage(bool isCam) async {
     String? photoUrl;
-    await _picker.pickImage(source: ImageSource.gallery).then((value) {
+    await _picker
+        .pickImage(source: !isCam ? ImageSource.gallery : ImageSource.camera)
+        .then((value) {
       bookImage = File(value!.path);
-    }).then((value) async {
-      emit(PickPhotoLoadingState());
-      await firebase_storage.FirebaseStorage.instance
-          .ref()
-          .child('books/${Uri.file(bookImage!.path).pathSegments.last}')
-          .putFile(bookImage!)
-          .then((p0) async {
-        await p0.ref.getDownloadURL().then((photoLink) async {
-          debugPrint(photoLink);
-          photoUrl = photoLink;
-          emit(PickPhotoLoadedState());
-          return photoUrl;
-        });
-      });
+      emit(PickPhotoLoadedState());
     });
-    emit(PickPhotoLoadedState());
-    return photoUrl!;
+    // .then((value) async {
+    //   emit(PickPhotoLoadingState());
+    //   await firebase_storage.FirebaseStorage.instance
+    //       .ref()
+    //       .child('books/${Uri.file(bookImage!.path).pathSegments.last}')
+    //       .putFile(bookImage!)
+    //       .then((p0) async {
+    //     await p0.ref.getDownloadURL().then((photoLink) async {
+    //       debugPrint(photoLink);
+    //       photoUrl = photoLink;
+    //       emit(PickPhotoLoadedState());
+    //       return photoUrl;
+    //     });
+    //   });
+    // });
+    return bookImage!;
   }
 
   Future<void> signUpWithEmailAndPassword({
@@ -54,13 +108,14 @@ class AuthCubit extends Cubit<AuthState> {
     required String name,
     required String phone,
     required InterstsModel interstsModel,
-    required bool isWhatsapp,
+    required String location,
     context,
   }) async {
     instance
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) {
           UserModel userModel = UserModel(
+<<<<<<< HEAD
             interstsModel: interstsModel,
             email: email,
             name: name,
@@ -69,6 +124,15 @@ class AuthCubit extends Cubit<AuthState> {
             isSemesterPaid: false,
             phone: phone,
           );
+=======
+              interstsModel: interstsModel,
+              userUid: value.user!.uid,
+              email: email,
+              name: name,
+              location: location,
+              phone: phone,
+              picture: '');
+>>>>>>> d425cdc95f41d99c525d988e9700634c20036c31
           FirebaseFirestore.instance
               .collection('users')
               .doc(value.user!.uid)
@@ -88,8 +152,7 @@ class AuthCubit extends Cubit<AuthState> {
         })
         .then(
           (value) async => {
-            await SharedPrefHelper.putStr(
-                key: 'userName', value: name),
+            await SharedPrefHelper.putStr(key: 'userName', value: name),
             emit(
               RegisterSuccessState(),
             ),
@@ -100,9 +163,8 @@ class AuthCubit extends Cubit<AuthState> {
           final snack = SnackBar(
             backgroundColor: Colors.red,
             content: Text(onError.toString()),
-            duration: Duration(seconds: 2),
+            duration: const Duration(seconds: 2),
           );
-
           ScaffoldMessenger.of(context).showSnackBar(snack);
           emit(EmailauthError(onError.toString()));
         });
@@ -122,8 +184,9 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  Future<void> toggleSwitchOfBooks({required BookModel book}) async {
-    bool localIsValid = !book.isValid!;
+  Future<void> toggleSwitchOfBooks(
+      {required BookModel book, required bool val}) async {
+    bool localIsValid = val;
     print(localIsValid);
     await FirebaseFirestore.instance
         .collection('books')
@@ -289,12 +352,12 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   UserModel getCurrentFirestoreUser() {
-    UserModel? internalUserModel;
     String userUid = getLoggedInUser().uid;
     FirebaseFirestore.instance.collection('users').doc(userUid).get().then((v) {
-      return internalUserModel = UserModel.fromJson(v.data()!);
+      userModel = UserModel.fromJson(v.data()!);
+      emit(GetBooksSuccessState());
     });
-    return internalUserModel!;
+    return userModel!;
   }
 
   void getRecommended() async {
@@ -314,8 +377,6 @@ class AuthCubit extends Cubit<AuthState> {
         .toList();
     map.forEach((key) async {
       await getSomeBooksByCategory(category: key.key).then((vv) {
-        // reccomendedBooks =
-        //     vv.where((element) => !reccomendedBooks.contains(element)).toList();
         vv.forEach((book) {
           if (!reccomendedBooks.contains(book)) {
             reccomendedBooks.add(book);
@@ -327,27 +388,81 @@ class AuthCubit extends Cubit<AuthState> {
     debugPrint(reccomendedBooks.length.toString());
   }
 
+  List<BookModel> userBooks = [];
+  Future<List<BookModel>> getUserBook(
+      {required String userUid, bool? isMyBooks}) async {
+    List<BookModel> books = [];
+    isMyBooks!
+        ? await FirebaseFirestore.instance
+            .collection('books')
+            .where('ownerUid', isEqualTo: userUid)
+            .get()
+            .then((value) {
+            for (var element in value.docs) {
+              books.add(BookModel.fromJson(element.data()));
+            }
+          })
+        : await FirebaseFirestore.instance
+            .collection('books')
+            .where('ownerUid', isEqualTo: userUid)
+            .where('isValid', isEqualTo: true)
+            .get()
+            .then((value) {
+            for (var element in value.docs) {
+              books.add(BookModel.fromJson(element.data()));
+            }
+          });
+    debugPrint(books.length.toString());
+    return books;
+  }
+
+  void getUserBooks({String? uId}) async {
+    print(instance.currentUser!.uid);
+    getUserBook(
+            userUid: uId ?? instance.currentUser!.uid, isMyBooks: uId == null)
+        .then((x) {
+      userBooks = [];
+      userBooks = x;
+      print('books : ${userBooks.length}');
+      emit(GetnovelBooksState());
+    });
+  }
+
   void addBook({
     required String category,
     required String name,
     required String authorName,
   }) async {
+    String? photoUrl;
     String bookId = RandomString.getRandomString(20);
-    await pickBookImage(bookId).then((value) async {
-      BookModel bookModel = BookModel(
-          ownerUid: instance.currentUser!.uid,
-          category: category,
-          picture: value,
-          name: name,
-          bookId: bookId,
-          authorName: authorName);
-      await FirebaseFirestore.instance
-          .collection('books')
-          .doc(bookId)
-          .set(bookModel.toJson());
-    }).then((value) {
-      emit(BookAddedSuccessState());
-    });
+    // emit(PickPhotoLoadingState());
+    if (bookImage != null) {
+      await firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('books/${Uri.file(bookImage!.path).pathSegments.last}')
+          .putFile(bookImage!)
+          .then((p0) async {
+        await p0.ref.getDownloadURL().then((photoLink) async {
+          debugPrint(photoLink);
+          photoUrl = photoLink;
+          emit(PickPhotoLoadedState());
+          BookModel bookModel = BookModel(
+              ownerUid: instance.currentUser!.uid,
+              category: category,
+              picture: photoUrl,
+              name: name,
+              bookId: bookId,
+              authorName: authorName);
+          await FirebaseFirestore.instance
+              .collection('books')
+              .doc(bookId)
+              .set(bookModel.toJson());
+        }).then((value) {
+          emit(BookAddedSuccessState());
+          bookImage = null;
+        });
+      });
+    }
   }
 
   Future<void> loginWithEmailAndPassword(
@@ -360,7 +475,7 @@ class AuthCubit extends Cubit<AuthState> {
           .doc(FirebaseAuth.instance.currentUser?.uid)
           .get()
           .then((value) async => {
-            print('name : '+value['name']),
+                print('name : ' + value['name']),
                 await SharedPrefHelper.putStr(
                     key: 'userName', value: value['name'])
               });
@@ -391,5 +506,16 @@ class AuthCubit extends Cubit<AuthState> {
       debugPrint("requested ya basha");
       emit(BookRequestedState());
     });
+  }
+
+  void bottomSheetShowState({required bool isShow, required IconData icon}) {
+    isBottomSheetShow = isShow;
+    fabIcon = icon;
+    emit(AppChangeSheetShowState());
+  }
+
+  void dropdownValueState({required String value}) {
+    dropdownValue = value;
+    emit(dropdownValueSheetShowState());
   }
 }

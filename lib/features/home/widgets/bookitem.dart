@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ketabna/core/constants/strings.dart';
 import '../../../core/models/book_model.dart';
 import '../../../core/utils/shared_pref_helper.dart';
 import '../../../core/widgets/components.dart';
@@ -44,7 +46,6 @@ class BookItem extends StatelessWidget {
                       },
                     });
                   }
-
                 })
               });
     } catch (error) {
@@ -75,74 +76,87 @@ class BookItem extends StatelessWidget {
         });
   }
 
-   BookItem({Key? key, required this.bookModel}) : super(key: key);
+  BookItem({Key? key, required this.bookModel}) : super(key: key);
   final BookModel bookModel;
 
   @override
   Widget build(BuildContext context) {
-
+    print(bookModel.picture);
     return InkWell(
       onTap: () async {
-        String ownerUid = bookModel.ownerUid.toString();
-        print('ownerUid'+ownerUid);
-        String ownerName = '';
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(ownerUid)
-            .get()
-            .then((value) => {
-                  ownerName = value['name'],
-          print('ownerName :'+ownerName)
-                });
-        checkForOldConversation(bookOwnerUid: ownerUid,myId:myUid,bookOwnerName: ownerName ).then((value) => {
-          navigateTo(context : context , widget :ChatScreen(
-            ownerName: ownerName,
-            ownerUid: ownerUid,
-            conversationDocId: value,
-          )),
+        // String ownerUid = bookModel.ownerUid.toString();
+        // print('ownerUid'+ownerUid);
+        // String ownerName = '';
+        // await FirebaseFirestore.instance
+        //     .collection('users')
+        //     .doc(ownerUid)
+        //     .get()
+        //     .then((value) => {
+        //           ownerName = value['name'],
+        //   print('ownerName :'+ownerName)
+        //         });
+        // checkForOldConversation(bookOwnerUid: ownerUid,myId:myUid,bookOwnerName: ownerName ).then((value) => {
+        //   navigateTo(context : context , widget :ChatScreen(
+        //     ownerName: ownerName,
+        //     ownerUid: ownerUid,
+        //     conversationDocId: value,
+        //   )),
 
-        });
+        // });
       },
       child: SizedBox(
         height: MediaQuery.of(context).size.height / 3,
-        width: 150,
+        width: 130,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
               child: Container(
+        //         child: bookModel.picture != null ? CachedNetworkImage(
+        // imageUrl: bookModel.picture!,
+        //   placeholder: (context, url) => const Center(
+        //       child: SizedBox(
+        //         child: CircularProgressIndicator(),
+        //         height: 30.0,
+        //         width: 30.0,
+        //       )),
+        //   errorWidget: (context, url, error) => Center(
+        //     child: Text('$error'),
+        //   ),
+        //   fit: BoxFit.fitHeight,
+        //   width: double.infinity,
+        // ): CircularProgressIndicator(color: kmMainColor,),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  image: bookModel.picture != ""
+                      ? DecorationImage(
+                    image: NetworkImage(
+                      bookModel.picture!,
+                    ),
+                    fit: BoxFit.fill,
+                  )
+                      : const DecorationImage(
+                    image: AssetImage(
+                      'assets/image/Books.png',
+                    ),
+                  ),
+                  borderRadius: BorderRadius.circular(13),
                 ),
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                width: 135,
-                height: 160,
-                child: Image(
-                  image: NetworkImage('${bookModel.picture}'),
-                  fit: BoxFit.cover,
-                ),
+                height: 140,
               ),
-            ),
-            const SizedBox(
-              height: 5,
             ),
             Text(
               '${bookModel.name}',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               maxLines: 3,
-            ),
-            const SizedBox(
-              height: 5,
             ),
             Text(
               '${bookModel.authorName}',
               style: TextStyle(
-                color: Colors.grey[500],
-                fontStyle: FontStyle.italic,
-              ),
+                  color: Colors.grey[500],
+                  fontSize: 12,
+                  fontWeight: FontWeight.w300),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
