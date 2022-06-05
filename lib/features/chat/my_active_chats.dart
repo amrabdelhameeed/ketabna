@@ -10,6 +10,7 @@ import 'chat_screen.dart';
 final myId = FirebaseAuth.instance.currentUser?.uid;
 final fireStore = FirebaseFirestore.instance;
 final myName = SharedPrefHelper.getStr(key: 'userName');
+int readMessagesForOwner = 0;
 
 class MyActiveChats extends StatefulWidget {
   const MyActiveChats({Key? key}) : super(key: key);
@@ -25,6 +26,8 @@ class _MyActiveChatsState extends State<MyActiveChats> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
+        centerTitle: true,
+        title: const Text('Your Chats',style: TextStyle(color: Colors.black87),),
         iconTheme: const IconThemeData(
           color: AppColors.secondaryColor,
           size: 32,
@@ -76,23 +79,29 @@ late String chatOwnerName ;
 
         for (var chat in activeChats!) {
           List messageSender = chat.get('ids');
-          if(myId == 1){
-            chatOwnerId = messageSender[0];
-          }else{
+          if(messageSender[0] == myId){
             chatOwnerId = messageSender[1];
+          }else{
+            chatOwnerId = messageSender[0];
           }
 
           if (messageSender.contains(myId)) {
             conversationDocId = chat.id;
             final lastMessageTime = chat.get('lastMessageTime');
-            final lastMessageSent = chat
-                .get('messages')
-                .last['text'];
+            String? lastMessageSent;
+            try{
+               lastMessageSent = chat
+                  .get('messages')
+                  .last['text'];
+            }catch (error){}
+
+            // ignore: unnecessary_null_comparison
+            if(lastMessageSent==null){
+              lastMessageSent = 'No messages yet';
+            }
             final numberOfMessagesOfChat = chat
                 .get('messages')
                 .length;
-
-
             final List nameOfTwoUsers = chat.get('names');
             final myNameIndex = nameOfTwoUsers.indexOf(myName);
             if(myNameIndex == 1){
@@ -101,16 +110,18 @@ late String chatOwnerName ;
               chatOwnerName = nameOfTwoUsers[1];
             }
             final readed_messages= chat.get('readed_messages')[myId];
-             int myReadedMessage = int.parse(readed_messages);
 
-            final numberOfUnreadMessage = numberOfMessagesOfChat - myReadedMessage;
+            readMessagesForOwner= chat.get('readed_messages')[chatOwnerId];
+
+            final numberOfUnreadMessage = numberOfMessagesOfChat - readed_messages;
 
             activeChatWidget.add(ActiveChatWidget(
               conversationDocId: conversationDocId,
               chatOwnerName: chatOwnerName,
-              numberOfMessagesOfChat: numberOfMessagesOfChat.toString(),
+              numberOfMessagesOfChat: numberOfMessagesOfChat,
               chatOwnerId: chatOwnerId,
-              numberOfUnreadMessage: numberOfUnreadMessage.toString(),
+              numberOfUnreadMessage: numberOfUnreadMessage,
+              readMessagesForOwner: readMessagesForOwner,
               lastMessageTime: lastMessageTime,
               lastMessageSent: lastMessageSent,),);
             activeChatWidget.sort((a, b) => a.lastMessageTime.compareTo(b.lastMessageTime));
@@ -132,8 +143,9 @@ class ActiveChatWidget extends StatelessWidget {
   final String chatOwnerId;
   final String lastMessageSent;
   final String lastMessageTime;
-  final String numberOfUnreadMessage;
-  final String numberOfMessagesOfChat;
+  final int numberOfUnreadMessage;
+  final int readMessagesForOwner;
+  final int numberOfMessagesOfChat;
   final String conversationDocId;
 
   ActiveChatWidget({required this.chatOwnerName,
@@ -141,6 +153,7 @@ class ActiveChatWidget extends StatelessWidget {
     required this.lastMessageTime,
     required this.chatOwnerId,
     required this.numberOfMessagesOfChat,
+    required this.readMessagesForOwner,
     required this.conversationDocId,
     required this.lastMessageSent});
 
@@ -148,16 +161,25 @@ class ActiveChatWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: ()async{
-        fireStore.collection('chats').doc(conversationDocId).update({
+        print('chatOwnerId : '+chatOwnerId);
+        print('myId : '+myId!);
+        await fireStore.collection('chats').doc(conversationDocId).update({
           'readed_messages':{
             '$myId':numberOfMessagesOfChat,
+            '$chatOwnerId':readMessagesForOwner,
           },
+        }).then((value) => {
+          navigateTo(context : context , widget :ChatScreen(
+            ownerName: chatOwnerName,
+            ownerUid: chatOwnerId,
+            conversationDocId: conversationDocId,
+          ))
         });
-        navigateTo(context : context , widget :ChatScreen(
-          ownerName: chatOwnerName,
-          ownerUid: chatOwnerId,
-          conversationDocId: conversationDocId,
-        ));
+        // navigateTo(context : context , widget :ChatScreen(
+        //   ownerName: chatOwnerName,
+        //   ownerUid: chatOwnerId,
+        //   conversationDocId: conversationDocId,
+        // ));
       },
       child: Card(
         elevation: 3,
@@ -170,9 +192,9 @@ class ActiveChatWidget extends StatelessWidget {
           title: Text(chatOwnerName,style: TextStyle(color: Colors.black),),
           subtitle: Text(lastMessageSent), 
          
-          trailing:int.parse(numberOfUnreadMessage)==0 ?const Text('') : CircleAvatar(
+          trailing:numberOfUnreadMessage==0 ?const Text('') : CircleAvatar(
             radius: 10,
-            child:Text(numberOfUnreadMessage),
+            child:Text(numberOfUnreadMessage.toString()),
           ),
         ),
       ),

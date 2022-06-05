@@ -19,7 +19,7 @@ final _firestore = FirebaseFirestore.instance;
 final String? _auth = FirebaseAuth.instance.currentUser?.uid.toString();
 List<String> imagesUrl = [];
 int numberOfMessages = 0;
-int readedMessages = 0;
+int readedMessagesForOwner = 0;
 int totalMessages = 0;
 
 class ChatScreen extends StatefulWidget {
@@ -53,7 +53,7 @@ class _ChatScreenState extends State<ChatScreen> {
     super.dispose();
   }
 
-  sendMessage(message) async {
+  sendMessage({message, ownerUid,}) async {
     final timeNow = DateTime.now().toIso8601String().toString();
     await _firestore.collection('chats').doc(widget.conversationDocId).update(
       {
@@ -65,6 +65,10 @@ class _ChatScreenState extends State<ChatScreen> {
           }
         ]),
         'lastMessageTime':timeNow,
+        'readed_messages':{
+          '$_auth':numberOfMessages+1,
+          '$ownerUid':readedMessagesForOwner,
+        },
       },
     );
   }
@@ -79,84 +83,8 @@ class _ChatScreenState extends State<ChatScreen> {
     final snapHot = await uploadedTask.whenComplete(() => {});
     final urlDownload = await snapHot.ref.getDownloadURL();
     print('urlDownload : ' + urlDownload);
-    sendMessage(urlDownload);
+    sendMessage(message: urlDownload,ownerUid: widget.ownerUid);
   }
-
-  // Future<bool> checkForOldConversation() async {
-  //   String ids;
-  //   bool containUid_1 = false;
-  //   bool containUid_2 = false;
-  //   bool oldchat = false;
-  //   try {
-  //     await FirebaseFirestore.instance
-  //         .collection("chats")
-  //         .get()
-  //         .then((value) => {
-  //               value.docs.forEach((element) {
-  //                 ids = element.data()['ids'].toString();
-  //                 containUid_1 = ids.contains(widget.ownerUid);
-  //                 containUid_2 = ids.contains(_auth!);
-  //                 if (containUid_1 && containUid_2) {
-  //                   print("element.id : "+element.id);
-  //                   widget.conversationDocId = element.id;
-  //                 }
-  //                 oldchat = true;
-  //               })
-  //             });
-  //   } catch (error) {
-  //     print(error.toString());
-  //   }
-  //   if (!oldchat) {
-  //     setNewConversation();
-  //   }
-  //   return containUid_1;
-  // }
-
-  // Future getMessages() async {
-  //   await FirebaseFirestore.instance.collection("chats").get().then((value) => {
-  //         value.docs.forEach((element) {
-  //           try {
-  //             numberOfMessages = element.data()['messages'].length;
-  //             print("numberOfMessages : " + numberOfMessages.toString());
-  //             readedMessages = element.data()['readedMessages'];
-  //             totalMessages = element.data()['totalMessages'];
-  //             for (int i = 0; i < numberOfMessages; i++) {
-  //               final text = element.data()['messages'][i]['text'];
-  //               final sender = element.data()['messages'][i]['sender'];
-  //               final time =
-  //                   DateTime.parse(element.data()['messages'][i]['time']);
-  //
-  //               messagesWidget.add(MessageBuble(
-  //                 text: text,
-  //                 sender: sender,
-  //                 time: time,
-  //                 isMe: element.data()['messages'][i]['sender'] == _auth,
-  //               ));
-  //             }
-  //             messagesWidget.sort((a, b) => a.time.compareTo(b.time));
-  //             print("sender : " + messagesWidget[0].text);
-  //           } catch (error) {
-  //             print(error.toString());
-  //             return;
-  //           }
-  //         })
-  //       });
-  // }
-
-  // Future setNewConversation() async {
-  //   await _firestore.collection("chats").add({
-  //     'ids': [
-  //       widget.ownerUid,
-  //       _auth,
-  //     ],
-  //     'messages': [],
-  //     'readedMessages': 0,
-  //     'totalMessages': 0,
-  //   }).then((documentSnapshot) => {
-  //         print("Added Data with ID: ${documentSnapshot.id}"),
-  //         conversationDocId = documentSnapshot.id,
-  //       });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -181,7 +109,7 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            MessageStream(conversationDocId: widget.conversationDocId),
+            MessageStream(conversationDocId: widget.conversationDocId,ownerUid: widget.ownerUid),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -207,7 +135,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     onPressed: () async {
                       messageTextController.clear();
                       //Implement send functionality.
-                      sendMessage(message);
+                      await sendMessage(message:message,ownerUid:widget.ownerUid);
                     },
                     child: const Text(
                       'Send',
@@ -225,9 +153,10 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class MessageStream extends StatelessWidget {
-  MessageStream({required this.conversationDocId});
+  MessageStream({required this.conversationDocId,required this.ownerUid});
 
   final String conversationDocId;
+  final String ownerUid;
 
   @override
   Widget build(BuildContext context) {
@@ -247,16 +176,13 @@ class MessageStream extends StatelessWidget {
           List<MessageBubble> messagesWidget = [];
           imagesUrl = [];
             numberOfMessages = conversationDoc['messages'].length;
-          // readedMessages = conversationDoc['readedMessages'];
-          // totalMessages = conversationDoc['totalMessages'];
+          readedMessagesForOwner= conversationDoc['readed_messages'][ownerUid];
           for (int i = 0; i < numberOfMessages; i++) {
             final text = conversationDoc['messages'][i]['text'];
             final sender = conversationDoc['messages'][i]['sender'];
             final time = DateTime.parse(conversationDoc['messages'][i]['time']);
             if (text.contains('firebasestorage.googleapis.com')) {
-
               imagesUrl.add(text);
-              print('imagesUrl : ' + imagesUrl.length.toString());
             }
             messagesWidget.add(MessageBubble(
               text: text,
@@ -291,7 +217,7 @@ class MessageBubble extends StatelessWidget {
 launchUri(Uri url)async{
   if(!text.contains('firebasestorage.googleapis.com') && text.contains('http')&& await canLaunchUrl(url)){
     // ignore: deprecated_member_use
-    await launchUrl(url,mode: LaunchMode.inAppWebView);
+    await launchUrl(url,mode: LaunchMode.externalApplication);
   }
 }
   @override
