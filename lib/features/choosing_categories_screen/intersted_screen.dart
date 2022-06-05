@@ -92,6 +92,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 crossAxisSpacing: 16,
+                mainAxisSpacing: 20,
               ),
               itemBuilder: (context, index) {
                 return CategoryItem(

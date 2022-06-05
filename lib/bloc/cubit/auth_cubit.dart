@@ -12,6 +12,7 @@ import 'package:ketabna/core/models/user_model.dart';
 import 'package:ketabna/core/utils/random_string.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:ketabna/core/utils/shared_pref_helper.dart';
+import 'package:ketabna/features/chat/my_active_chats.dart';
 import 'package:ketabna/features/home/home_screen.dart';
 import 'package:ketabna/features/home/widgets/add_book.dart';
 import 'package:ketabna/features/search/search_screen.dart';
@@ -54,7 +55,7 @@ class AuthCubit extends Cubit<AuthState> {
     // BlocProvider<AuthCubit>.value(
     //   value: authCubit!,
     //   child:
-    AddBook(),
+    MyActiveChats(),
     // ),
     // /* 5 Profile Screen*/ BlocProvider<AuthCubit>.value(
     //   value: authCubit!..getUserBooks(),

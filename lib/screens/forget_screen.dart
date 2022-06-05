@@ -9,7 +9,6 @@ import '../core/widgets/default_text_form_field.dart';
 
 class ForgetScreen extends StatelessWidget {
   ForgetScreen({Key? key}) : super(key: key);
-
   getHeight({context}) {
     final height = MediaQuery.of(context).size.height;
     return height;

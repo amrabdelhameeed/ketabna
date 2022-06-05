@@ -58,143 +58,153 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
         var cubit = AuthCubit.get(context);
         print(cubit.userModel!.name);
-        return Scaffold(
-          appBar: AppBar(
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    cubit.logOut().then((value) {
-                      navigateAndFinish(context, SignInUPScreen());
-                    });
-                  },
-                  child: Text('log out')),
-            ],
-            backgroundColor: Colors.transparent,
-            elevation: 0.0,
-            iconTheme: const IconThemeData(
-              color: AppColors.secondaryColor,
-              size: 32,
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: Scaffold(
+            appBar: AppBar(
+              leading: Container(),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      cubit.logOut().then((value) {
+                        navigateAndFinish(context, SignInUPScreen());
+                      });
+                    },
+                    child: Text('log out')),
+              ],
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
+              iconTheme: const IconThemeData(
+                color: AppColors.secondaryColor,
+                size: 32,
+              ),
             ),
-          ),
-          body: Container(
-            padding: const EdgeInsetsDirectional.all(10),
-            width: double.infinity,
-            height: double.infinity,
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  // profile image
-                  Stack(
-                    alignment: AlignmentDirectional.bottomEnd,
-                    children: [
-                      // image
-                      cubit.userModel!.picture == '' ||
-                              cubit.userModel!.picture == null
-                          ? const CircleAvatar(
-                              radius: 80,
-                              backgroundImage: AssetImage('assets/image/b.png'))
-                          : CircleAvatar(
-                              radius: 80,
-                              backgroundImage:
-                                  NetworkImage(cubit.userModel!.picture!)),
-                      // camera icon
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.grey.shade600,
-                        child: IconButton(
-                          tooltip: 'Upload Image',
-                          splashRadius: 30,
-                          onPressed: () {
-                            //upload picture
-                            cubit.editProfilePicture().then((value) {
-                              AuthCubit.get(context).getCurrentFirestoreUser();
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.linked_camera,
-                            size: 25,
-                            color: Colors.white,
+            body: Container(
+              padding: const EdgeInsetsDirectional.all(10),
+              width: double.infinity,
+              height: double.infinity,
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    // profile image
+                    Stack(
+                      alignment: AlignmentDirectional.bottomEnd,
+                      children: [
+                        // image
+                        cubit.userModel!.picture == '' ||
+                                cubit.userModel!.picture == null
+                            ? const CircleAvatar(
+                                radius: 80,
+                                backgroundImage:
+                                    AssetImage('assets/image/b.png'))
+                            : CircleAvatar(
+                                radius: 80,
+                                backgroundImage:
+                                    NetworkImage(cubit.userModel!.picture!)),
+                        // camera icon
+                        CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.grey.shade600,
+                          child: IconButton(
+                            tooltip: 'Upload Image',
+                            splashRadius: 30,
+                            onPressed: () {
+                              //upload picture
+                              cubit.editProfilePicture().then((value) {
+                                AuthCubit.get(context)
+                                    .getCurrentFirestoreUser();
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.linked_camera,
+                              size: 25,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
 
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  // Name
-                  Text(
-                    cubit.userModel!.name!,
-                    maxLines: 1,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline4!
-                        .copyWith(fontSize: 28, fontWeight: FontWeight.bold),
-                  ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    // Name
+                    Text(
+                      cubit.userModel!.name!,
+                      maxLines: 1,
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4!
+                          .copyWith(fontSize: 28, fontWeight: FontWeight.bold),
+                    ),
 
-                  const SizedBox(
-                    height: 20,
-                  ),
+                    const SizedBox(
+                      height: 20,
+                    ),
 
-                  DefaultFormButton(
-                    text: 'Edit Profile',
-                    width: 120,
-                    height: 35,
-                    radius: 10,
-                    padding: 10,
-                    textColor: Colors.white,
-                    fillColor: AppColors.secondaryColor,
-                  ),
+                    DefaultFormButton(
+                      text: 'Edit Profile',
+                      width: 120,
+                      height: 35,
+                      radius: 10,
+                      padding: 10,
+                      textColor: Colors.white,
+                      fillColor: AppColors.secondaryColor,
+                    ),
 
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  // text My books
-                  Padding(
-                    padding: const EdgeInsets.only(left: 24),
-                    child: Align(
-                      alignment: AlignmentDirectional.topStart,
-                      child: Text(
-                        'My books',
-                        style: Theme.of(context).textTheme.headline4!.copyWith(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    // text My books
+                    Padding(
+                      padding: const EdgeInsets.only(left: 24),
+                      child: Align(
+                        alignment: AlignmentDirectional.topStart,
+                        child: Text(
+                          'My books',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4!
+                              .copyWith(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
-                  ),
-                  // item book
-                  BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
-                    var cubit = AuthCubit.get(context);
-                    if (cubit.userBooks.isEmpty) {
-                      return const Center(
-                        child: Text('there is no books added'),
-                      );
-                    } else {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) => buildItemBook(
-                            image: cubit.userBooks[index].picture ?? '',
-                            context: context,
-                            title: cubit.userBooks[index].name ?? '',
-                            description:
-                                cubit.userBooks[index].describtion ?? '',
-                            isCheckedSwitch:
-                                cubit.userBooks[index].isValid ?? false,
-                            switchChange: (value) {
-                              cubit.userBooks[index].isValid = value;
-                              cubit.toggleSwitchOfBooks(
-                                  val: value, book: cubit.userBooks[index]);
-                              setState(() {});
-                            }),
-                        itemCount: cubit.userBooks.length,
-                      );
-                    }
-                  }),
-                ],
+                    // item book
+                    BlocBuilder<AuthCubit, AuthState>(
+                        builder: (context, state) {
+                      var cubit = AuthCubit.get(context);
+                      if (cubit.userBooks.isEmpty) {
+                        return const Center(
+                          child: Text('there is no books added'),
+                        );
+                      } else {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) => buildItemBook(
+                              image: cubit.userBooks[index].picture ?? '',
+                              context: context,
+                              title: cubit.userBooks[index].name ?? '',
+                              description:
+                                  cubit.userBooks[index].describtion ?? '',
+                              isCheckedSwitch:
+                                  cubit.userBooks[index].isValid ?? false,
+                              switchChange: (value) {
+                                cubit.userBooks[index].isValid = value;
+                                cubit.toggleSwitchOfBooks(
+                                    val: value, book: cubit.userBooks[index]);
+                                setState(() {});
+                              }),
+                          itemCount: cubit.userBooks.length,
+                        );
+                      }
+                    }),
+                  ],
+                ),
               ),
             ),
           ),
