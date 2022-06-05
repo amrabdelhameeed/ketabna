@@ -1,4 +1,3 @@
-// Writen by BALY
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ketabna/bloc/cubit/auth_cubit.dart';
@@ -92,6 +91,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 crossAxisSpacing: 16,
+                mainAxisSpacing: 20,
               ),
               itemBuilder: (context, index) {
                 return CategoryItem(
