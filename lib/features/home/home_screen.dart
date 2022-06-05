@@ -68,193 +68,199 @@ class HomeScreen extends StatelessWidget {
           },
           child: Scaffold(
             key: scaffoldKey,
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                if (cubit.isBottomSheetShow) {
-                  if (formKey.currentState!.validate()) {
-                    {
-                      {
-                        // Navigator.pop(context);
-                        //  cubit.bottomSheetShowState(isShow: false , icon: Icons.add);
-                        // fabIcon = Icons.edit;
-                      }
-                    }
-                  }
-                } else {
-                  scaffoldKey.currentState!
-                      .showBottomSheet(
-                        (context) => Container(
-                          padding: const EdgeInsetsDirectional.all(20),
-                          height: MediaQuery.of(context).size.height * 2 / 3,
-                          child: Form(
-                            key: formKey,
-                            child: SingleChildScrollView(
-                              physics: const BouncingScrollPhysics(),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                2 /
-                                                5,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                1 /
-                                                4,
-                                        decoration:
-                                            BoxDecoration(border: Border.all()),
-                                        child: Center(
-                                            child: image != null
-                                                ? Image.file(image!)
-                                                : const Text(
-                                                    "No image selected")),
-                                      ),
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      Column(
-                                        children: [
-                                          MaterialButton(
-                                              color: Colors.blue,
-                                              child: const Text("Gallery",
-                                                  style: TextStyle(
-                                                      color: Colors.white70,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              onPressed: () {
-                                                // pickImage();
-                                              }),
-                                          MaterialButton(
-                                              color: Colors.blue,
-                                              child: const Text("Camera",
-                                                  style: TextStyle(
-                                                      color: Colors.white70,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              onPressed: () {
-                                                // pickImageC();
-                                              }),
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                1 /
-                                                3,
-                                            child: DropdownButton<String>(
-                                              value: cubit.dropdownValue,
-                                              isExpanded: true,
-                                              icon: const Icon(
-                                                Icons
-                                                    .arrow_drop_down_circle_outlined,
-                                                color: Color(0xFFF5B53F),
-                                              ),
-                                              elevation: 16,
-                                              style: const TextStyle(
-                                                  color: Color(0xFFF5B53F)),
-                                              underline: Container(
-                                                height: 2,
-                                                color: const Color(0xFFF5B53F),
-                                              ),
-                                              onChanged: (String? newValue) {
-                                                cubit.dropdownValue = newValue!;
-                                              },
-                                              items: <String>[
-                                                'Biography',
-                                                'Children',
-                                                'Fantasy',
-                                                'Graphic Novels',
-                                                'History',
-                                                'Horror',
-                                                'Romance',
-                                                'Science Fiction'
-                                              ].map<DropdownMenuItem<String>>(
-                                                  (String value) {
-                                                return DropdownMenuItem<String>(
-                                                  value: value,
-                                                  child: Text(value),
-                                                );
-                                              }).toList(),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  DefaultTextFormField(
-                                    hint: 'Book Name - اسم الكتاب',
-                                    controller: bookNameController,
-                                    validationText:
-                                        'Book name can\'t be empty.',
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  DefaultTextFormField(
-                                    hint: 'author Name - اسم الكاتب ',
-                                    controller: authorNameController,
-                                    validationText:
-                                        'author name can\'t be empty.',
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Container(
-                                    padding:
-                                        const EdgeInsetsDirectional.all(10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[200],
-                                      borderRadius: const BorderRadius.all(
-                                          const Radius.circular(30)),
-                                    ),
-                                    child: TextField(
-                                      maxLines: 10,
-                                      controller: descriptionController,
-                                      decoration:
-                                          const InputDecoration.collapsed(
-                                        hintText:
-                                            "Write your description here - اكتب وصفك هنا ",
-                                        hintStyle: TextStyle(
-                                          color: AppColors.formFontColor,
-                                        ),
-                                      ),
-                                      textAlignVertical:
-                                          TextAlignVertical.center,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(60.0),
-                          ),
-                        ),
-                        elevation: 80,
-                        backgroundColor: const Color(0xFFF5F1D7),
-                      )
-                      .closed
-                      .then((value) {
-                    cubit.bottomSheetShowState(isShow: false, icon: Icons.add);
-                  });
-                  cubit.bottomSheetShowState(isShow: true, icon: Icons.check);
-                }
-              },
-              child: Icon(cubit.fabIcon),
-            ),
+            // floatingActionButton: FloatingActionButton(
+            //   onPressed: () {
+            //     if (cubit.isBottomSheetShow) {
+            //       if (formKey.currentState!.validate()) {
+            //         {
+            //           {
+            //             // Navigator.pop(context);
+            //             //  cubit.bottomSheetShowState(isShow: false , icon: Icons.add);
+            //             // fabIcon = Icons.edit;
+            //           }
+            //         }
+            //       }
+            //     } else {
+            //       scaffoldKey.currentState!
+            //           .showBottomSheet(
+            //             (context) => Container(
+            //               padding: const EdgeInsetsDirectional.all(20),
+            //               height: MediaQuery.of(context).size.height * 2 / 3,
+            //               child: Form(
+            //                 key: formKey,
+            //                 child: SingleChildScrollView(
+            //                   physics: const BouncingScrollPhysics(),
+            //                   child: Column(
+            //                     children: [
+            //                       Row(
+            //                         children: [
+            //                           Container(
+            //                             width:
+            //                                 MediaQuery.of(context).size.width *
+            //                                     2 /
+            //                                     5,
+            //                             height:
+            //                                 MediaQuery.of(context).size.height *
+            //                                     1 /
+            //                                     4,
+            //                             decoration:
+            //                                 BoxDecoration(border: Border.all()),
+            //                             child: Center(
+            //                                 child: image != null
+            //                                     ? Image.file(image!)
+            //                                     : const Text(
+            //                                         "No image selected")),
+            //                           ),
+            //                           const SizedBox(
+            //                             width: 20,
+            //                           ),
+            //                           Column(
+            //                             children: [
+            //                               MaterialButton(
+            //                                   color: Colors.blue,
+            //                                   child: const Text("Gallery",
+            //                                       style: TextStyle(
+            //                                           color: Colors.white70,
+            //                                           fontWeight:
+            //                                               FontWeight.bold)),
+            //                                   onPressed: () {
+            //                                     // pickImage();
+            //                                   }),
+            //                               MaterialButton(
+            //                                   color: Colors.blue,
+            //                                   child: const Text("Camera",
+            //                                       style: TextStyle(
+            //                                           color: Colors.white70,
+            //                                           fontWeight:
+            //                                               FontWeight.bold)),
+            //                                   onPressed: () {
+            //                                     // pickImageC();
+            //                                   }),
+            //                               Container(
+            //                                 width: MediaQuery.of(context)
+            //                                         .size
+            //                                         .width *
+            //                                     1 /
+            //                                     3,
+            //                                 child: DropdownButton<String>(
+            //                                   value: cubit.dropdownValue,
+            //                                   isExpanded: true,
+            //                                   icon: const Icon(
+            //                                     Icons
+            //                                         .arrow_drop_down_circle_outlined,
+            //                                     color: Color(0xFFF5B53F),
+            //                                   ),
+            //                                   elevation: 16,
+            //                                   style: const TextStyle(
+            //                                       color: Color(0xFFF5B53F)),
+            //                                   underline: Container(
+            //                                     height: 2,
+            //                                     color: const Color(0xFFF5B53F),
+            //                                   ),
+            //                                   onChanged: (String? newValue) {
+            //                                     cubit.dropdownValue = newValue!;
+            //                                   },
+            //                                   items: <String>[
+            //                                     'Biography',
+            //                                     'Children',
+            //                                     'Fantasy',
+            //                                     'Graphic Novels',
+            //                                     'History',
+            //                                     'Horror',
+            //                                     'Romance',
+            //                                     'Science Fiction'
+            //                                   ].map<DropdownMenuItem<String>>(
+            //                                       (String value) {
+            //                                     return DropdownMenuItem<String>(
+            //                                       value: value,
+            //                                       child: Text(value),
+            //                                     );
+            //                                   }).toList(),
+            //                                 ),
+            //                               ),
+            //                             ],
+            //                           ),
+            //                         ],
+            //                       ),
+            //                       const SizedBox(
+            //                         height: 10,
+            //                       ),
+            //                       DefaultTextFormField(
+            //                         hint: 'Book Name - اسم الكتاب',
+            //                         controller: bookNameController,
+            //                         validationText:
+            //                             'Book name can\'t be empty.',
+            //                       ),
+            //                       const SizedBox(
+            //                         height: 10,
+            //                       ),
+            //                       DefaultTextFormField(
+            //                         hint: 'author Name - اسم الكاتب ',
+            //                         controller: authorNameController,
+            //                         validationText:
+            //                             'author name can\'t be empty.',
+            //                       ),
+            //                       const SizedBox(
+            //                         height: 10,
+            //                       ),
+            //                       Container(
+            //                         padding:
+            //                             const EdgeInsetsDirectional.all(10),
+            //                         decoration: BoxDecoration(
+            //                           color: Colors.grey[200],
+            //                           borderRadius: const BorderRadius.all(
+            //                               const Radius.circular(30)),
+            //                         ),
+            //                         child: TextField(
+            //                           maxLines: 10,
+            //                           controller: descriptionController,
+            //                           decoration:
+            //                               const InputDecoration.collapsed(
+            //                             hintText:
+            //                                 "Write your description here - اكتب وصفك هنا ",
+            //                             hintStyle: TextStyle(
+            //                               color: AppColors.formFontColor,
+            //                             ),
+            //                           ),
+            //                           textAlignVertical:
+            //                               TextAlignVertical.center,
+            //                         ),
+            //                       )
+            //                     ],
+            //                   ),
+            //                 ),
+            //               ),
+            //             ),
+            //             shape: const RoundedRectangleBorder(
+            //               borderRadius: BorderRadius.vertical(
+            //                 top: Radius.circular(60.0),
+            //               ),
+            //             ),
+            //             elevation: 80,
+            //             backgroundColor: const Color(0xFFF5F1D7),
+            //           )
+            //           .closed
+            //           .then((value) {
+            //         cubit.bottomSheetShowState(isShow: false, icon: Icons.add);
+            //       });
+            //       cubit.bottomSheetShowState(isShow: true, icon: Icons.check);
+            //     }
+            //   },
+            //   child: Icon(cubit.fabIcon),
+            // ),
             body: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child:
                   BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
                 var cubit = AuthCubit.get(context);
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children:
+                  [
+                    Container(
+                      color: const Color(0xfff5b53f),
+                      height: MediaQuery.of(context).viewPadding.top,
+                    ),
                     Stack(alignment: AlignmentDirectional.topStart, children: [
                       ClipPath(
                         clipper: CustomShape(),
@@ -268,80 +274,80 @@ class HomeScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          AppBar(
-                            elevation: 0.0,
-                            backgroundColor: Colors.transparent,
-                            leading: IconButton(
-                              onPressed: () {
-                                showMenu<String>(
-                                    context: context,
-                                    color: Colors.white,
-                                    elevation: 5,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    position: const RelativeRect.fromLTRB(
-                                        30, 40, double.infinity, 0),
-                                    items: const [
-                                      PopupMenuItem(
-                                        value: 'name',
-                                        child: Text('name'),
-                                      ),
-                                      PopupMenuItem(
-                                        value: 'authorName',
-                                        child: Text('authorName'),
-                                      )
-                                    ]).then((value) {
-                                  if (value != null) {
-                                    Navigator.pushNamed(context, searchScreen,
-                                        arguments: value);
-                                  }
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.search,
-                                color: Colors.black,
-                                size: 35,
-                              ),
-                              splashRadius: 20,
-                              splashColor: Colors.transparent,
-                            ),
-                            actions: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.pushNamed(context, profileScreen,
-                                      arguments: cubit.userModel);
-                                },
-                                hoverColor: Colors.transparent,
-                                borderRadius: BorderRadius.circular(200),
-                                focusColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                child: const Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.white70,
-                                    radius: 20,
-                                    // backgroundImage: user.profilePic! !=""?  NetworkImage(
-                                    //       user.profilePic!,
-                                    // ) : const NetworkImage(
-                                    //   'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
-                                    // )
-                                    backgroundImage: NetworkImage(
-                                      'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              IconButton(
-                                  onPressed: () {
-                                    cubit.logOut().then((value) {
-                                      navigateAndFinish(
-                                          context, SignInUPScreen());
-                                    });
-                                  },
-                                  icon: Icon(Icons.exit_to_app))
-                            ],
-                          ),
+                          // AppBar(
+                          //   elevation: 0.0,
+                          //   backgroundColor: Colors.transparent,
+                          //   leading: IconButton(
+                          //     onPressed: () {
+                          //       showMenu<String>(
+                          //           context: context,
+                          //           color: Colors.white,
+                          //           elevation: 5,
+                          //           shape: RoundedRectangleBorder(
+                          //               borderRadius:
+                          //                   BorderRadius.circular(10)),
+                          //           position: const RelativeRect.fromLTRB(
+                          //               30, 40, double.infinity, 0),
+                          //           items: const [
+                          //             PopupMenuItem(
+                          //               value: 'name',
+                          //               child: Text('name'),
+                          //             ),
+                          //             PopupMenuItem(
+                          //               value: 'authorName',
+                          //               child: Text('authorName'),
+                          //             )
+                          //           ]).then((value) {
+                          //         if (value != null) {
+                          //           Navigator.pushNamed(context, searchScreen,
+                          //               arguments: value);
+                          //         }
+                          //       });
+                          //     },
+                          //     icon: const Icon(
+                          //       Icons.search,
+                          //       color: Colors.black,
+                          //       size: 35,
+                          //     ),
+                          //     splashRadius: 20,
+                          //     splashColor: Colors.transparent,
+                          //   ),
+                          //   actions: [
+                          //     InkWell(
+                          //       onTap: () {
+                          //         Navigator.pushNamed(context, profileScreen,
+                          //             arguments: cubit.userModel);
+                          //       },
+                          //       hoverColor: Colors.transparent,
+                          //       borderRadius: BorderRadius.circular(200),
+                          //       focusColor: Colors.transparent,
+                          //       highlightColor: Colors.transparent,
+                          //       child: const Padding(
+                          //         padding: EdgeInsets.all(10.0),
+                          //         child: CircleAvatar(
+                          //           backgroundColor: Colors.white70,
+                          //           radius: 20,
+                          //           // backgroundImage: user.profilePic! !=""?  NetworkImage(
+                          //           //       user.profilePic!,
+                          //           // ) : const NetworkImage(
+                          //           //   'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
+                          //           // )
+                          //           backgroundImage: NetworkImage(
+                          //             'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
+                          //           ),
+                          //         ),
+                          //       ),
+                          //     ),
+                          //     IconButton(
+                          //         onPressed: () {
+                          //           cubit.logOut().then((value) {
+                          //             navigateAndFinish(
+                          //                 context, SignInUPScreen());
+                          //           });
+                          //         },
+                          //         icon: Icon(Icons.exit_to_app))
+                          //   ],
+                          // ),
                           defaultHeader(
                             text: 'Recommended',
                           ),

@@ -108,7 +108,7 @@ class SigninPage extends StatelessWidget {
                             if (cubit.instance.currentUser!.phoneNumber !=
                                 null) {
                               Navigator.pushReplacementNamed(
-                                  context, mainScreen);
+                                  context, bottomNavBar);
                             } else {
                               Navigator.pushReplacementNamed(
                                   context, verificationScreen);

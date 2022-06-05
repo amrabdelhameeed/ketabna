@@ -6,6 +6,9 @@ import 'package:ketabna/app_router.dart';
 import 'package:ketabna/core/constants/observer.dart';
 import 'package:ketabna/core/constants/strings.dart';
 import 'package:ketabna/core/utils/shared_pref_helper.dart';
+import 'package:ketabna/screens/bottom_navigation.dart';
+
+import 'features/home/home_screen.dart';
 
 List<String> listOfUsersChoosedCategories = [];
 String initialRoute = "";
@@ -25,7 +28,7 @@ void main() async {
     } else if (user.phoneNumber == null || user.phoneNumber!.isEmpty) {
       initialRoute = verificationScreen;
     } else {
-      initialRoute = mainScreen;
+      initialRoute = bottomNavBar;
     }
   });
   BlocOverrides.runZoned(
@@ -48,6 +51,7 @@ class MyApp extends StatelessWidget {
       initialRoute: initialRoute,
       onGenerateRoute: appRouter.generateRoutes,
       title: 'Ketabna',
+      // home: BottomNavBar(),
     );
   }
 }

@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ketabna/core/constants/strings.dart';
 import '../../../core/models/book_model.dart';
 import '../../../core/utils/shared_pref_helper.dart';
 import '../../../core/widgets/components.dart';
@@ -79,6 +81,7 @@ class BookItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(bookModel.picture);
     return InkWell(
       onTap: () async {
         // String ownerUid = bookModel.ownerUid.toString();
@@ -109,21 +112,35 @@ class BookItem extends StatelessWidget {
           children: [
             Expanded(
               child: Container(
+        //         child: bookModel.picture != null ? CachedNetworkImage(
+        // imageUrl: bookModel.picture!,
+        //   placeholder: (context, url) => const Center(
+        //       child: SizedBox(
+        //         child: CircularProgressIndicator(),
+        //         height: 30.0,
+        //         width: 30.0,
+        //       )),
+        //   errorWidget: (context, url, error) => Center(
+        //     child: Text('$error'),
+        //   ),
+        //   fit: BoxFit.fitHeight,
+        //   width: double.infinity,
+        // ): CircularProgressIndicator(color: kmMainColor,),
                 decoration: BoxDecoration(
-                    image: bookModel.picture != ""
-                        ? DecorationImage(
-                            image: NetworkImage(
-                              bookModel.picture!,
-                            ),
-                            fit: BoxFit.fill,
-                          )
-                        : const DecorationImage(
-                            image: AssetImage(
-                              'assets/image/Books.png',
-                            ),
-                          ),
-                    borderRadius: BorderRadius.circular(13),
-                    border: Border.all(width: 1)),
+                  image: bookModel.picture != ""
+                      ? DecorationImage(
+                    image: NetworkImage(
+                      bookModel.picture!,
+                    ),
+                    fit: BoxFit.fill,
+                  )
+                      : const DecorationImage(
+                    image: AssetImage(
+                      'assets/image/Books.png',
+                    ),
+                  ),
+                  borderRadius: BorderRadius.circular(13),
+                ),
                 height: 140,
               ),
             ),
