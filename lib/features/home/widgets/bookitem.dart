@@ -83,7 +83,9 @@ class BookItem extends StatelessWidget {
   Widget build(BuildContext context) {
     print(bookModel.picture);
     return InkWell(
-      onTap: () async {
+      onTap: () async
+      {
+        Navigator.pushNamed(context, bookScreen, arguments: bookModel);
         // String ownerUid = bookModel.ownerUid.toString();
         // print('ownerUid'+ownerUid);
         // String ownerName = '';
@@ -149,7 +151,7 @@ class BookItem extends StatelessWidget {
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              maxLines: 3,
+              maxLines: 1,
             ),
             Text(
               '${bookModel.authorName}',

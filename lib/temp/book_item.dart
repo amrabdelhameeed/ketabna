@@ -24,7 +24,8 @@ class BookItem extends StatelessWidget {
   final BookModel bookModel;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)
+  {
     return InkWell(
       onTap: () async {
         Navigator.pushNamed(context, bookScreen, arguments: bookModel);
@@ -89,7 +90,7 @@ class BookItem extends StatelessWidget {
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              maxLines: 3,
+              maxLines: 1,
             ),
             Text(
               '${bookModel.authorName}',

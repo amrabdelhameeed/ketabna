@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ketabna/core/utils/size_config.dart';
 
 import '../../../core/models/book_model.dart';
 import 'bookitem.dart';
@@ -16,11 +17,12 @@ class CustomListView extends StatelessWidget {
       builder:(context) =>  SizedBox(
         height: MediaQuery.of(context).size.height / 3,
         child: ListView.separated(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           physics:const BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) => BookItem(bookModel: listOfBook[index]),
-          separatorBuilder: (context, index) => const SizedBox(
-            width: 0,
+          separatorBuilder: (context, index) =>  const SizedBox(
+            width: 10,
           ),
           itemCount: listOfBook.length,
         ),
