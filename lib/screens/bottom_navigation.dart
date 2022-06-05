@@ -7,6 +7,7 @@ import 'package:ketabna/screens/profile.dart';
 
 import '../app_router.dart';
 import '../core/models/user_model.dart';
+import '../core/utils/app_colors.dart';
 import '../features/home/home_screen.dart';
 import '../features/home/widgets/add_book.dart';
 import '../features/search/search_screen.dart';
@@ -31,7 +32,7 @@ class BottomNavBar extends StatelessWidget {
                   Icon(Icons.message, size: 30, color: Colors.white),
                   Icon(Icons.perm_identity, size: 30, color: Colors.white),
                 ],
-                color: Colors.orangeAccent,
+                color: AppColors.secondaryColor ,
                 // buttonBackgroundColor: Colors.black,
                 backgroundColor: const Color(0xFFF5F1D7),
                 animationCurve: Curves.easeInOut,
