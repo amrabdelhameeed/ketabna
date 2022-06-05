@@ -217,7 +217,7 @@ class MessageBubble extends StatelessWidget {
 launchUri(Uri url)async{
   if(!text.contains('firebasestorage.googleapis.com') && text.contains('http')&& await canLaunchUrl(url)){
     // ignore: deprecated_member_use
-    await launchUrl(url,mode: LaunchMode.inAppWebView);
+    await launchUrl(url,mode: LaunchMode.externalApplication);
   }
 }
   @override
