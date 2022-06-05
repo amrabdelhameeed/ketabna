@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ketabna/bloc/cubit/auth_cubit.dart';
+import 'package:ketabna/core/models/book_model.dart';
 import 'package:ketabna/core/models/user_model.dart';
 import 'package:ketabna/core/widgets/default_form_button.dart';
 import 'package:ketabna/features/home/widgets/bookitem.dart';
@@ -200,9 +201,9 @@ class _VisitorScreenState extends State<VisitorScreen> {
                         alignment: AlignmentDirectional.centerEnd,
                         children: [
                           DefaultFormButton(
-                            onPressed: (){
-                              _makePhoneCall(widget.userModel.phone);
-                            },
+                              onPressed: () {
+                                _makePhoneCall(widget.userModel.phone);
+                              },
                               text: 'Call',
                               width: 120,
                               height: 35,
@@ -276,18 +277,13 @@ class _VisitorScreenState extends State<VisitorScreen> {
                   ),
 
                   // item book
-                  GridView.count(
-                    shrinkWrap: true,
-                    // padding: EdgeInsetsDirectional.only(start: 15 , bottom: 10, top: 10),
-                    physics: const NeverScrollableScrollPhysics(),
-                    mainAxisSpacing: 3,
-                    primary: false,
-                    crossAxisSpacing: 3,
-                    crossAxisCount: 3,
+                  Wrap(
                     children: cubit.userBooks
-                        .map((e) => BookItem(bookModel: e))
+                        .map((e) => BookItem(
+                              bookModel: e,
+                            ))
                         .toList(),
-                  ),
+                  )
                 ],
               ),
             ),
@@ -296,41 +292,49 @@ class _VisitorScreenState extends State<VisitorScreen> {
         listener: (context, state) {});
   }
 
-// Widget buildItem() {
-//   return Column(
-//     // crossAxisAlignment: CrossAxisAlignment.start,
-//     children: [
-//       Expanded(
-//         child: ClipRRect(
-//           borderRadius: BorderRadius.circular(10),
-//           child: const Image(
-//             image: AssetImage('assets/image/ph.jpg'),
-//           ),
-//         ),
-//       ),
-//       const SizedBox(
-//         height: 5,
-//       ),
-//       const Text(
-//         'name',
-//         style: TextStyle(
-//           fontWeight: FontWeight.bold,
-//         ),
-//         maxLines: 3,
-//       ),
-//       const SizedBox(
-//         height: 5,
-//       ),
-//       Text(
-//         'dis',
-//         style: TextStyle(
-//           color: Colors.grey[500],
-//           fontStyle: FontStyle.italic,
-//         ),
-//         maxLines: 2,
-//         overflow: TextOverflow.ellipsis,
-//       ),
-//     ],
-//   );
-// }
+  Widget buildItem(BookModel bookModel) {
+    return Column(
+      // crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: bookModel.picture == null || bookModel.picture == ''
+                ? const Text('')
+                : Image.network(
+                    bookModel.picture!,
+                    fit: BoxFit.fill,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                  ),
+          ),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Text(
+          bookModel.name ?? '',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          softWrap: true,
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Text(
+          bookModel.name!,
+          style: Theme.of(context).textTheme.headline6!.copyWith(
+                color: Colors.grey.shade700,
+                fontSize: 18,
+              ),
+          softWrap: true,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    );
+  }
 }

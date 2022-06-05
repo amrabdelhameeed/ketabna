@@ -84,25 +84,7 @@ class BookItem extends StatelessWidget {
     print(bookModel.picture);
     return InkWell(
       onTap: () async {
-        // String ownerUid = bookModel.ownerUid.toString();
-        // print('ownerUid'+ownerUid);
-        // String ownerName = '';
-        // await FirebaseFirestore.instance
-        //     .collection('users')
-        //     .doc(ownerUid)
-        //     .get()
-        //     .then((value) => {
-        //           ownerName = value['name'],
-        //   print('ownerName :'+ownerName)
-        //         });
-        // checkForOldConversation(bookOwnerUid: ownerUid,myId:myUid,bookOwnerName: ownerName ).then((value) => {
-        //   navigateTo(context : context , widget :ChatScreen(
-        //     ownerName: ownerName,
-        //     ownerUid: ownerUid,
-        //     conversationDocId: value,
-        //   )),
-
-        // });
+        Navigator.pushNamed(context, bookScreen, arguments: bookModel);
       },
       child: SizedBox(
         height: MediaQuery.of(context).size.height / 3,
@@ -112,33 +94,33 @@ class BookItem extends StatelessWidget {
           children: [
             Expanded(
               child: Container(
-        //         child: bookModel.picture != null ? CachedNetworkImage(
-        // imageUrl: bookModel.picture!,
-        //   placeholder: (context, url) => const Center(
-        //       child: SizedBox(
-        //         child: CircularProgressIndicator(),
-        //         height: 30.0,
-        //         width: 30.0,
-        //       )),
-        //   errorWidget: (context, url, error) => Center(
-        //     child: Text('$error'),
-        //   ),
-        //   fit: BoxFit.fitHeight,
-        //   width: double.infinity,
-        // ): CircularProgressIndicator(color: kmMainColor,),
+                //         child: bookModel.picture != null ? CachedNetworkImage(
+                // imageUrl: bookModel.picture!,
+                //   placeholder: (context, url) => const Center(
+                //       child: SizedBox(
+                //         child: CircularProgressIndicator(),
+                //         height: 30.0,
+                //         width: 30.0,
+                //       )),
+                //   errorWidget: (context, url, error) => Center(
+                //     child: Text('$error'),
+                //   ),
+                //   fit: BoxFit.fitHeight,
+                //   width: double.infinity,
+                // ): CircularProgressIndicator(color: kmMainColor,),
                 decoration: BoxDecoration(
                   image: bookModel.picture != ""
                       ? DecorationImage(
-                    image: NetworkImage(
-                      bookModel.picture!,
-                    ),
-                    fit: BoxFit.fill,
-                  )
+                          image: NetworkImage(
+                            bookModel.picture!,
+                          ),
+                          fit: BoxFit.fill,
+                        )
                       : const DecorationImage(
-                    image: AssetImage(
-                      'assets/image/Books.png',
-                    ),
-                  ),
+                          image: AssetImage(
+                            'assets/image/Books.png',
+                          ),
+                        ),
                   borderRadius: BorderRadius.circular(13),
                 ),
                 height: 140,
