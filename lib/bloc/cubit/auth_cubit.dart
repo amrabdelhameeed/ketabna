@@ -420,6 +420,33 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
+  Future editProfilePicture() async {
+    String? photoUrl;
+    // emit(PickPhotoLoadingState());
+    await pickBookImage(false).then((value) {
+      String userUid = instance.currentUser!.uid;
+      firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('books/${Uri.file(bookImage!.path).pathSegments.last}')
+          .putFile(value)
+          .then((p0) async {
+        await p0.ref.getDownloadURL().then((photoLink) async {
+          debugPrint(photoLink);
+          photoUrl = photoLink;
+          emit(PickPhotoLoadedState());
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userUid)
+              .update({'picture': photoLink});
+        }).then((value) {
+          userModel = getCurrentFirestoreUser();
+          emit(BookAddedSuccessState());
+          bookImage = null;
+        });
+      });
+    });
+  }
+
   void addBook({
     required String category,
     required String name,

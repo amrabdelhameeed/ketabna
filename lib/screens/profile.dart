@@ -43,11 +43,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       'isCheckedSwitch': false
     },
   ];
-  UserModel? userModel;
 
   @override
   void initState() {
-    userModel = AuthCubit.get(context).getCurrentFirestoreUser();
     super.initState();
   }
 
@@ -59,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ..getUserBooks(),
       child: BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
         var cubit = AuthCubit.get(context);
-        print(userModel!.name);
+        print(cubit.userModel!.name);
         return Scaffold(
           appBar: AppBar(
             actions: [
@@ -91,14 +89,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     alignment: AlignmentDirectional.bottomEnd,
                     children: [
                       // image
-                      userModel?.picture == '' || userModel?.picture == null
+                      cubit.userModel!.picture == '' ||
+                              cubit.userModel!.picture == null
                           ? const CircleAvatar(
                               radius: 80,
                               backgroundImage: AssetImage('assets/image/b.png'))
                           : CircleAvatar(
                               radius: 80,
                               backgroundImage:
-                                  NetworkImage(userModel!.picture!)),
+                                  NetworkImage(cubit.userModel!.picture!)),
                       // camera icon
                       CircleAvatar(
                         radius: 20,
@@ -108,6 +107,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           splashRadius: 30,
                           onPressed: () {
                             //upload picture
+                            cubit.editProfilePicture().then((value) {
+                              AuthCubit.get(context).getCurrentFirestoreUser();
+                            });
                           },
                           icon: const Icon(
                             Icons.linked_camera,
@@ -124,7 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   // Name
                   Text(
-                    userModel!.name!,
+                    cubit.userModel!.name!,
                     maxLines: 1,
                     softWrap: true,
                     textAlign: TextAlign.center,
