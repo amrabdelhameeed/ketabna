@@ -7,6 +7,7 @@ import 'package:ketabna/core/models/user_model.dart';
 import 'package:ketabna/features/authentication/otp/otp_screen.dart';
 import 'package:ketabna/features/authentication/otp/varification_screen.dart';
 import 'package:ketabna/features/book/book.dart';
+import 'package:ketabna/screens/bottom_navigation.dart';
 import 'package:ketabna/screens/profile.dart';
 import 'package:ketabna/temp/book_screen.dart';
 import 'package:ketabna/features/authentication/sign_up/signup_screen.dart';
@@ -44,6 +45,16 @@ class AppRouter {
             child: const SplashView(),
           );
         });
+
+      case bottomNavBar:
+        return MaterialPageRoute(builder: (_) {
+          return BlocProvider<AuthCubit>.value(
+            value: authCubit!,
+            child:  BottomNavBar(),
+          );
+        });
+
+
       case mainScreen:
         return MaterialPageRoute(builder: (_) {
           return BlocProvider<AuthCubit>.value(
@@ -90,7 +101,7 @@ class AppRouter {
           final userModel = settings.arguments as UserModel;
           return BlocProvider<AuthCubit>.value(
             value: authCubit!..getUserBooks(),
-            child: ProfileScreen(userModel: userModel),
+            child: ProfileScreen(),
           );
         });
       case searchScreen:

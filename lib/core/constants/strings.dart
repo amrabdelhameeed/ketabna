@@ -7,6 +7,7 @@ const registerScreen = "/registerScreen";
 const signInUpScreen = "/signInUpScreen";
 const mainScreen = "/mainScreen";
 const splashScreen = "/splashScreen";
+const bottomNavBar = "/bottomNavBar";
 const onBoardingScreen = "/onBoardingScreen";
 const otpscreen = "/otpscreen";
 const bookScreen = "/bookScreen";

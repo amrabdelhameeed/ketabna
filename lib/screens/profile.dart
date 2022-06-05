@@ -7,10 +7,14 @@ import 'package:ketabna/core/models/user_model.dart';
 import 'package:ketabna/core/widgets/default_form_button.dart';
 
 import '../core/utils/app_colors.dart';
+import '../core/widgets/components.dart';
+import '../features/on_boarding/sign_in_up_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key, required this.userModel}) : super(key: key);
-  final UserModel userModel;
+  ProfileScreen({
+    Key? key,
+  }) : super(key: key);
+  UserModel? userModel;
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
@@ -39,140 +43,158 @@ class _ProfileScreenState extends State<ProfileScreen> {
       'isCheckedSwitch': false
     },
   ];
+  @override
+  void initState() {
+    widget.userModel = AuthCubit.get(context).getCurrentFirestoreUser();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        iconTheme: const IconThemeData(
-          color: AppColors.secondaryColor,
-          size: 32,
-        ),
-      ),
-      body: Container(
-        padding: const EdgeInsetsDirectional.all(10),
-        width: double.infinity,
-        height: double.infinity,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              // profile image
-              Stack(
-                alignment: AlignmentDirectional.bottomEnd,
-                children: [
-                  // image
-                  widget.userModel.picture == '' ||
-                          widget.userModel.picture == null
-                      ? const CircleAvatar(
-                          radius: 80,
-                          backgroundImage: AssetImage('assets/image/b.png'))
-                      : CircleAvatar(
-                          radius: 80,
-                          backgroundImage:
-                              NetworkImage(widget.userModel.picture!)),
-                  // camera icon
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Colors.grey.shade600,
-                    child: IconButton(
-                      tooltip: 'Upload Image',
-                      splashRadius: 30,
-                      onPressed: () {
-                        //upload picture
-                      },
-                      icon: const Icon(
-                        Icons.linked_camera,
-                        size: 25,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+    return BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
+      var cubit = AuthCubit.get(context);
+      return Scaffold(
+        appBar: AppBar(
+          actions: [
+            TextButton(
+                onPressed: () {
+                  cubit.logOut().then((value) {
+                    navigateAndFinish(context, SignInUPScreen());
+                  });
+                },
+                child: Text('log out')),
 
-              const SizedBox(
-                height: 15,
-              ),
-              // Name
-              Text(
-                widget.userModel.name!,
-                maxLines: 1,
-                softWrap: true,
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline4!
-                    .copyWith(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-
-              const SizedBox(
-                height: 20,
-              ),
-
-              DefaultFormButton(
-                text: 'Edit Profile',
-                width: 120,
-                height: 35,
-                radius: 10,
-                padding: 10,
-                textColor: Colors.white,
-                fillColor: AppColors.secondaryColor,
-              ),
-
-              const SizedBox(
-                height: 15,
-              ),
-              // text My books
-              Padding(
-                padding: const EdgeInsets.only(left: 24),
-                child: Align(
-                  alignment: AlignmentDirectional.topStart,
-                  child: Text(
-                    'My books',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline4!
-                        .copyWith(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              // item book
-              BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
-                var cubit = AuthCubit.get(context);
-
-                if (cubit.userBooks.isEmpty) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) => buildItemBook(
-                        image: cubit.userBooks[index].picture ?? '',
-                        context: context,
-                        title: cubit.userBooks[index].name ?? '',
-                        description: cubit.userBooks[index].describtion ?? '',
-                        isCheckedSwitch:
-                            cubit.userBooks[index].isValid ?? false,
-                        switchChange: (value) {
-                          cubit.userBooks[index].isValid = value;
-                          cubit.toggleSwitchOfBooks(
-                              val: value, book: cubit.userBooks[index]);
-                          setState(() {});
-                        }),
-                    itemCount: itemBook.length,
-                  );
-                }
-              }),
-            ],
+          ],
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          iconTheme: const IconThemeData(
+            color: AppColors.secondaryColor,
+            size: 32,
           ),
         ),
-      ),
-    );
+        body: Container(
+          padding: const EdgeInsetsDirectional.all(10),
+          width: double.infinity,
+          height: double.infinity,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                // profile image
+                Stack(
+                  alignment: AlignmentDirectional.bottomEnd,
+                  children: [
+                    // image
+                    widget.userModel?.picture == '' ||
+                            widget.userModel?.picture == null
+                        ? const CircleAvatar(
+                            radius: 80,
+                            backgroundImage: AssetImage('assets/image/b.png'))
+                        : CircleAvatar(
+                            radius: 80,
+                            backgroundImage:
+                                NetworkImage(widget.userModel!.picture!)),
+                    // camera icon
+                    CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.grey.shade600,
+                      child: IconButton(
+                        tooltip: 'Upload Image',
+                        splashRadius: 30,
+                        onPressed: () {
+                          //upload picture
+                        },
+                        icon: const Icon(
+                          Icons.linked_camera,
+                          size: 25,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(
+                  height: 15,
+                ),
+                // Name
+                Text(
+                  widget.userModel!.name!,
+                  maxLines: 1,
+                  softWrap: true,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4!
+                      .copyWith(fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+
+                const SizedBox(
+                  height: 20,
+                ),
+
+                DefaultFormButton(
+                  text: 'Edit Profile',
+                  width: 120,
+                  height: 35,
+                  radius: 10,
+                  padding: 10,
+                  textColor: Colors.white,
+                  fillColor: AppColors.secondaryColor,
+                ),
+
+                const SizedBox(
+                  height: 15,
+                ),
+                // text My books
+                Padding(
+                  padding: const EdgeInsets.only(left: 24),
+                  child: Align(
+                    alignment: AlignmentDirectional.topStart,
+                    child: Text(
+                      'My books',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4!
+                          .copyWith(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                // item book
+                BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
+                  var cubit = AuthCubit.get(context);
+
+                  if (cubit.userBooks.isEmpty) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) => buildItemBook(
+                          image: cubit.userBooks[index].picture ?? '',
+                          context: context,
+                          title: cubit.userBooks[index].name ?? '',
+                          description: cubit.userBooks[index].describtion ?? '',
+                          isCheckedSwitch:
+                              cubit.userBooks[index].isValid ?? false,
+                          switchChange: (value) {
+                            cubit.userBooks[index].isValid = value;
+                            cubit.toggleSwitchOfBooks(
+                                val: value, book: cubit.userBooks[index]);
+                            setState(() {});
+                          }),
+                      itemCount: itemBook.length,
+                    );
+                  }
+                }),
+              ],
+            ),
+          ),
+        ),
+      );
+    });
   }
 
   Widget buildItemBook({

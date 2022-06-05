@@ -288,9 +288,9 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  Future<UserModel> getCurrentFirestoreUser() async {
+  UserModel getCurrentFirestoreUser()  {
     String userUid = getLoggedInUser().uid;
-    await FirebaseFirestore.instance
+     FirebaseFirestore.instance
         .collection('users')
         .doc(userUid)
         .get()

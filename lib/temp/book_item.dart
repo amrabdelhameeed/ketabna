@@ -6,6 +6,7 @@ import 'package:ketabna/core/constants/strings.dart';
 import 'package:ketabna/core/models/book_model.dart';
 import 'package:ketabna/core/widgets/components.dart';
 import 'package:ketabna/temp/book_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../core/utils/shared_pref_helper.dart';
 import '../features/chat/chat_screen.dart';
@@ -51,19 +52,33 @@ class BookItem extends StatelessWidget {
           children: [
             Expanded(
               child: Container(
+        //         child: bookModel.picture != null ? CachedNetworkImage(
+        // imageUrl: bookModel.picture!,
+        //   placeholder: (context, url) => const Center(
+        //       child: SizedBox(
+        //         child: CircularProgressIndicator(),
+        //         height: 30.0,
+        //         width: 30.0,
+        //       )),
+        //   errorWidget: (context, url, error) => Center(
+        //     child: Text('$error'),
+        //   ),
+        //   fit: BoxFit.fitHeight,
+        //   width: double.infinity,
+        // ): CircularProgressIndicator(),
                 decoration: BoxDecoration(
                   image: bookModel.picture != ""
                       ? DecorationImage(
-                          image: NetworkImage(
-                            bookModel.picture!,
-                          ),
-                          fit: BoxFit.fill,
-                        )
+                    image: NetworkImage(
+                      bookModel.picture!,
+                    ),
+                    fit: BoxFit.fill,
+                  )
                       : const DecorationImage(
-                          image: AssetImage(
-                            'assets/image/Books.png',
-                          ),
-                        ),
+                    image: AssetImage(
+                      'assets/image/Books.png',
+                    ),
+                  ),
                   borderRadius: BorderRadius.circular(13),
                 ),
                 height: 140,
@@ -92,6 +107,11 @@ class BookItem extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
 
 Future<String> checkForOldConversation(
     {bookOwnerUid, bookOwnerName, myId}) async {
@@ -146,3 +166,32 @@ Future setNewConversation({bookOwnerUid, bookOwnerName}) async {
         conversationDocId = documentSnapshot.id,
       });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+// BoxDecoration(
+// image: bookModel.picture != ""
+// ? DecorationImage(
+// image: NetworkImage(
+// bookModel.picture!,
+// ),
+// fit: BoxFit.fill,
+// )
+// : const DecorationImage(
+// image: AssetImage(
+// 'assets/image/Books.png',
+// ),
+// ),
+// borderRadius: BorderRadius.circular(13),
+// ),
