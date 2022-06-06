@@ -91,6 +91,7 @@ class Home extends StatelessWidget {
                           describtion: '',
                           category: "technologyInterst",
                           name: "قران",
+                          bookLink: '',
                           authorName: "-");
                     },
                     child: Text("pick photo and add book"))

@@ -452,6 +452,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String category,
     required String name,
     required String authorName,
+    required String bookLink,
     required String describtion,
   }) async {
     String? photoUrl;
@@ -472,6 +473,8 @@ class AuthCubit extends Cubit<AuthState> {
               category: category,
               picture: photoUrl,
               name: name,
+              bookLink: bookLink,
+              isPdf: bookLink.contains('.com')?true:false,
               describtion: describtion,
               bookId: bookId,
               authorName: authorName);

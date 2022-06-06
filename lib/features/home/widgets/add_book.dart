@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ketabna/app_router.dart';
@@ -15,7 +19,13 @@ class AddBook extends StatefulWidget {
 }
 
 class _AddBookState extends State<AddBook> {
+  PlatformFile? pickedFile;
+  UploadTask? uploadTask;
+  bool? isUploadingFile = false;
+  bool? isUploadingBook = false;
+
   var bookNameController = TextEditingController();
+  var bookLinkController = TextEditingController();
 
   var authorNameController = TextEditingController();
 
@@ -23,6 +33,34 @@ class _AddBookState extends State<AddBook> {
 
   var image;
   var dropdownValue = 'biography';
+
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles();
+    if (result == null) return;
+    setState(() {
+      pickedFile = result.files.first;
+      isUploadingFile = true;
+    });
+    uploadFile();
+  }
+
+  Future uploadFile() async {
+    final path = 'pdfs/${pickedFile!.name}';
+    final file = File(pickedFile!.path!);
+    'files/${pickedFile!.name}';
+    (pickedFile!.path!);
+    final ref = FirebaseStorage.instance.ref().child(path);
+    uploadTask = ref.putFile(file);
+    final snapshot = await uploadTask!.whenComplete(() {
+      setState(() {
+        isUploadingFile = false;
+      });
+
+    });
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    print('Download Link:$urlDownload');
+    bookLinkController.text = urlDownload;
+  }
 
   List<String> items = [
     'biography',
@@ -172,6 +210,36 @@ class _AddBookState extends State<AddBook> {
                     const SizedBox(
                       height: 10,
                     ),
+                    Row(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width / 1.39,
+                          child: DefaultTextFormField(
+                            hint: 'Book Link - مسار الكتاب',
+                            controller: bookLinkController,
+                            validationText: 'Book link can\'t be empty.',
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                          child: isUploadingFile!
+                              ? const CircularProgressIndicator(
+                                  color: AppColors.secondaryColor,
+                                )
+                              : IconButton(
+                                  onPressed: () {
+                                    selectFile();
+                                  },
+                                  icon: const Icon(Icons.open_in_new),
+                                ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Container(
                       padding: const EdgeInsetsDirectional.all(10),
                       decoration: BoxDecoration(
@@ -203,29 +271,44 @@ class _AddBookState extends State<AddBook> {
                           width: MediaQuery.of(context).size.width * 2 / 4,
                           height: MediaQuery.of(context).size.height * 1 / 20,
                           decoration: BoxDecoration(
-                              color: const Color(0xFFF5B53F),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: const Center(
-                            child: Text(
-                              "Add Book",
-                              style: TextStyle(color: Colors.white),
-                            ),
+                            color: const Color(0xFFF5B53F),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Center(
+                            child: isUploadingBook!
+                                ? const CircularProgressIndicator(
+                                    color: AppColors.secondaryColor,
+                                  )
+                                : const Text(
+                                    "Add Book",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                           ),
                         ),
                         onPressed: () {
                           // pickImage();
+                          setState(() {
+                            isUploadingBook = true;
+                          });
                           cubit.addBook(
                               describtion: descriptionController.text,
                               category: dropdownValue,
+                              bookLink: bookLinkController.text,
                               name: bookNameController.text,
                               authorName: authorNameController.text);
                         }),
                     BlocListener<AuthCubit, AuthState>(
                       listener: (context, state) {
                         if (state is BookAddedSuccessState) {
+                          setState(() {
+                            isUploadingBook = false;
+                          });
                           cubit.changeIndex(0);
                           ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Added successfully')));
+                            const SnackBar(
+                              content: Text('Added successfully'),
+                            ),
+                          );
                         }
                       },
                       child: Container(),

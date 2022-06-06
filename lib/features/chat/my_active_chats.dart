@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -45,17 +46,15 @@ class _MyActiveChatsState extends State<MyActiveChats> {
 }
 
 class ChatsStream extends StatelessWidget {
-late String chatOwnerName ;
- Future<String> getChatOwnerName({required messageSender,required chatOwnerUidIndex})async{
+late String chatOwnerImage ;
+ Future<String> getChatOwnerData({required uid})async{
 
-    await fireStore.collection('users').doc(
-        messageSender[chatOwnerUidIndex]).get().then((value) =>
+    await fireStore.collection('users').doc(uid).get().then((value) =>
     {
-     chatOwnerName = value['name'],
-      print('chatOwnerName :'+chatOwnerName)
+      chatOwnerImage = value['picture'],
 
     });
-    return messageSender;
+    return chatOwnerImage;
   }
   @override
   Widget build(BuildContext context) {
@@ -76,6 +75,8 @@ late String chatOwnerName ;
         String conversationDocId = '';
         String chatOwnerId = '';
         String chatOwnerName = '';
+        String? lastMessageSent;
+        String chatOwnerImage = '';
 
         for (var chat in activeChats!) {
           List messageSender = chat.get('ids');
@@ -84,11 +85,10 @@ late String chatOwnerName ;
           }else{
             chatOwnerId = messageSender[0];
           }
-
           if (messageSender.contains(myId)) {
             conversationDocId = chat.id;
             final lastMessageTime = chat.get('lastMessageTime');
-            String? lastMessageSent;
+
             try{
                lastMessageSent = chat
                   .get('messages')
@@ -111,15 +111,16 @@ late String chatOwnerName ;
             }
             final readed_messages= chat.get('readed_messages')[myId];
 
-            readMessagesForOwner= chat.get('readed_messages')[chatOwnerId];
+            readMessagesForOwner = chat.get('readed_messages')[chatOwnerId];
 
             final numberOfUnreadMessage = numberOfMessagesOfChat - readed_messages;
-
+            chatOwnerImage = chat.get('images')[chatOwnerId];
             activeChatWidget.add(ActiveChatWidget(
               conversationDocId: conversationDocId,
               chatOwnerName: chatOwnerName,
               numberOfMessagesOfChat: numberOfMessagesOfChat,
               chatOwnerId: chatOwnerId,
+              chatOwnerImage: chatOwnerImage,
               numberOfUnreadMessage: numberOfUnreadMessage,
               readMessagesForOwner: readMessagesForOwner,
               lastMessageTime: lastMessageTime,
@@ -141,6 +142,7 @@ late String chatOwnerName ;
 class ActiveChatWidget extends StatelessWidget {
   final String chatOwnerName;
   final String chatOwnerId;
+  final String chatOwnerImage;
   final String lastMessageSent;
   final String lastMessageTime;
   final int numberOfUnreadMessage;
@@ -152,6 +154,7 @@ class ActiveChatWidget extends StatelessWidget {
     required this.numberOfUnreadMessage,
     required this.lastMessageTime,
     required this.chatOwnerId,
+    required this.chatOwnerImage,
     required this.numberOfMessagesOfChat,
     required this.readMessagesForOwner,
     required this.conversationDocId,
@@ -159,10 +162,9 @@ class ActiveChatWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('chatOwnerImage : '+chatOwnerImage);
     return InkWell(
       onTap: ()async{
-        print('chatOwnerId : '+chatOwnerId);
-        print('myId : '+myId!);
         await fireStore.collection('chats').doc(conversationDocId).update({
           'readed_messages':{
             '$myId':numberOfMessagesOfChat,
@@ -185,13 +187,13 @@ class ActiveChatWidget extends StatelessWidget {
         elevation: 3,
         shadowColor: AppColors.secondaryColor,
         child: ListTile(
-          leading: const CircleAvatar(
-            backgroundImage: AssetImage('assets/image/Cooking.jpg'),
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(chatOwnerImage),
             radius: 30,
           ),
-          title: Text(chatOwnerName,style: TextStyle(color: Colors.black),),
-          subtitle: Text(lastMessageSent), 
-         
+          title: Text(chatOwnerName,style: const TextStyle(color: Colors.black),),
+          subtitle: Text(lastMessageSent),
+
           trailing:numberOfUnreadMessage==0 ?const Text('') : CircleAvatar(
             radius: 10,
             child:Text(numberOfUnreadMessage.toString()),
