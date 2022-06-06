@@ -42,14 +42,17 @@ class HomeScreen extends StatelessWidget {
   var category = CategoryModel.categories;
 
   DateTime pre_backpress = DateTime.now();
-  Future<void> _refresh(BuildContext context)async {
-    AuthCubit.get(context).getRecommended();
-    AuthCubit.get(context).getbiographyBooks();
-    AuthCubit.get(context).getFantasyBooks();
-    AuthCubit.get(context).getnovelBooks();
-    AuthCubit.get(context).getTechnologyBooks();
-    AuthCubit.get(context).getfictionBooks();
-    AuthCubit.get(context).getHorrorBooks();
+  Future<void> _refresh(BuildContext context) async {
+    print('refresh');
+    authCubit!
+      // ..getCurrentFirestoreUser()
+      ..getRecommended()
+      ..getHorrorBooks()
+      ..getTechnologyBooks()
+      ..getFantasyBooks()
+      ..getnovelBooks()
+      ..getfictionBooks()
+      ..getbiographyBooks();
   }
 
   @override
@@ -263,11 +266,11 @@ class HomeScreen extends StatelessWidget {
                 // ),
                 body: RefreshIndicator(
                   color: AppColors.secondaryColor,
-                  onRefresh:(){
+                  onRefresh: () {
                     return _refresh(context);
                   },
                   child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     child: BlocBuilder<AuthCubit, AuthState>(
                         builder: (context, state) {
                       var cubit = AuthCubit.get(context);
@@ -406,7 +409,8 @@ class HomeScreen extends StatelessWidget {
                           ),
                           CarouselSlider.builder(
                               itemCount: category.length,
-                              itemBuilder: (context, index, realIndex) => InkWell(
+                              itemBuilder: (context, index, realIndex) =>
+                                  InkWell(
                                     borderRadius: BorderRadius.circular(20),
                                     onTap: () {
                                       // Navigator.pushNamed(context, categoryScreen);
@@ -442,9 +446,11 @@ class HomeScreen extends StatelessWidget {
                                                   BoxShadow(
                                                       color: Colors.black
                                                           .withOpacity(0.5),
-                                                      blurStyle: BlurStyle.normal,
+                                                      blurStyle:
+                                                          BlurStyle.normal,
                                                       blurRadius: 10,
-                                                      offset: const Offset(0, 10))
+                                                      offset:
+                                                          const Offset(0, 10))
                                                 ],
                                               ),
                                               height: MediaQuery.of(context)
@@ -479,7 +485,8 @@ class HomeScreen extends StatelessWidget {
                               if (state is BookAddedSuccessState) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                        content: Text('Uploaded Successfully')));
+                                        content:
+                                            Text('Uploaded Successfully')));
                               }
                             },
                             child: Container(),
