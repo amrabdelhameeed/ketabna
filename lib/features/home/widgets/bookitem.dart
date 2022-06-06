@@ -85,6 +85,25 @@ class BookItem extends StatelessWidget {
     return InkWell(
       onTap: () async {
         Navigator.pushNamed(context, bookScreen, arguments: bookModel);
+        // String ownerUid = bookModel.ownerUid.toString();
+        // print('ownerUid'+ownerUid);
+        // String ownerName = '';
+        // await FirebaseFirestore.instance
+        //     .collection('users')
+        //     .doc(ownerUid)
+        //     .get()
+        //     .then((value) => {
+        //           ownerName = value['name'],
+        //   print('ownerName :'+ownerName)
+        //         });
+        // checkForOldConversation(bookOwnerUid: ownerUid,myId:myUid,bookOwnerName: ownerName ).then((value) => {
+        //   navigateTo(context : context , widget :ChatScreen(
+        //     ownerName: ownerName,
+        //     ownerUid: ownerUid,
+        //     conversationDocId: value,
+        //   )),
+
+        // });
       },
       child: SizedBox(
         height: MediaQuery.of(context).size.height / 3,
@@ -131,7 +150,7 @@ class BookItem extends StatelessWidget {
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              maxLines: 3,
+              maxLines: 1,
             ),
             Text(
               '${bookModel.authorName}',
