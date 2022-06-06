@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ketabna/bloc/cubit/auth_cubit.dart';
 import 'package:ketabna/core/constants/strings.dart';
+import 'package:ketabna/core/utils/app_colors.dart';
 import 'package:ketabna/main.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -68,6 +69,7 @@ class OtpScreen extends StatelessWidget {
           autoFocus: true,
           keyboardType: TextInputType.number,
           pinTheme: PinTheme(
+              inactiveColor: AppColors.secondaryColor,
               borderRadius: BorderRadius.circular(5),
               shape: PinCodeFieldShape.box,
               borderWidth: 1,

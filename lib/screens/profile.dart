@@ -67,6 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 TextButton(
                     onPressed: () {
                       cubit.logOut().then((value) {
+                        cubit.changeIndex(0);
                         navigateAndFinish(context, SignInUPScreen());
                       });
                     },
