@@ -63,6 +63,7 @@ class AuthCubit extends Cubit<AuthState> {
     ProfileScreen(),
     // ),
   ];
+
   Future<UserModel> getUserModelByOwnerUid(String uId) async {
     UserModel? internalUserModel;
     String userUid = uId;
@@ -169,9 +170,10 @@ class AuthCubit extends Cubit<AuthState> {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(getLoggedInUser().uid)
-        .update({'user': name}).then((value) {
+        .update({'name': name}).then((value) {
       print('updateName success');
       emit(EmailSubmitted());
+      getCurrentFirestoreUser();
     }).catchError((onError) {
       print('error fe updateName');
     });

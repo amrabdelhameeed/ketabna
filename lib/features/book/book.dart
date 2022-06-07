@@ -126,6 +126,7 @@ class _BookScreenState extends State<BookScreen> {
                       child: Text(
                         widget.bookModel.describtion ?? '',
                         textAlign: TextAlign.center,
+                        textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 18,
