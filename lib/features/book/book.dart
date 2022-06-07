@@ -1,13 +1,29 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ketabna/bloc/cubit/auth_cubit.dart';
 import 'package:ketabna/core/constants/strings.dart';
 import 'package:ketabna/core/models/book_model.dart';
+import 'package:ketabna/core/utils/app_colors.dart';
 import 'package:ketabna/core/utils/size_config.dart';
+import 'package:ketabna/core/widgets/components.dart';
+import 'package:ketabna/features/store/pay_semester_books.dart';
+import 'package:ketabna/features/store/pdf_api.dart';
 
-class BookScreen extends StatelessWidget {
+import '../store/pdf_viewer.dart';
+
+final String myId = FirebaseAuth.instance.currentUser!.uid;
+
+class BookScreen extends StatefulWidget {
   const BookScreen({Key? key, required this.bookModel}) : super(key: key);
   final BookModel bookModel;
+
+  @override
+  State<BookScreen> createState() => _BookScreenState();
+}
+
+class _BookScreenState extends State<BookScreen> {
+  bool isDownloadingPdf = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +48,14 @@ class BookScreen extends StatelessWidget {
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
                 title: Text(
-                  bookModel.name!,
-                  style: TextStyle(
+                  widget.bookModel.name!,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 15,
                   ),
                 ),
                 background: Image.network(
-                  bookModel.picture!,
+                  widget.bookModel.picture!,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -54,7 +70,7 @@ class BookScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          bookModel.name!,
+                          widget.bookModel.name!,
                           style: const TextStyle(
                             color: Colors.black,
                             fontSize: 20,
@@ -68,7 +84,7 @@ class BookScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'By : ${bookModel.authorName}',
+                              'By : ${widget.bookModel.authorName}',
                               style: const TextStyle(
                                 color: Colors.black54,
                                 fontSize: 15,
@@ -83,7 +99,7 @@ class BookScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Category : ${bookModel.category}',
+                              'Category : ${widget.bookModel.category}',
                               style: const TextStyle(
                                 color: Colors.black54,
                                 fontSize: 15,
@@ -108,7 +124,8 @@ class BookScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Text(
-                        bookModel.describtion ?? '',
+                        widget.bookModel.describtion ?? '',
+                        textAlign: TextAlign.center,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Colors.black,
@@ -128,19 +145,49 @@ class BookScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
                     child: MaterialButton(
-                      onPressed: () {
-                        //view Profile
-                        cubit
-                            .getUserModelByOwnerUid(bookModel.ownerUid!)
-                            .then((value) {
-                          Navigator.pushNamed(context, visitorScreen,
-                              arguments: value);
+                      onPressed: () async {
+                        setState(() {
+                          isDownloadingPdf = true;
                         });
+                        if (widget.bookModel.bookOwners!.contains(myId) == false &&widget.bookModel.isPdf!){
+                          print('first if');
+                          navigateTo(context: context,widget: PayBookPrice(bookModel: widget.bookModel,),);
+                          setState(() {
+                            isDownloadingPdf = false;
+                          });
+                        } else if (widget.bookModel.isPdf! &&
+                            widget.bookModel.bookOwners!.contains(myId)) {
+                          print('second if');
+                          final filePdf = await PdfApi.loadNetwork(
+                              Uri.parse(widget.bookModel.bookLink!));
+                          openPdf(context: context,
+                              filePdf: filePdf,
+                              bookModel: widget.bookModel);
+                          setState(() {
+                            isDownloadingPdf = false;
+                          });
+                        } else if(widget.bookModel.isPdf! == false){
+                          setState(() {
+                            isDownloadingPdf=false;
+                          });
+                          //view Profile
+                          cubit
+                              .getUserModelByOwnerUid(
+                              widget.bookModel.ownerUid!)
+                              .then((value) {
+
+
+                            Navigator.pushNamed(context, visitorScreen,
+                                arguments: value);
+                          });
+                        }
                       },
                       color: const Color(0xfff5b53f),
-                      child: const Text(
-                        'View Owner Profile',
-                        style: TextStyle(
+                      child: isDownloadingPdf ? const CircularProgressIndicator(
+                        color: AppColors.mainColor,) : Text(widget
+                          .bookModel.isPdf! ? 'Read the book.' :
+                      'View Owner Profile',
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                         ),
@@ -159,6 +206,11 @@ class BookScreen extends StatelessWidget {
         ),
       );
     });
+  }
+
+  void openPdf({required BuildContext context, filePdf, bookModel}) {
+    navigateTo(context: context,
+      widget: PdfViewerPage(file: filePdf, bookModel: bookModel,),);
   }
 }
 // appBar: AppBar(

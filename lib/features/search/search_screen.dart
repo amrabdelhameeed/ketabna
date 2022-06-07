@@ -10,43 +10,46 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FirestoreSearchScaffold(
-        appBarTitle: 'search with $searchBy',
-        scaffoldBody: const Center(
-          child: Text('No searched items'),
-        ),
-        appBarBackgroundColor: AppColors.mainColor,
-        backButtonColor: AppColors.mainColor,
-        firestoreCollectionName: 'books',
-        searchBy: searchBy,
-        dataListFromSnapshot: BookModel().dataListFromSnapshot,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final List<BookModel>? dataList = snapshot.data;
-            if (dataList!.isEmpty) {
-              return const Center(
-                child: Text('No Results Returned'),
+      body: WillPopScope(
+        onWillPop: () async => false,
+        child: FirestoreSearchScaffold(
+          appBarTitle: 'search with $searchBy',
+          scaffoldBody: const Center(
+            child: Text('No searched items'),
+          ),
+          appBarBackgroundColor: AppColors.mainColor,
+          backButtonColor: AppColors.mainColor,
+          firestoreCollectionName: 'books',
+          searchBy: searchBy,
+          dataListFromSnapshot: BookModel().dataListFromSnapshot,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final List<BookModel>? dataList = snapshot.data;
+              if (dataList!.isEmpty) {
+                return const Center(
+                  child: Text('No Results Returned'),
+                );
+              }
+              return GridView(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 0.65,
+                  crossAxisCount: 3,
+                ),
+                children: dataList.map((e) => BookItem(bookModel: e)).toList(),
               );
             }
-            return GridView(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 0.65,
-                crossAxisCount: 3,
-              ),
-              children: dataList.map((e) => BookItem(bookModel: e)).toList(),
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: Text('No Results Returned'),
+                );
+              }
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
             );
-          }
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (!snapshot.hasData) {
-              return const Center(
-                child: Text('No Results Returned'),
-              );
-            }
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
+          },
+        ),
       ),
     );
   }

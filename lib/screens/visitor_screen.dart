@@ -50,7 +50,6 @@ class _VisitorScreenState extends State<VisitorScreen> {
 
                   if (containUid_1 && containUid_2) {
                     oldchat = true;
-                    print('Start !!');
                     int bookOwnerReadMessages =
                         element.data()['readed_messages'][bookOwnerUid];
                     conversationDocId = element.id;
@@ -91,30 +90,43 @@ class _VisitorScreenState extends State<VisitorScreen> {
   }
 
   Future setNewConversation({bookOwnerUid, bookOwnerName}) async {
-    await _firestore.collection("chats").add({
-      'names': [bookOwnerName, myName],
-      'ids': [
-        bookOwnerUid,
-        myUid,
-      ],
-      'messages': [],
-      'lastMessageTime': '',
-      'readed_messages': {
-        '$bookOwnerUid': 0,
-        '$myUid': 0,
-      },
-    }).then((documentSnapshot) => {
-          navigateTo(
-            context: context,
-            widget: ChatScreen(
-              ownerName: bookOwnerName,
-              ownerUid: bookOwnerUid,
-              conversationDocId: conversationDocId,
-            ),
-          ),
-          print("Added Data with ID: ${documentSnapshot.id}"),
-          conversationDocId = documentSnapshot.id,
+    String? myImage;
+    await _firestore.collection('users').doc(myUid).get().then((value) => {
+          myImage = value['picture'],
         });
+
+    await _firestore.collection("chats").add(
+      {
+        'names': [bookOwnerName, myName],
+        'ids': [
+          bookOwnerUid,
+          myUid,
+        ],
+        'messages': [],
+        'images': {
+          bookOwnerUid: widget.userModel.picture,
+          myUid: myImage,
+        },
+        'lastMessageTime': '',
+        'readed_messages': {
+          '$bookOwnerUid': 0,
+          '$myUid': 0,
+        },
+      },
+    ).then(
+      (documentSnapshot) => {
+        navigateTo(
+          context: context,
+          widget: ChatScreen(
+            ownerName: bookOwnerName,
+            ownerUid: bookOwnerUid,
+            conversationDocId: conversationDocId,
+          ),
+        ),
+        print("Added Data with ID: ${documentSnapshot.id}"),
+        conversationDocId = documentSnapshot.id,
+      },
+    );
   }
 
   Future<void> _makePhoneCall(String? phoneNumber) async {

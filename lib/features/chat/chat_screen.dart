@@ -168,7 +168,7 @@ class MessageStream extends StatelessWidget {
               snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(
-                backgroundColor: Colors.lightBlueAccent,
+                backgroundColor: AppColors.secondaryColor,
               ),
             );
           }
