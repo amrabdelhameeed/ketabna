@@ -67,7 +67,6 @@ class HomeScreen extends StatelessWidget {
               onWillPop: () async => false,
               child: Scaffold(
                 key: scaffoldKey,
-                //                       ),
                 body: RefreshIndicator(
                   color: AppColors.secondaryColor,
                   onRefresh: () {
