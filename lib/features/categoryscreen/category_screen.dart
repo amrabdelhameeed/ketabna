@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:ketabna/core/models/book_model.dart';
+import '../../core/constants/strings.dart';
 import '../../core/models/book_model.dart';
 import '../../core/utils/size_config.dart';
 
@@ -40,51 +41,55 @@ class CategoryScreen extends StatelessWidget {
           crossAxisSpacing: 0,
           children:
             book.map((item)=>
-              Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        image: item.picture != ""
-                            ? DecorationImage(
-                          image: NetworkImage(
-                            item.picture!,
+              InkWell(
+                onTap: () {
+                Navigator.pushNamed(context, bookScreen, arguments: item);},
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          image: item.picture != ""
+                              ? DecorationImage(
+                            image: NetworkImage(
+                              item.picture!,
+                            ),
+                            fit: BoxFit.fill,
+                          )
+                              : const DecorationImage(
+                            image: AssetImage(
+                              'assets/image/Books.png',
+                            ),
                           ),
-                          fit: BoxFit.fill,
-                        )
-                            : const DecorationImage(
-                          image: AssetImage(
-                            'assets/image/Books.png',
-                          ),
-                        ),
-                        borderRadius: BorderRadius.circular(13),
-                        border: Border.all(width: 1)),
-                    height: 122,
-                    width: 120,
+                          borderRadius: BorderRadius.circular(13),
+                          border: Border.all(width: 1)),
+                      height: 122,
+                      width: 120,
 
-                  ),
+                    ),
 
-                  Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: SizeConfig.defaultSize as double),
-                    child: Text(
+                    Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: SizeConfig.defaultSize as double),
+                      child: Text(
 
-                      '${item.name}',
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        '${item.name}',
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                      ),
+                    ),
+
+                    Text(
+                      '${item.authorName}',
+                      style: TextStyle( color: Colors.grey[500],fontSize: 11, fontWeight: FontWeight.w300),
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
-                      maxLines: 1,
                     ),
-                  ),
-
-                  Text(
-                    '${item.authorName}',
-                    style: TextStyle( color: Colors.grey[500],fontSize: 11, fontWeight: FontWeight.w300),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+                  ],
+                ),
               ),
           ).toList()
         ),
