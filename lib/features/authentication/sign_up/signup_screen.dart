@@ -33,18 +33,17 @@ class SignupPage extends StatelessWidget {
             size: 32,
           ),
 
-          // leading: IconButton(
-          //   padding: EdgeInsets.only(top: 20.0),
-          //   onPressed: () {
-          //     Navigator.pop(context);
-          //     // Navigator.pushReplacementNamed(context, loginScreen);
-          //   },
-          //   icon: const Icon(
-          //     Icons.arrow_back_ios_new,
-          //     color: AppColors.secondaryColor,
-          //     size: 22.0,
-          //   ),
-          // ),
+          leading: IconButton(
+            padding: const EdgeInsets.only(top: 20.0),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              color: AppColors.secondaryColor,
+              size: 22.0,
+            ),
+          ),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -123,6 +122,7 @@ class SignupPage extends StatelessWidget {
                                 text: 'Sign Up',
                                 fontSize: 20,
                                 fillColor: AppColors.secondaryColor,
+                                textColor: Colors.white,
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
                                     await cubit.signUpWithEmailAndPassword(
