@@ -23,24 +23,28 @@ class MyActiveChats extends StatefulWidget {
 class _MyActiveChatsState extends State<MyActiveChats> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        centerTitle: true,
-        title: const Text('Your Chats',style: TextStyle(color: Colors.black87),),
-        iconTheme: const IconThemeData(
-          color: AppColors.secondaryColor,
-          size: 32,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          leading: const Text(''),
+          centerTitle: true,
+          title: const Text('Your Chats',style: TextStyle(color: Colors.black87),),
+          iconTheme: const IconThemeData(
+            color: AppColors.secondaryColor,
+            size: 32,
+          ),
         ),
+        body:SafeArea(
+          child: Column(
+            children: [
+              ChatsStream()
+            ],
+          ),
+        ), //ChatsStream(),
       ),
-      body:SafeArea(
-        child: Column(
-          children: [
-            ChatsStream()
-          ],
-        ),
-      ), //ChatsStream(),
     );
   }
 }

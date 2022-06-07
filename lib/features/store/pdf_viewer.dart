@@ -22,10 +22,19 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
     print('start secure');
     await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
   }
+  enableScreenShot()async{
+    print('end secure');
+    await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
+  }
   @override
   void initState() {
     preventScreenShot();
     super.initState();
+  }
+  @override
+  void dispose() {
+    enableScreenShot();
+    super.dispose();
   }
   late PDFViewController pdfViewController;
   int pages=0;

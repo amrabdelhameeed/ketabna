@@ -64,24 +64,7 @@ class HomeScreen extends StatelessWidget {
           builder: (context, state) {
             var cubit = AuthCubit.get(context);
             return WillPopScope(
-              onWillPop: () async {
-                final timegap = DateTime.now().difference(pre_backpress);
-
-                final cantExit = timegap >= const Duration(seconds: 2);
-
-                pre_backpress = DateTime.now();
-
-                if (cantExit) {
-                  //show snackbar
-                  buildSnackBar(
-                      context: context,
-                      text: 'Press Back button again to Exit');
-
-                  return false;
-                } else {
-                  return true;
-                }
-              },
+              onWillPop: () async => false,
               child: Scaffold(
                 key: scaffoldKey,
                 // floatingActionButton: FloatingActionButton(
