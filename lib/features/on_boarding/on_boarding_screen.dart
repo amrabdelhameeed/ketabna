@@ -50,12 +50,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       appBar: AppBar(
         actions: [
           TextButton(
-              onPressed: () {
-                if (loginColor == const Color(0xfff5b53f)) {
-                  setState(() {
-                    submit();
-                  });
-                }
+              onPressed: ()
+              {
+                submit() ;
               },
               child: Text(
                 'SKIP',
@@ -186,7 +183,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   void submit() {
     SharedPrefHelper.saveData(key: 'onBoarding', value: true).then((value) {
-      if (value) {
+      if (value)
+      {
         navigateAndFinish(context, SignInUPScreen());
       }
     });
