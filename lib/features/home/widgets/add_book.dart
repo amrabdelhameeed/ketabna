@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ketabna/app_router.dart';
 
 import '../../../bloc/cubit/auth_cubit.dart';
-import '../../../core/constants/strings.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/widgets/default_text_form_field.dart';
 
@@ -271,7 +270,7 @@ class _AddBookState extends State<AddBook> {
                           splashColor: Colors.transparent,
                           child: Container(
                             width: MediaQuery.of(context).size.width * 2 / 4,
-                            height: MediaQuery.of(context).size.height * 1 / 20,
+                            height: MediaQuery.of(context).size.height * 1 / 18,
                             decoration: BoxDecoration(
                               color: const Color(0xFFF5B53F),
                               borderRadius: BorderRadius.circular(15),
@@ -279,7 +278,7 @@ class _AddBookState extends State<AddBook> {
                             child: Center(
                               child: isUploadingBook!
                                   ? const CircularProgressIndicator(
-                                      color: AppColors.secondaryColor,
+                                      color: AppColors.mainColor,
                                     )
                                   : const Text(
                                       "Add Book",
