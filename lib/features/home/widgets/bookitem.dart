@@ -84,6 +84,7 @@ class BookItem extends StatelessWidget {
     print(bookModel.picture);
     return InkWell(
       onTap: () async {
+        Navigator.pushNamed(context, bookScreen, arguments: bookModel);
         // String ownerUid = bookModel.ownerUid.toString();
         // print('ownerUid'+ownerUid);
         // String ownerName = '';
@@ -112,33 +113,33 @@ class BookItem extends StatelessWidget {
           children: [
             Expanded(
               child: Container(
-        //         child: bookModel.picture != null ? CachedNetworkImage(
-        // imageUrl: bookModel.picture!,
-        //   placeholder: (context, url) => const Center(
-        //       child: SizedBox(
-        //         child: CircularProgressIndicator(),
-        //         height: 30.0,
-        //         width: 30.0,
-        //       )),
-        //   errorWidget: (context, url, error) => Center(
-        //     child: Text('$error'),
-        //   ),
-        //   fit: BoxFit.fitHeight,
-        //   width: double.infinity,
-        // ): CircularProgressIndicator(color: kmMainColor,),
+                //         child: bookModel.picture != null ? CachedNetworkImage(
+                // imageUrl: bookModel.picture!,
+                //   placeholder: (context, url) => const Center(
+                //       child: SizedBox(
+                //         child: CircularProgressIndicator(),
+                //         height: 30.0,
+                //         width: 30.0,
+                //       )),
+                //   errorWidget: (context, url, error) => Center(
+                //     child: Text('$error'),
+                //   ),
+                //   fit: BoxFit.fitHeight,
+                //   width: double.infinity,
+                // ): CircularProgressIndicator(color: kmMainColor,),
                 decoration: BoxDecoration(
                   image: bookModel.picture != ""
                       ? DecorationImage(
-                    image: NetworkImage(
-                      bookModel.picture!,
-                    ),
-                    fit: BoxFit.fill,
-                  )
+                          image: NetworkImage(
+                            bookModel.picture!,
+                          ),
+                          fit: BoxFit.fill,
+                        )
                       : const DecorationImage(
-                    image: AssetImage(
-                      'assets/image/Books.png',
-                    ),
-                  ),
+                          image: AssetImage(
+                            'assets/image/Books.png',
+                          ),
+                        ),
                   borderRadius: BorderRadius.circular(13),
                 ),
                 height: 140,
@@ -149,7 +150,7 @@ class BookItem extends StatelessWidget {
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              maxLines: 3,
+              maxLines: 1,
             ),
             Text(
               '${bookModel.authorName}',

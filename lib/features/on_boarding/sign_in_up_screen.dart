@@ -84,98 +84,95 @@ class SignInUPScreen extends StatelessWidget {
             /// Text And Button
             Padding(
               padding: const EdgeInsets.all(15.0),
-              child: Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    SizedBox(
-                      height: SizeConfig.screenHeight! / 5.5,
-                    ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SizedBox(
+                    height: SizeConfig.screenHeight! / 7,
+                  ),
 
-                    /// Title
-                    const Text(
-                      'Books For \nEveryone.',
-                      style: TextStyle(
-                        fontFamily: 'SF Pro Rounded',
-                        fontStyle: FontStyle.normal,
-                        fontSize: 38,
-                        color: Color(0xfff5b53f),
-                        letterSpacing: 0.36,
-                        fontWeight: FontWeight.normal,
-                        height: 1.1111111111111112,
-                      ),
-                      textHeightBehavior:
-                          TextHeightBehavior(applyHeightToFirstAscent: false),
-                      textAlign: TextAlign.center,
+                  /// Title
+                  const Text(
+                    'Books For \nEveryone.',
+                    style: TextStyle(
+                      fontFamily: 'SF Pro Rounded',
+                      fontStyle: FontStyle.normal,
+                      fontSize: 38,
+                      color: Color(0xfff5b53f),
+                      letterSpacing: 0.36,
+                      fontWeight: FontWeight.normal,
+                      height: 1.1111111111111112,
                     ),
+                    textHeightBehavior:
+                        TextHeightBehavior(applyHeightToFirstAscent: false),
+                    textAlign: TextAlign.center,
+                  ),
 
-                    SizedBox(
-                      height: SizeConfig.screenHeight! / 8,
+                  SizedBox(
+                    height: SizeConfig.screenHeight! / 8,
+                  ),
+
+                  /// Sign In Button
+                  Container(
+                    height: SizeConfig.screenHeight! / 12,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(245, 181, 63, .93),
+                      borderRadius: BorderRadius.circular(20.0),
                     ),
-
-                    /// Sign In Button
-                    Container(
-                      height: SizeConfig.screenHeight! / 12,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: const Color.fromRGBO(245, 181, 63, .93),
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: MaterialButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, loginScreen);
-                        },
-                        child: const Text(
-                          'Sign In',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                          textAlign: TextAlign.center,
-                          softWrap: false,
+                    child: MaterialButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, loginScreen);
+                      },
+                      child: const Text(
+                        'Sign In',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
                         ),
-                        elevation: 0.0,
+                        textAlign: TextAlign.center,
+                        softWrap: false,
                       ),
+                      elevation: 0.0,
                     ),
-                    SizedBox(
-                      height: SizeConfig.screenHeight! / 68,
-                    ),
+                  ),
+                  SizedBox(
+                    height: SizeConfig.screenHeight! / 68,
+                  ),
 
-                    /// Sign Up Button
-                    Container(
-                      height: SizeConfig.screenHeight! / 12,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: const Color.fromRGBO(245, 181, 63, .93),
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: MaterialButton(
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(
-                              context, registerScreen);
-                        },
-                        child: const Text(
-                          'Sign Up',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                          textAlign: TextAlign.center,
-                          softWrap: false,
-                        ),
-                        elevation: 0.0,
-                      ),
+                  /// Sign Up Button
+                  Container(
+                    height: SizeConfig.screenHeight! / 12,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(245, 181, 63, .93),
+                      borderRadius: BorderRadius.circular(20.0),
                     ),
-                  ],
-                ),
+                    child: MaterialButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, registerScreen);
+                      },
+                      child: const Text(
+                        'Sign Up',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                        textAlign: TextAlign.center,
+                        softWrap: false,
+                      ),
+                      elevation: 0.0,
+                    ),
+                  ),
+                ],
               ),
             ),
 
             ///Girl
             Positioned(
               left: -90,
-              bottom: -40,
+              bottom: -50,
               child: Image(
                 image: const AssetImage('assets/image/G.png'),
                 width: SizeConfig.screenWidth! / 1.15,
