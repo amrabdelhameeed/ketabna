@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
     Colors.amber.shade500,
     Colors.red.shade900,
     Colors.brown.shade400,
-    Colors.white,
+    Colors.black87,
     Colors.amber,
     const Color(0xFFEF5350),
   ];
