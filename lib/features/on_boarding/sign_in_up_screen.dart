@@ -89,7 +89,7 @@ class SignInUPScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   SizedBox(
-                    height: SizeConfig.screenHeight! / 5.5,
+                    height: SizeConfig.screenHeight! / 7,
                   ),
 
                   /// Title
@@ -172,7 +172,7 @@ class SignInUPScreen extends StatelessWidget {
             ///Girl
             Positioned(
               left: -90,
-              bottom: -40,
+              bottom: -50,
               child: Image(
                 image: const AssetImage('assets/image/G.png'),
                 width: SizeConfig.screenWidth! / 1.15,
