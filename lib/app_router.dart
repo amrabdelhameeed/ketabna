@@ -19,7 +19,7 @@ import 'package:ketabna/features/on_boarding/sign_in_up_screen.dart';
 import 'package:ketabna/temp/home_screen.dart';
 import 'package:ketabna/features/on_boarding/Splash_view.dart';
 import 'package:ketabna/features/on_boarding/on_boarding_screen.dart';
-import 'package:ketabna/features/profile_screen/profile_screen.dart';
+// import 'package:ketabna/features/profile_screen/profile_screen.dart';
 import 'package:ketabna/features/search/search_screen.dart';
 
 import 'features/authentication/sign_in/signin_screen.dart';
