@@ -64,6 +64,18 @@ class HomeScreen extends StatelessWidget {
           listener: (context, state) {},
           builder: (context, state) {
             var cubit = AuthCubit.get(context);
+            List bookCategory =[
+              cubit.studingInterstBooks,
+              cubit.horrorInterstBooks,
+              cubit.fantasyInterstBooks,
+              cubit.novelInterstBooks,
+              cubit.fictionInterstBooks,
+              cubit.horrorInterstBooks,
+              cubit.technologyInterstBooks,
+              cubit.fictionInterstBooks,
+
+
+            ];
             return WillPopScope(
               onWillPop: () async => false,
               child: Scaffold(
@@ -144,7 +156,7 @@ class HomeScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(20),
                                     onTap: () {
                                       // Navigator.pushNamed(context, categoryScreen);
-                                      Navigator.push(context, MaterialPageRoute(builder:(context)=> CategoryScreen(categoryName: category[index].categoryName, book:cubit.horrorInterstBooks ,),));
+                                      Navigator.push(context, MaterialPageRoute(builder:(context)=> CategoryScreen(categoryName: category[index].categoryName, book:bookCategory[index],),));
                                     },
                                     child: Stack(
                                       alignment: AlignmentDirectional.center,
