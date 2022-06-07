@@ -14,6 +14,7 @@ import 'package:ketabna/features/on_boarding/sign_in_up_screen.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/widgets/default_text_form_field.dart';
 // import '../chat/my_active_chats.dart';
+import '../categoryscreen/category_screen.dart';
 import 'widgets/customShape.dart';
 import 'widgets/customcarousel.dart';
 
@@ -26,7 +27,7 @@ class HomeScreen extends StatelessWidget {
     Colors.amber.shade500,
     Colors.red.shade900,
     Colors.brown.shade400,
-    Colors.black54,
+    Colors.white,
     Colors.amber,
     const Color(0xFFEF5350),
   ];
@@ -414,6 +415,7 @@ class HomeScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(20),
                                     onTap: () {
                                       // Navigator.pushNamed(context, categoryScreen);
+                                      Navigator.push(context, MaterialPageRoute(builder:(context)=> CategoryScreen(categoryName: category[index].categoryName, book:cubit.horrorInterstBooks ,),));
                                     },
                                     child: Stack(
                                       alignment: AlignmentDirectional.center,
@@ -502,11 +504,6 @@ class HomeScreen extends StatelessWidget {
         ));
   }
 }
-
-
-
-
-
 
 //  شغل عمرو
 
