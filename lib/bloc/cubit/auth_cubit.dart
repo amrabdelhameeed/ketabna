@@ -476,6 +476,7 @@ class AuthCubit extends Cubit<AuthState> {
               picture: photoUrl,
               name: name,
               bookLink: bookLink,
+              bookOwners: [myId],
               isPdf: bookLink.contains('.com')?true:false,
               describtion: describtion,
               bookId: bookId,
