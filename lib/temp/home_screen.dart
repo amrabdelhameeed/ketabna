@@ -33,6 +33,7 @@ class HomeTemp extends StatelessWidget {
                     category: InterstsModel.categorys[
                         Random().nextInt(InterstsModel.categorys.length)],
                     name: ' name',
+                    bookLink: '',
                     authorName: ' authorName');
               },
               label: Text('Add Book')),

@@ -57,7 +57,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ..getUserBooks(),
       child: BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
         var cubit = AuthCubit.get(context);
-        print(cubit.userModel!.name);
         return WillPopScope(
           onWillPop: () async => false,
           child: Scaffold(
@@ -71,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         navigateAndFinish(context, SignInUPScreen());
                       });
                     },
-                    child: Text('log out')),
+                    child: const Text('Log Out')),
               ],
               backgroundColor: Colors.transparent,
               elevation: 0.0,
@@ -131,29 +130,61 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       height: 15,
                     ),
                     // Name
-                    Text(
-                      cubit.userModel!.name!,
-                      maxLines: 1,
-                      softWrap: true,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline4!
-                          .copyWith(fontSize: 28, fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          cubit.userModel!.name ?? '',
+                          maxLines: 1,
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4!
+                              .copyWith(
+                                  fontSize: 28, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 2,
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    TextEditingController controller =
+                                        TextEditingController();
+                                    return AlertDialog(
+                                      actions: [
+                                        Column(
+                                          children: [
+                                            textFormField(
+                                                controller: controller,
+                                                keyboardType:
+                                                    TextInputType.name,
+                                                label: 'Edit Name'),
+                                            TextButton(
+                                                onPressed: () {
+                                                  cubit
+                                                      .updateName(
+                                                          name: controller.text)
+                                                      .then((value) {
+                                                    Navigator.pop(context);
+                                                  });
+                                                },
+                                                child: const Text('save'))
+                                          ],
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            },
+                            icon: Icon(Icons.edit))
+                      ],
                     ),
 
                     const SizedBox(
                       height: 20,
-                    ),
-
-                    DefaultFormButton(
-                      text: 'Edit Profile',
-                      width: 120,
-                      height: 35,
-                      radius: 10,
-                      padding: 10,
-                      textColor: Colors.white,
-                      fillColor: AppColors.secondaryColor,
                     ),
 
                     const SizedBox(
@@ -190,8 +221,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               image: cubit.userBooks[index].picture ?? '',
                               context: context,
                               title: cubit.userBooks[index].name ?? '',
-                              description:
-                                  cubit.userBooks[index].describtion ?? '',
+                              auther:
+                                  cubit.userBooks[index].authorName ?? '',
                               isCheckedSwitch:
                                   cubit.userBooks[index].isValid ?? false,
                               switchChange: (value) {
@@ -217,7 +248,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget buildItemBook({
     required BuildContext context,
     required String title,
-    required String description,
+    required String auther,
     required String image,
     required Function switchChange,
     bool isCheckedSwitch = false,
@@ -245,7 +276,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             Positioned(
               child: Text(
-                description,
+                'by $auther',
                 maxLines: 2,
                 softWrap: true,
                 style: Theme.of(context).textTheme.headline3!.copyWith(

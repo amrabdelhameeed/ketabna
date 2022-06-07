@@ -63,6 +63,7 @@ class AuthCubit extends Cubit<AuthState> {
     ProfileScreen(),
     // ),
   ];
+
   Future<UserModel> getUserModelByOwnerUid(String uId) async {
     UserModel? internalUserModel;
     String userUid = uId;
@@ -169,9 +170,10 @@ class AuthCubit extends Cubit<AuthState> {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(getLoggedInUser().uid)
-        .update({'user': name}).then((value) {
+        .update({'name': name}).then((value) {
       print('updateName success');
       emit(EmailSubmitted());
+      getCurrentFirestoreUser();
     }).catchError((onError) {
       print('error fe updateName');
     });
@@ -452,6 +454,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String category,
     required String name,
     required String authorName,
+    required String bookLink,
     required String describtion,
   }) async {
     String? photoUrl;
@@ -472,6 +475,9 @@ class AuthCubit extends Cubit<AuthState> {
               category: category,
               picture: photoUrl,
               name: name,
+              bookLink: bookLink,
+              bookOwners: [myId],
+              isPdf: bookLink.contains('.com')?true:false,
               describtion: describtion,
               bookId: bookId,
               authorName: authorName);
