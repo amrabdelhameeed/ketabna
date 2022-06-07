@@ -70,7 +70,7 @@ class CategoryScreen extends StatelessWidget {
                     ),
 
                     Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: SizeConfig.defaultSize as double),
+                      padding: EdgeInsets.symmetric(horizontal: SizeConfig.defaultSize as double),
                       child: Text(
 
                         '${item.name}',
