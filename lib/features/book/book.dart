@@ -125,6 +125,7 @@ class _BookScreenState extends State<BookScreen> {
                       padding: const EdgeInsets.all(10.0),
                       child: Text(
                         widget.bookModel.describtion ?? '',
+                        textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 18,
