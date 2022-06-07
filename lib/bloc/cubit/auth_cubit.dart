@@ -17,6 +17,8 @@ import 'package:ketabna/features/home/widgets/add_book.dart';
 import 'package:ketabna/features/search/search_screen.dart';
 import 'package:ketabna/screens/profile.dart';
 
+import '../../features/search/search_way.dart';
+
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -46,9 +48,7 @@ class AuthCubit extends Cubit<AuthState> {
     //   child:
     HomeScreen(),
 
-    /* 2 Search Screen*/ SearchScreen(
-      searchBy: '',
-    ),
+    /* 2 Search Screen*/ SearchWay(),
     /* 3 Add Screen*/ AddBook(),
     /* 4 chat Screen*/
     // BlocProvider<AuthCubit>.value(

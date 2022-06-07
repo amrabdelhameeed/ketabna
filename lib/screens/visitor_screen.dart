@@ -291,9 +291,12 @@ class _VisitorScreenState extends State<VisitorScreen> {
                   // item book
                   Wrap(
                     children: cubit.userBooks
-                        .map((e) => BookItem(
-                              bookModel: e,
-                            ))
+                        .map((e) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: BookItem(
+                                bookModel: e,
+                              ),
+                        ))
                         .toList(),
                   )
                 ],
