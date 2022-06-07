@@ -221,8 +221,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               image: cubit.userBooks[index].picture ?? '',
                               context: context,
                               title: cubit.userBooks[index].name ?? '',
-                              description:
-                                  cubit.userBooks[index].describtion ?? '',
+                              auther:
+                                  cubit.userBooks[index].authorName ?? '',
                               isCheckedSwitch:
                                   cubit.userBooks[index].isValid ?? false,
                               switchChange: (value) {
@@ -248,7 +248,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget buildItemBook({
     required BuildContext context,
     required String title,
-    required String description,
+    required String auther,
     required String image,
     required Function switchChange,
     bool isCheckedSwitch = false,
@@ -276,7 +276,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             Positioned(
               child: Text(
-                description,
+                'by $auther',
                 maxLines: 2,
                 softWrap: true,
                 style: Theme.of(context).textTheme.headline3!.copyWith(
