@@ -6,6 +6,7 @@ import 'package:ketabna/core/models/book_model.dart';
 import 'package:ketabna/features/store/pdf_api.dart';
 import 'package:ketabna/features/store/pdf_viewer.dart';
 
+import '../../app_router.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/size_config.dart';
 import '../../core/widgets/components.dart';
@@ -50,7 +51,7 @@ class _MyStatefulWidgetState extends State<PayBookPrice> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: const Text(
-          'ادفع يا عرصي يا سيسي',
+          'Book Coast',
           style: TextStyle(color: Colors.black87),
         ),
         centerTitle: true,
@@ -163,6 +164,15 @@ class _MyStatefulWidgetState extends State<PayBookPrice> {
                             filePdf: filePdf,
                             bookModel: widget.bookModel);
                       }
+                      authCubit!
+                      // ..getCurrentFirestoreUser()
+                        ..getRecommended()
+                        ..getHorrorBooks()
+                        ..getTechnologyBooks()
+                        ..getFantasyBooks()
+                        ..getnovelBooks()
+                        ..getfictionBooks()
+                        ..getbiographyBooks();
                       setState(() {
                         isPayingMoney = false;
                       });

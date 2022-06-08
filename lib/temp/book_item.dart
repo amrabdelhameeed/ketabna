@@ -97,7 +97,7 @@ class BookItem extends StatelessWidget {
                   color: Colors.grey[500],
                   fontSize: 12,
                   fontWeight: FontWeight.w300),
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
             ),
