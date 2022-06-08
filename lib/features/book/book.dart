@@ -76,6 +76,7 @@ class _BookScreenState extends State<BookScreen> {
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
+                          maxLines: 1,
                         ),
                         const SizedBox(
                           height: 10,
@@ -89,6 +90,7 @@ class _BookScreenState extends State<BookScreen> {
                                 color: Colors.black54,
                                 fontSize: 15,
                               ),
+                              maxLines: 1,
                             ),
                           ],
                         ),
@@ -104,6 +106,7 @@ class _BookScreenState extends State<BookScreen> {
                                 color: Colors.black54,
                                 fontSize: 15,
                               ),
+                              maxLines: 1,
                             ),
                           ],
                         ),

@@ -264,7 +264,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Positioned(
               child: Text(
                 title,
-                maxLines: 1,
+                maxLines: 2,
                 softWrap: true,
                 style: Theme.of(context).textTheme.bodyText1!.copyWith(
                       fontSize: 18,
@@ -273,6 +273,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               left: 30,
               top: 20,
+            ),
+            SizedBox(
+              height: 20,
             ),
             Positioned(
               child: Text(
