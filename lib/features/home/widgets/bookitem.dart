@@ -128,6 +128,15 @@ class BookItem extends StatelessWidget {
                 //   width: double.infinity,
                 // ): CircularProgressIndicator(color: kmMainColor,),
                 decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade300,
+                      blurStyle: BlurStyle.solid,
+                      offset: Offset.fromDirection(1),
+                      blurRadius: 2,
+                      spreadRadius: 2,
+                    )
+                  ],
                   image: bookModel.picture != ""
                       ? DecorationImage(
                           image: NetworkImage(

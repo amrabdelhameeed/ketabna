@@ -33,6 +33,7 @@ class CategoryScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
+
         child: Wrap(
           children: book
               .map((e) => InkWell(
