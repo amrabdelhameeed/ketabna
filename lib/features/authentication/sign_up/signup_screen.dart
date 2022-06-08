@@ -10,15 +10,26 @@ import 'package:ketabna/core/widgets/default_form_button.dart';
 import 'package:ketabna/core/widgets/default_text_form_field.dart';
 // import 'package:ketabna/features/home/home_screen.dart';
 
-class SignupPage extends StatelessWidget {
+class SignupPage extends StatefulWidget {
   SignupPage({Key? key}) : super(key: key);
 
+  @override
+  State<SignupPage> createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
+  bool isLoginIn = false;
   final TextEditingController _nameController = TextEditingController();
+
   final TextEditingController _emailController = TextEditingController();
+
   final TextEditingController _mobileController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
+
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
@@ -118,34 +129,52 @@ class SignupPage extends StatelessWidget {
                           var cubit = AuthCubit.get(context);
                           return Column(
                             children: [
-                              DefaultFormButton(
-                                text: 'Sign Up',
-                                fontSize: 20,
-                                fillColor: AppColors.secondaryColor,
-                                textColor: Colors.white,
-                                onPressed: () async {
-                                  if (formKey.currentState!.validate()) {
-                                    await cubit.signUpWithEmailAndPassword(
-                                      location: 'cairo',
-                                      context: context,
-                                      interstsModel: InterstsModel(
-                                        biography: true,
-                                        children: true,
-                                        fantasy: true,
-                                        graphicNovels: true,
-                                        history: true,
-                                        horror: true,
-                                        romance: true,
-                                        scienceFiction: true,
+                              isLoginIn
+                                  ? const Center(
+                                      child: CircularProgressIndicator(
+                                        color: AppColors.secondaryColor,
                                       ),
-                                      email: _emailController.text,
-                                      password: _passwordController.text,
-                                      name: _nameController.text,
-                                      phone: _mobileController.text,
-                                    );
-                                  }
-                                },
-                              ),
+                                    )
+                                  : DefaultFormButton(
+                                      text: 'Sign Up',
+                                      fontSize: 20,
+                                      fillColor: AppColors.secondaryColor,
+                                      textColor: Colors.white,
+                                      onPressed: () async {
+                                        setState(() {
+                                          isLoginIn = true;
+                                        });
+                                        if (formKey.currentState!.validate()) {
+                                          await cubit
+                                              .signUpWithEmailAndPassword(
+                                                location: 'cairo',
+                                                context: context,
+                                                interstsModel: InterstsModel(
+                                                  biography: true,
+                                                  children: true,
+                                                  fantasy: true,
+                                                  graphicNovels: true,
+                                                  history: true,
+                                                  horror: true,
+                                                  romance: true,
+                                                  scienceFiction: true,
+                                                ),
+                                                email: _emailController.text,
+                                                password:
+                                                    _passwordController.text,
+                                                name: _nameController.text,
+                                                phone: _mobileController.text,
+                                              )
+                                              .then((value) => {
+                                                    setState(
+                                                      () {
+                                                        isLoginIn = false;
+                                                      },
+                                                    ),
+                                                  });
+                                        }
+                                      },
+                                    ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
