@@ -11,11 +11,21 @@ import '../../../core/widgets/default_form_button.dart';
 import '../../../core/widgets/default_text_form_field.dart';
 import '../../../screens/forget_screen.dart';
 
-class SigninPage extends StatelessWidget {
+class SigninPage extends StatefulWidget {
   SigninPage({Key? key}) : super(key: key);
+
+  @override
+  State<SigninPage> createState() => _SigninPageState();
+}
+
+class _SigninPageState extends State<SigninPage> {
+  bool isLoginIn = false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   final TextEditingController _emailController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +98,8 @@ class SigninPage extends StatelessWidget {
                           TextButton(
                               onPressed: () {
                                 // here you will push the forgotten password screen
-                                navigateTo(context:context,widget:ForgetScreen());
+                                navigateTo(
+                                    context: context, widget: ForgetScreen());
                               },
                               child: const Text('Forgot Password ?',
                                   style: TextStyle(
@@ -117,20 +128,36 @@ class SigninPage extends StatelessWidget {
                         },
                         builder: (context, state) {
                           var cubit = AuthCubit.get(context);
-                          return DefaultFormButton(
-                            text: 'Sign In',
-                            fillColor: AppColors.secondaryColor,
-                            textColor: Colors.white,
-                            fontSize: 19.0,
-                            onPressed: () async {
-                              if (formKey.currentState!.validate()) {
-                                await cubit.loginWithEmailAndPassword(
-                                    email: _emailController.text,
-                                    password: _passwordController.text,
-                                    context: context);
-                              }
-                            },
-                          );
+                          return isLoginIn
+                              ? const Center(
+                                child: CircularProgressIndicator(
+                                    color: AppColors.secondaryColor,
+                                  ),
+                              )
+                              : DefaultFormButton(
+                                  text: 'Sign In',
+                                  fillColor: AppColors.secondaryColor,
+                                  textColor: Colors.white,
+                                  fontSize: 19.0,
+                                  onPressed: () async {
+                                    setState(() {
+                                      isLoginIn = true;
+                                    });
+                                    if (formKey.currentState!.validate()) {
+                                      await cubit
+                                          .loginWithEmailAndPassword(
+                                              email: _emailController.text,
+                                              password:
+                                                  _passwordController.text,
+                                              context: context)
+                                          .then((value) => {
+                                                setState(() {
+                                                  isLoginIn = false;
+                                                })
+                                              });
+                                    }
+                                  },
+                                );
                         },
                       ),
                     ],
