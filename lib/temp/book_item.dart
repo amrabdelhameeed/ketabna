@@ -89,7 +89,7 @@ class BookItem extends StatelessWidget {
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              maxLines: 3,
+              maxLines: 1,
             ),
             Text(
               '${bookModel.authorName}',
@@ -97,7 +97,7 @@ class BookItem extends StatelessWidget {
                   color: Colors.grey[500],
                   fontSize: 12,
                   fontWeight: FontWeight.w300),
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
             ),

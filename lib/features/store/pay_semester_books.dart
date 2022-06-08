@@ -51,7 +51,7 @@ class _MyStatefulWidgetState extends State<PayBookPrice> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: const Text(
-          'ادفع يا عرص',
+          'Book Coast',
           style: TextStyle(color: Colors.black87),
         ),
         centerTitle: true,
